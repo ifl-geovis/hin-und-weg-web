@@ -1,9 +1,3 @@
-function parsedCSV(results, file)
-{
-	console.log('results: ', results);
-	console.log('file: ', file);
-}
-
 function init()
 {
 	console.log('initialize!');
@@ -20,4 +14,10 @@ function start()
 			skipEmptyLines: true,
 		}
 		Papa.parse('data/test.csv', config);
+}
+
+function parsedCSV(results, file)
+{
+	console.log('results: ', results);
+	console.log('file: ', file);
 }
