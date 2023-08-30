@@ -2,6 +2,7 @@ let app =
 {
 	status:
 	{
+		dataset_loads: 0
 	},
 	datasetlist: [],
 	datasets:
@@ -24,6 +25,10 @@ function init_datalist()
 	if (this.status !== 200) return;
 	let datasets = JSON.parse(this.responseText);
 	app.datasetlist = datasets;
+	console.log("datasets: ", datasets);
+	console.log("datasets.length: ", datasets.length);
+	app.status.dataset_loads = datasets.length;
+	console.log("loads: ", app.status.dataset_loads);
 	for (const dataset of datasets)
 	{
 		let datasetinfo =
@@ -41,12 +46,16 @@ function init_datasetinfo()
 	console.log("content: ", this.responseText);
 	if (this.status !== 200)
 	{
+		remove_item_from_list(app.datasetlist, this.appinfo.dir);
+		app.status.dataset_loads--;
 		return;
 	}
 	console.log("appinfo: ", this.appinfo);
 	let dataset = JSON.parse(this.responseText);
 	app.datasets[this.appinfo.dir] = dataset;
-	console.log("app: ", app);
+	console.log("loads: ", app.status.dataset_loads);
+	app.status.dataset_loads--;
+	if (app.status.dataset_loads === 0) start();
 }
 
 function start()
