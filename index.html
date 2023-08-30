@@ -3,26 +3,13 @@
 	<head>
 		<title>statistics web</title>
 		<script type="text/javascript" src="lib/papaparse.min.js"></script>
-		<script type="text/javascript">
-			function parsedCSV(results, file)
-			{
-				console.log('results: ', results);
-				console.log('file: ', file);
-			}
-		</script>
+		<script type="text/javascript" src="main.js"></script>
 	</head>
 
 	<body>
 		<script type="text/javascript" defer>
-			console.log('We are here!');
-			console.log('Papa: ', Papa);
-			const config =
-			{
-				complete: parsedCSV,
-				download: true,
-				skipEmptyLines: true,
-			}
-			Papa.parse('data/test.csv', config);
+			init();
+			start();
 		</script>
 		<h1>My First Heading</h1>
 		<p>My first paragraph.</p>
