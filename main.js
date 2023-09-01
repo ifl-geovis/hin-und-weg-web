@@ -10,7 +10,9 @@ let app =
 	{
 	},
 	selected_dataset_id: null,
-	selected_dataset: null
+	selected_dataset: null,
+	selected_category_id: null,
+	selected_category: null
 };
 
 function init()
@@ -98,6 +100,8 @@ function dataset_selected(event)
 function category_selected(event)
 {
 	console.log("category_selected: ", event.target.value);
+	app.selected_category_id = event.target.value;
+	app.selected_category = select_category(app.selected_category_id, app.selected_dataset.categories);
 }
 
 function create_dataset_mapping(dataset_list)
@@ -176,4 +180,13 @@ function remove_select_options(select)
 		//console.log(select.lastElementChild.value);
 		select.lastElementChild.remove();
 	}
+}
+
+function select_category(id, categories)
+{
+	for (let category of categories)
+	{
+		if (category.id === id) return category;
+	}
+	return null;
 }
