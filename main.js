@@ -2,7 +2,8 @@ let app =
 {
 	status:
 	{
-		dataset_loads: 0
+		dataset_loads: 0,
+		dataset_loaded: false,
 	},
 	datasetlist: [],
 	datasets:
@@ -47,15 +48,36 @@ function init_datasetinfo()
 	if (this.status !== 200)
 	{
 		remove_item_from_list(app.datasetlist, this.appinfo.dir);
-		app.status.dataset_loads--;
-		return;
 	}
-	console.log("appinfo: ", this.appinfo);
-	let dataset = JSON.parse(this.responseText);
-	app.datasets[this.appinfo.dir] = dataset;
+	else
+	{
+		console.log("appinfo: ", this.appinfo);
+		let dataset = JSON.parse(this.responseText);
+		app.datasets[this.appinfo.dir] = dataset;
+	}
 	console.log("loads: ", app.status.dataset_loads);
 	app.status.dataset_loads--;
-	if (app.status.dataset_loads === 0) start();
+	if (app.status.dataset_loads === 0)
+	{
+		init_datasetloader(app.datasetlist);
+		start();
+	}
+}
+
+function init_datasetloader(datasetlist)
+{
+	let dataset_mapping = create_dataset_mapping(datasetlist);
+	console.log('dataset_mapping', dataset_mapping);
+}
+
+function create_dataset_mapping(datasetlist)
+{
+	let mapping = {};
+	for (let datasetid of datasetlist)
+	{
+		mapping[datasetid] = app.datasets[datasetid].name;
+	}
+	return mapping;
 }
 
 function start()
