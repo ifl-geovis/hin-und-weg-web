@@ -5,10 +5,12 @@ let app =
 		dataset_loads: 0,
 		dataset_loaded: false,
 	},
-	datasetlist: [],
+	dataset_list: [],
 	datasets:
 	{
-	}
+	},
+	selected_dataset_id: null,
+	selected_dataset: null
 };
 
 function init()
@@ -25,7 +27,7 @@ function init_datalist()
 	console.log("app: ", app);
 	if (this.status !== 200) return;
 	let datasets = JSON.parse(this.responseText);
-	app.datasetlist = datasets;
+	app.dataset_list = datasets;
 	console.log("datasets: ", datasets);
 	console.log("datasets.length: ", datasets.length);
 	app.status.dataset_loads = datasets.length;
@@ -47,7 +49,7 @@ function init_datasetinfo()
 	//console.log("content: ", this.responseText);
 	if (this.status !== 200)
 	{
-		remove_item_from_list(app.datasetlist, this.appinfo.dir);
+		remove_item_from_list(app.dataset_list, this.appinfo.dir);
 	}
 	else
 	{
@@ -59,38 +61,61 @@ function init_datasetinfo()
 	app.status.dataset_loads--;
 	if (app.status.dataset_loads === 0)
 	{
-		init_datasetloader(app.datasetlist);
+		init_datasetloader(app.dataset_list);
 		start();
 	}
 }
 
-function init_datasetloader(datasetlist)
+function init_datasetloader(dataset_list)
 {
-	let dataset_mapping = create_dataset_mapping(datasetlist);
+	let dataset_mapping = create_dataset_mapping(dataset_list);
 	app.dataset_mapping = dataset_mapping;
-	console.log("dataset_mapping", dataset_mapping);
-	console.log("selector-element: ", document.getElementById("dataset-selector"));
+	//console.log("dataset_mapping", dataset_mapping);
+	//console.log("selector-element: ", document.getElementById("dataset-selector"));
 	let selection = document.getElementById("dataset-selector");
-	for (let dataset of datasetlist)
-	{
-		let option = document.createElement("option");
-		option.value = dataset;
-		option.text = dataset_mapping[dataset];
-		selection.add(option);
-	}
+	add_select_options(selection, dataset_list, dataset_mapping);
 }
 
 function dataset_selected(event)
 {
-	console.log('dataset_selected: ', event.target.value);
+	app.selected_dataset_id = event.target.value;
+	app.selected_dataset = app.datasets[app.selected_dataset_id];
+	console.log("dataset_selected: ", event.target.value);
+	let selection = document.getElementById("category-selector");
+	console.log("child:", selection.lastElementChild);
+	remove_select_options(selection);
+	if (app.selected_dataset_id)
+	{
+		let category_mapping = create_category_mapping(app.selected_dataset.categories);
+		app.category_mapping = category_mapping;
+		//console.log("category_mapping", category_mapping);
+		let category_list = Object.keys(category_mapping);
+		//console.log("category_list", category_list);
+		add_select_options(selection, category_list, category_mapping);
+	}
 }
 
-function create_dataset_mapping(datasetlist)
+function category_selected(event)
+{
+	console.log("category_selected: ", event.target.value);
+}
+
+function create_dataset_mapping(dataset_list)
 {
 	let mapping = {};
-	for (let datasetid of datasetlist)
+	for (let datasetid of dataset_list)
 	{
 		mapping[datasetid] = app.datasets[datasetid].name;
+	}
+	return mapping;
+}
+
+function create_category_mapping(categorylist)
+{
+	let mapping = {};
+	for (let category of categorylist)
+	{
+		mapping[category.id] = category.name;
 	}
 	return mapping;
 }
@@ -130,5 +155,25 @@ function remove_item_from_list(list, item)
 	if (index !== -1)
 	{
 		list.splice(index, 1);
+	}
+}
+
+function add_select_options(select, list, mapping)
+{
+	for (let id of list)
+	{
+		let option = document.createElement("option");
+		option.value = id;
+		option.text = mapping[id];
+		select.add(option);
+	}
+}
+
+function remove_select_options(select)
+{
+	while (select.lastElementChild.value)
+	{
+		//console.log(select.lastElementChild.value);
+		select.lastElementChild.remove();
 	}
 }
