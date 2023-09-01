@@ -2,6 +2,7 @@
 <html>
 	<head>
 		<title>statistics web</title>
+		<meta charset="UTF-8">
 		<link rel="stylesheet" href="main.css">
 		<script type="text/javascript" src="lib/papaparse.min.js"></script>
 		<script type="text/javascript" src="main.js"></script>
@@ -45,6 +46,13 @@
 		<p>My first paragraph. This is more text to test! This is more text to test! This is more text to test! This is more text to test! This is more text to test! This is more text to test!</p>
 		<p>My first paragraph. This is more text to test! This is more text to test! This is more text to test! This is more text to test! This is more text to test! This is more text to test!</p>
 		<p>My first paragraph. This is more text to test! This is more text to test! This is more text to test! This is more text to test! This is more text to test! This is more text to test!</p>
-		<div id="datasetloader">test123</div>
+		<div id="datasetloader">
+			<h2>Datensatz einladen</h2>
+			<p>Bitte laden sie den gewünschten Datensatz</p>
+			<label for="dataset">Datensatz:</label>
+			<select name="dataset" id="dataset-selector">
+				<option value="">-- Bitte wählen sie einen Datensatz aus --</option>
+			</select>
+		</div>
 	</body>
 </html>
