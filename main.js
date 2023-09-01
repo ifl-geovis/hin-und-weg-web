@@ -20,8 +20,8 @@ function init()
 function init_datalist()
 {
 	console.log("init_datalist: ", this);
-	console.log("status: ", this.status);
-	console.log("content: ", this.responseText);
+	//console.log("status: ", this.status);
+	//console.log("content: ", this.responseText);
 	console.log("app: ", app);
 	if (this.status !== 200) return;
 	let datasets = JSON.parse(this.responseText);
@@ -42,9 +42,9 @@ function init_datalist()
 
 function init_datasetinfo()
 {
-	console.log("init_datalist: ", this);
-	console.log("status: ", this.status);
-	console.log("content: ", this.responseText);
+	console.log("init_datasetinfo: ", this);
+	//console.log("status: ", this.status);
+	//console.log("content: ", this.responseText);
 	if (this.status !== 200)
 	{
 		remove_item_from_list(app.datasetlist, this.appinfo.dir);
@@ -78,6 +78,11 @@ function init_datasetloader(datasetlist)
 		option.text = dataset_mapping[dataset];
 		selection.add(option);
 	}
+}
+
+function dataset_selected(event)
+{
+	console.log('dataset_selected: ', event.target.value);
 }
 
 function create_dataset_mapping(datasetlist)
