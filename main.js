@@ -80,11 +80,11 @@ function init_datasetloader(dataset_list)
 
 function dataset_selected(event)
 {
+	console.log("dataset_selected: ", event.target.value);
 	app.selected_dataset_id = event.target.value;
 	app.selected_dataset = app.datasets[app.selected_dataset_id];
-	console.log("dataset_selected: ", event.target.value);
 	let selection = document.getElementById("category-selector");
-	console.log("child:", selection.lastElementChild);
+	//console.log("selection:", selection);
 	remove_select_options(selection);
 	if (app.selected_dataset_id)
 	{
@@ -94,6 +94,11 @@ function dataset_selected(event)
 		let category_list = Object.keys(category_mapping);
 		//console.log("category_list", category_list);
 		add_select_options(selection, category_list, category_mapping);
+		selection.disabled = false;
+	}
+	else
+	{
+		selection.disabled = true;
 	}
 }
 

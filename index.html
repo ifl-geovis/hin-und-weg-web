@@ -49,18 +49,15 @@
 		<div id="datasetloader">
 			<h2>Datensatz einladen</h2>
 			<p>Bitte laden sie den gewünschten Datensatz</p>
-			<div id="dataset-selector-container">
-				<label for="dataset">Datensatz:</label>
-				<select name="dataset" id="dataset-selector" oninput="dataset_selected(event)">
-					<option value="">-- Bitte wählen sie einen Datensatz aus --</option>
-				</select>
-			</div>
-			<div id="category-selector-container">
-				<label for="category">Kategorie:</label>
-				<select name="category" id="category-selector" oninput="category_selected(event)">
-					<option value="">-- Bitte wählen sie eine Kategorie aus --</option>
-				</select>
-			</div>
+			<label for="dataset">Datensatz:</label>
+			<select name="dataset" id="dataset-selector" oninput="dataset_selected(event)">
+				<option value="">-- Bitte wählen sie einen Datensatz aus --</option>
+			</select>
+			<br />
+			<label for="category">Kategorie:</label>
+			<select name="category" id="category-selector" oninput="category_selected(event)" disabled>
+				<option value="">-- Bitte wählen sie eine Kategorie aus --</option>
+			</select>
 		</div>
 	</body>
 </html>
