@@ -1,0 +1,11 @@
+div#datasetloader
+{
+	display: block;
+	position: fixed;
+	top: 300px;
+	margin-left: 25%;
+	margin-right: 25%;
+	width: 50%;
+	border-style: solid;
+	border-width: 3px;
+}
