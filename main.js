@@ -67,7 +67,17 @@ function init_datasetinfo()
 function init_datasetloader(datasetlist)
 {
 	let dataset_mapping = create_dataset_mapping(datasetlist);
-	console.log('dataset_mapping', dataset_mapping);
+	app.dataset_mapping = dataset_mapping;
+	console.log("dataset_mapping", dataset_mapping);
+	console.log("selector-element: ", document.getElementById("dataset-selector"));
+	let selection = document.getElementById("dataset-selector");
+	for (let dataset of datasetlist)
+	{
+		let option = document.createElement("option");
+		option.value = dataset;
+		option.text = dataset_mapping[dataset];
+		selection.add(option);
+	}
 }
 
 function create_dataset_mapping(datasetlist)
