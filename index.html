@@ -51,20 +51,20 @@
 		<p>My first paragraph. This is more text to test! This is more text to test! This is more text to test! This is more text to test! This is more text to test! This is more text to test!</p>
 
 		<!-- dataset loader dialog -->
-		<div id="datasetloader">
+		<div id="datasetloader_dialog">
 			<h2>Datensatz einladen</h2>
 			<p>Bitte laden sie den gewünschten Datensatz</p>
 			<label for="dataset">Datensatz:</label>
-			<select name="dataset" id="dataset-selector" oninput="dataset_selected(event)">
+			<select name="dataset" id="dataset_selector" oninput="dataset_selected(event)">
 				<option value="">-- Bitte wählen sie einen Datensatz aus --</option>
 			</select>
 			<br />
 			<label for="category">Datenkategorie:</label>
-			<select name="category" id="category-selector" oninput="category_selected(event)" disabled>
+			<select name="category" id="category_selector" oninput="category_selected(event)" disabled>
 				<option value="">-- Bitte wählen sie eine Datenkategorie aus --</option>
 			</select>
 			<br />
-			<button name="load_dataset" id="load-dataset-button" onclick="load_dataset(event)" disabled>Daten einladen</button>
+			<button name="load_dataset" id="load_dataset_button" onclick="load_dataset(event)" disabled>Daten einladen</button>
 		</div>
 	</body>
 </html>

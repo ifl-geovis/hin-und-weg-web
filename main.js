@@ -73,8 +73,8 @@ function init_datasetloader(dataset_list)
 	let dataset_mapping = create_dataset_mapping(dataset_list);
 	app.dataset_mapping = dataset_mapping;
 	//console.log("dataset_mapping", dataset_mapping);
-	//console.log("selector-element: ", document.getElementById("dataset-selector"));
-	let selection = document.getElementById("dataset-selector");
+	//console.log("selector-element: ", document.getElementById("dataset_selector"));
+	let selection = document.getElementById("dataset_selector");
 	add_select_options(selection, dataset_list, dataset_mapping);
 }
 
@@ -83,7 +83,7 @@ function dataset_selected(event)
 	console.log("dataset_selected: ", event.target.value);
 	app.selected_dataset_id = event.target.value;
 	app.selected_dataset = app.datasets[app.selected_dataset_id];
-	let selection = document.getElementById("category-selector");
+	let selection = document.getElementById("category_selector");
 	//console.log("selection:", selection);
 	remove_select_options(selection);
 	if (app.selected_dataset_id)
@@ -107,7 +107,7 @@ function category_selected(event)
 	console.log("category_selected: ", event.target.value);
 	app.selected_category_id = event.target.value;
 	app.selected_category = select_category(app.selected_category_id, app.selected_dataset.categories);
-	let button = document.getElementById("load-dataset-button");
+	let button = document.getElementById("load_dataset_button");
 	if (app.selected_category_id)
 	{
 		button.disabled = false;
