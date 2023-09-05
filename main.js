@@ -137,6 +137,8 @@ function load_dataset(event)
 	dataset_dialog.style.display = "none";
 	console.log("app.selected_dataset_id: ", app.selected_dataset_id);
 	console.log("app.selected_category_id: ", app.selected_category_id);
+	let info = {};
+	load_url("data/" + app.selected_dataset_id + "/" + app.selected_dataset.geodata, info, load_geodata);
 	update_element_visibility();
 	app.status.modal_dialog = false;
 }
@@ -241,4 +243,15 @@ function show_table(event)
 {
 	if (app.status.modal_dialog) return;
 	console.log("show_table");
+}
+
+function load_geodata()
+{
+	console.log("load_geodata: ", this);
+	//console.log("status: ", this.status);
+	//console.log("content: ", this.responseText);
+	if (this.status === 200)
+	{
+		app.geodata = JSON.parse(this.responseText);
+	}
 }
