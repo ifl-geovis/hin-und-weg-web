@@ -1,3 +1,9 @@
+div#leafletmap
+{
+	height: 750px;
+	z-index: -1;
+}
+
 div#datasetloader_dialog
 {
 	display: block;

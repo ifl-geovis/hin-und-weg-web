@@ -1,5 +1,6 @@
 let app =
 {
+	map: null,
 	status:
 	{
 		dataset_loads: 0,
@@ -19,6 +20,13 @@ let app =
 function init()
 {
 	console.log("initialize!");
+	app.map = L.map("leafletmap");
+	app.map.setView([51.5, 7], 13);
+	let mapconfig =
+	{
+		attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+	};
+	L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', mapconfig).addTo(app.map);
 	load_url("data/data.json", null, init_datalist);
 }
 

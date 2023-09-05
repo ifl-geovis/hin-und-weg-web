@@ -3,52 +3,20 @@
 	<head>
 		<title>hin&amp;weg web</title>
 		<meta charset="UTF-8">
+		<link rel="stylesheet" href="lib/leaflet.css">
 		<link rel="stylesheet" href="main.css">
+		<script type="text/javascript" src="lib/leaflet.js"></script>
 		<script type="text/javascript" src="lib/papaparse.min.js"></script>
 		<script type="text/javascript" src="main.js"></script>
 	</head>
 
 	<body>
-		<!-- scripting load -->
-		<script type="text/javascript" defer>
-			init();
-		</script>
 
 		<!-- basic site content -->
 		<h1>hin&amp;weg web</h1>
-		<p>My first paragraph. This is more text to test! This is more text to test! This is more text to test! This is more text to test! This is more text to test! This is more text to test! This is more text to test! This is more text to test!</p>
-		<p>My first paragraph. This is more text to test! This is more text to test! This is more text to test! This is more text to test! This is more text to test! This is more text to test! This is more text to test! This is more text to test!</p>
-		<p>My first paragraph. This is more text to test! This is more text to test! This is more text to test! This is more text to test! This is more text to test! This is more text to test! This is more text to test! This is more text to test!</p>
-		<p>My first paragraph. This is more text to test! This is more text to test! This is more text to test! This is more text to test! This is more text to test! This is more text to test! This is more text to test! This is more text to test!</p>
-		<p>My first paragraph. This is more text to test! This is more text to test! This is more text to test! This is more text to test! This is more text to test! This is more text to test! This is more text to test! This is more text to test!</p>
-		<p>My first paragraph. This is more text to test! This is more text to test! This is more text to test! This is more text to test! This is more text to test! This is more text to test! This is more text to test! This is more text to test!</p>
-		<p>My first paragraph. This is more text to test! This is more text to test! This is more text to test! This is more text to test! This is more text to test! This is more text to test! This is more text to test! This is more text to test!</p>
-		<p>My first paragraph. This is more text to test! This is more text to test! This is more text to test! This is more text to test! This is more text to test! This is more text to test! This is more text to test! This is more text to test!</p>
-		<p>My first paragraph. This is more text to test! This is more text to test! This is more text to test! This is more text to test! This is more text to test! This is more text to test!</p>
-		<p>My first paragraph. This is more text to test! This is more text to test! This is more text to test! This is more text to test! This is more text to test! This is more text to test!</p>
-		<p>My first paragraph. This is more text to test! This is more text to test! This is more text to test! This is more text to test! This is more text to test! This is more text to test!</p>
-		<p>My first paragraph. This is more text to test! This is more text to test! This is more text to test! This is more text to test! This is more text to test! This is more text to test!</p>
-		<p>My first paragraph. This is more text to test! This is more text to test! This is more text to test! This is more text to test! This is more text to test! This is more text to test!</p>
-		<p>My first paragraph. This is more text to test! This is more text to test! This is more text to test! This is more text to test! This is more text to test! This is more text to test!</p>
-		<p>My first paragraph. This is more text to test! This is more text to test! This is more text to test! This is more text to test! This is more text to test! This is more text to test!</p>
-		<p>My first paragraph. This is more text to test! This is more text to test! This is more text to test! This is more text to test! This is more text to test! This is more text to test!</p>
-		<p>My first paragraph. This is more text to test! This is more text to test! This is more text to test! This is more text to test! This is more text to test! This is more text to test!</p>
-		<p>My first paragraph. This is more text to test! This is more text to test! This is more text to test! This is more text to test! This is more text to test! This is more text to test!</p>
-		<p>My first paragraph. This is more text to test! This is more text to test! This is more text to test! This is more text to test! This is more text to test! This is more text to test!</p>
-		<p>My first paragraph. This is more text to test! This is more text to test! This is more text to test! This is more text to test! This is more text to test! This is more text to test!</p>
-		<p>My first paragraph. This is more text to test! This is more text to test! This is more text to test! This is more text to test! This is more text to test! This is more text to test!</p>
-		<p>My first paragraph. This is more text to test! This is more text to test! This is more text to test! This is more text to test! This is more text to test! This is more text to test!</p>
-		<p>My first paragraph. This is more text to test! This is more text to test! This is more text to test! This is more text to test! This is more text to test! This is more text to test!</p>
-		<p>My first paragraph. This is more text to test! This is more text to test! This is more text to test! This is more text to test! This is more text to test! This is more text to test!</p>
-		<p>My first paragraph. This is more text to test! This is more text to test! This is more text to test! This is more text to test! This is more text to test! This is more text to test!</p>
-		<p>My first paragraph. This is more text to test! This is more text to test! This is more text to test! This is more text to test! This is more text to test! This is more text to test!</p>
-		<p>My first paragraph. This is more text to test! This is more text to test! This is more text to test! This is more text to test! This is more text to test! This is more text to test!</p>
-		<p>My first paragraph. This is more text to test! This is more text to test! This is more text to test! This is more text to test! This is more text to test! This is more text to test!</p>
-		<p>My first paragraph. This is more text to test! This is more text to test! This is more text to test! This is more text to test! This is more text to test! This is more text to test!</p>
-		<p>My first paragraph. This is more text to test! This is more text to test! This is more text to test! This is more text to test! This is more text to test! This is more text to test!</p>
-		<p>My first paragraph. This is more text to test! This is more text to test! This is more text to test! This is more text to test! This is more text to test! This is more text to test!</p>
-		<p>My first paragraph. This is more text to test! This is more text to test! This is more text to test! This is more text to test! This is more text to test! This is more text to test!</p>
-		<p>My first paragraph. This is more text to test! This is more text to test! This is more text to test! This is more text to test! This is more text to test! This is more text to test!</p>
+
+		<!-- map -->
+		<div id="leafletmap"></div>
 
 		<!-- dataset loader dialog -->
 		<div id="datasetloader_dialog">
@@ -74,5 +42,11 @@
 		<div id="table_button" class="action_button" onclick="show_table(event)">
 			<img src="icons/table-data.svg" width="100%" height="100%" />
 		</div>
+
+		<!-- scripting load -->
+		<script type="text/javascript" defer>
+			init();
+		</script>
+
 	</body>
 </html>
