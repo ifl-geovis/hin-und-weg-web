@@ -107,6 +107,20 @@ function category_selected(event)
 	console.log("category_selected: ", event.target.value);
 	app.selected_category_id = event.target.value;
 	app.selected_category = select_category(app.selected_category_id, app.selected_dataset.categories);
+	let button = document.getElementById("load-dataset-button");
+	if (app.selected_category_id)
+	{
+		button.disabled = false;
+	}
+	else
+	{
+		button.disabled = true;
+	}
+}
+
+function load_dataset(event)
+{
+	console.log("load_dataset");
 }
 
 function create_dataset_mapping(dataset_list)
