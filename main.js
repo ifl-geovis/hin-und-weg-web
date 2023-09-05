@@ -236,3 +236,9 @@ function select_category(id, categories)
 	}
 	return null;
 }
+
+function show_table(event)
+{
+	if (app.status.modal_dialog) return;
+	console.log("show_table");
+}
