@@ -4,6 +4,7 @@ let app =
 	{
 		dataset_loads: 0,
 		dataset_loaded: false,
+		modal_dialog: true,
 	},
 	dataset_list: [],
 	datasets:
@@ -41,6 +42,7 @@ function update_element_visibility()
 	{
 		load_dataset_button.disabled = true;
 	}
+	console.log("document.styleSheets: ", document.styleSheets);
 }
 
 function init_datalist()
@@ -136,11 +138,14 @@ function load_dataset(event)
 	console.log("app.selected_dataset_id: ", app.selected_dataset_id);
 	console.log("app.selected_category_id: ", app.selected_category_id);
 	update_element_visibility();
+	app.status.modal_dialog = false;
 }
 
 function dataset_load(event)
 {
+	if (app.status.modal_dialog) return;
 	console.log("dataset_load");
+	app.status.modal_dialog = true;
 	let dataset_dialog = document.getElementById("datasetloader_dialog");
 	dataset_dialog.style.display = "block";
 }
