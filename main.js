@@ -121,6 +121,8 @@ function category_selected(event)
 function load_dataset(event)
 {
 	console.log("load_dataset");
+	let dataset_dialog = document.getElementById("datasetloader");
+	dataset_dialog.style.display = "none";
 }
 
 function create_dataset_mapping(dataset_list)
