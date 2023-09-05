@@ -21,6 +21,28 @@ function init()
 	load_url("data/data.json", null, init_datalist);
 }
 
+function update_element_visibility()
+{
+	let category_selector = document.getElementById("category_selector");
+	if (app.selected_dataset_id)
+	{
+		category_selector.disabled = false;
+	}
+	else
+	{
+		category_selector.disabled = true;
+	}
+	let load_dataset_button = document.getElementById("load_dataset_button");
+	if (app.selected_dataset_id && app.selected_category_id)
+	{
+		load_dataset_button.disabled = false;
+	}
+	else
+	{
+		load_dataset_button.disabled = true;
+	}
+}
+
 function init_datalist()
 {
 	console.log("init_datalist: ", this);
@@ -94,12 +116,8 @@ function dataset_selected(event)
 		let category_list = Object.keys(category_mapping);
 		//console.log("category_list", category_list);
 		add_select_options(selection, category_list, category_mapping);
-		selection.disabled = false;
 	}
-	else
-	{
-		selection.disabled = true;
-	}
+	update_element_visibility();
 }
 
 function category_selected(event)
@@ -107,15 +125,7 @@ function category_selected(event)
 	console.log("category_selected: ", event.target.value);
 	app.selected_category_id = event.target.value;
 	app.selected_category = select_category(app.selected_category_id, app.selected_dataset.categories);
-	let button = document.getElementById("load_dataset_button");
-	if (app.selected_category_id)
-	{
-		button.disabled = false;
-	}
-	else
-	{
-		button.disabled = true;
-	}
+	update_element_visibility();
 }
 
 function load_dataset(event)
@@ -125,6 +135,7 @@ function load_dataset(event)
 	dataset_dialog.style.display = "none";
 	console.log("app.selected_dataset_id: ", app.selected_dataset_id);
 	console.log("app.selected_category_id: ", app.selected_category_id);
+	update_element_visibility();
 }
 
 function dataset_load(event)
