@@ -121,7 +121,7 @@ function category_selected(event)
 function load_dataset(event)
 {
 	console.log("load_dataset");
-	let dataset_dialog = document.getElementById("datasetloader");
+	let dataset_dialog = document.getElementById("datasetloader_dialog");
 	dataset_dialog.style.display = "none";
 	console.log("app.selected_dataset_id: ", app.selected_dataset_id);
 	console.log("app.selected_category_id: ", app.selected_category_id);
