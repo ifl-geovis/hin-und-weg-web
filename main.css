@@ -13,3 +13,22 @@ div#datasetloader_dialog
 	border-width: 3px;
 	padding: 10px
 }
+
+div.action_button
+{
+	display: block;
+	position: fixed;
+	right: -1px;
+	width: 40px;
+	height: 40px;
+	border-style: solid;
+	border-width: 1px;
+	padding: 0px;
+	margin: 0px;
+	background-color: seashell;
+}
+
+div#dataset_load_button
+{
+	top: 50px;
+}
