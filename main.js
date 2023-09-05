@@ -21,7 +21,7 @@ function init()
 {
 	console.log("initialize!");
 	app.map = L.map("leafletmap");
-	app.map.setView([51.5, 7], 13);
+	app.map.setView([51.5, 10], 7);
 	let mapconfig =
 	{
 		attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
