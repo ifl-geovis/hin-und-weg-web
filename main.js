@@ -123,6 +123,8 @@ function load_dataset(event)
 	console.log("load_dataset");
 	let dataset_dialog = document.getElementById("datasetloader");
 	dataset_dialog.style.display = "none";
+	console.log("app.selected_dataset_id: ", app.selected_dataset_id);
+	console.log("app.selected_category_id: ", app.selected_category_id);
 }
 
 function create_dataset_mapping(dataset_list)
