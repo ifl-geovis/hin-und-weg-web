@@ -191,5 +191,6 @@ function load_geodata()
 	if (this.status === 200)
 	{
 		app.geodata = JSON.parse(this.responseText);
+		show_geojson_layer();
 	}
 }
