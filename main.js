@@ -1,6 +1,7 @@
 let app =
 {
 	map: null,
+	maplayer: null,
 	status:
 	{
 		dataset_loads: 0,
@@ -191,16 +192,6 @@ function start()
 		skipEmptyLines: true,
 	}
 	Papa.parse("data/test.csv", config);
-}
-
-function load_url(url, info, listener)
-{
-	console.log("load_url: ", url);
-	let xhr = new XMLHttpRequest();
-	xhr.appinfo = info;
-	xhr.addEventListener("load", listener);
-	xhr.open("GET", url);
-	xhr.send();
 }
 
 function parsed_csv(results, file)
