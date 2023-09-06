@@ -51,6 +51,7 @@ function init_datasetinfo()
 	{
 		console.log("appinfo: ", this.appinfo);
 		let dataset = JSON.parse(this.responseText);
+		extract_migration_years(dataset);
 		app.datasets[this.appinfo.dir] = dataset;
 	}
 	console.log("loads: ", app.status.dataset_loads);
