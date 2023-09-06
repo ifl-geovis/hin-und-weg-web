@@ -1,7 +1,6 @@
 div#leafletmap
 {
 	height: 750px;
-	z-index: -1;
 }
 
 div#datasetloader_dialog
@@ -17,7 +16,8 @@ div#datasetloader_dialog
 	background-color: white;
 	border-style: solid;
 	border-width: 3px;
-	padding: 10px
+	padding: 10px;
+	z-index: 1000;
 }
 
 div.action_button
@@ -35,6 +35,7 @@ div.action_button
 	padding: 0px;
 	margin: 0px;
 	background-color: #fff5eecc;
+	z-index: 1000;
 }
 
 div#dataset_load_button
