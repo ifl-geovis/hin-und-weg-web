@@ -1,7 +1,6 @@
 {
 	"name": "bundesweite Daten",
 	"geodata": "DE_Bundeslaender.geojson",
-	"crs": "epsg:25832",
 	"categories":
 	[
 		{

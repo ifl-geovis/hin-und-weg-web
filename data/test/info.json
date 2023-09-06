@@ -1,7 +1,6 @@
 {
 	"name": "synthetische Testdaten",
 	"geodata": "testdata.geojson",
-	"crs": "epsg:4326",
 	"categories":
 	[
 		{
