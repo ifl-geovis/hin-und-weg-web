@@ -5,15 +5,87 @@
 	[
 		{
 			"id": "all",
-			"name": "Gesamtdaten"
+			"name": "Gesamtdaten",
+			"migrations":
+			{
+				"2000": "Binnenwanderungen_ingesamt_2000-2020/BWinsg2000.csv",
+				"2001": "Binnenwanderungen_ingesamt_2000-2020/BWinsg2001.csv",
+				"2002": "Binnenwanderungen_ingesamt_2000-2020/BWinsg2002.csv",
+				"2003": "Binnenwanderungen_ingesamt_2000-2020/BWinsg2003.csv",
+				"2004": "Binnenwanderungen_ingesamt_2000-2020/BWinsg2004.csv",
+				"2005": "Binnenwanderungen_ingesamt_2000-2020/BWinsg2005.csv",
+				"2006": "Binnenwanderungen_ingesamt_2000-2020/BWinsg2006.csv",
+				"2007": "Binnenwanderungen_ingesamt_2000-2020/BWinsg2007.csv",
+				"2008": "Binnenwanderungen_ingesamt_2000-2020/BWinsg2008.csv",
+				"2009": "Binnenwanderungen_ingesamt_2000-2020/BWinsg2009.csv",
+				"2010": "Binnenwanderungen_ingesamt_2000-2020/BWinsg2010.csv",
+				"2011": "Binnenwanderungen_ingesamt_2000-2020/BWinsg2011.csv",
+				"2012": "Binnenwanderungen_ingesamt_2000-2020/BWinsg2012.csv",
+				"2013": "Binnenwanderungen_ingesamt_2000-2020/BWinsg2013.csv",
+				"2014": "Binnenwanderungen_ingesamt_2000-2020/BWinsg2014.csv",
+				"2015": "Binnenwanderungen_ingesamt_2000-2020/BWinsg2015.csv",
+				"2016": "Binnenwanderungen_ingesamt_2000-2020/BWinsg2016.csv",
+				"2017": "Binnenwanderungen_ingesamt_2000-2020/BWinsg2017.csv",
+				"2018": "Binnenwanderungen_ingesamt_2000-2020/BWinsg2018.csv",
+				"2019": "Binnenwanderungen_ingesamt_2000-2020/BWinsg2019.csv",
+				"2020": "Binnenwanderungen_ingesamt_2000-2020/BWinsg2020.csv",
+			}
 		},
 		{
 			"id": "female",
-			"name": "weiblich"
+			"name": "weiblich",
+			"migrations":
+			{
+				"2000": "Binnenwanderungen_w_2000-2020/BWw2000.csv",
+				"2001": "Binnenwanderungen_w_2000-2020/BWw2001.csv",
+				"2002": "Binnenwanderungen_w_2000-2020/BWw2002.csv",
+				"2003": "Binnenwanderungen_w_2000-2020/BWw2003.csv",
+				"2004": "Binnenwanderungen_w_2000-2020/BWw2004.csv",
+				"2005": "Binnenwanderungen_w_2000-2020/BWw2005.csv",
+				"2006": "Binnenwanderungen_w_2000-2020/BWw2006.csv",
+				"2007": "Binnenwanderungen_w_2000-2020/BWw2007.csv",
+				"2008": "Binnenwanderungen_w_2000-2020/BWw2008.csv",
+				"2009": "Binnenwanderungen_w_2000-2020/BWw2009.csv",
+				"2010": "Binnenwanderungen_w_2000-2020/BWw2010.csv",
+				"2011": "Binnenwanderungen_w_2000-2020/BWw2011.csv",
+				"2012": "Binnenwanderungen_w_2000-2020/BWw2012.csv",
+				"2013": "Binnenwanderungen_w_2000-2020/BWw2013.csv",
+				"2014": "Binnenwanderungen_w_2000-2020/BWw2014.csv",
+				"2015": "Binnenwanderungen_w_2000-2020/BWw2015.csv",
+				"2016": "Binnenwanderungen_w_2000-2020/BWw2016.csv",
+				"2017": "Binnenwanderungen_w_2000-2020/BWw2017.csv",
+				"2018": "Binnenwanderungen_w_2000-2020/BWw2018.csv",
+				"2019": "Binnenwanderungen_w_2000-2020/BWw2019.csv",
+				"2020": "Binnenwanderungen_w_2000-2020/BWw2020.csv",
+			}
 		},
 		{
 			"id": "male",
-			"name": "männlich"
+			"name": "männlich",
+			"migrations":
+			{
+				"2000": "Binnenwanderungen_m_2000-2020/BWm2000.csv",
+				"2001": "Binnenwanderungen_m_2000-2020/BWm2001.csv",
+				"2002": "Binnenwanderungen_m_2000-2020/BWm2002.csv",
+				"2003": "Binnenwanderungen_m_2000-2020/BWm2003.csv",
+				"2004": "Binnenwanderungen_m_2000-2020/BWm2004.csv",
+				"2005": "Binnenwanderungen_m_2000-2020/BWm2005.csv",
+				"2006": "Binnenwanderungen_m_2000-2020/BWm2006.csv",
+				"2007": "Binnenwanderungen_m_2000-2020/BWm2007.csv",
+				"2008": "Binnenwanderungen_m_2000-2020/BWm2008.csv",
+				"2009": "Binnenwanderungen_m_2000-2020/BWm2009.csv",
+				"2010": "Binnenwanderungen_m_2000-2020/BWm2010.csv",
+				"2011": "Binnenwanderungen_m_2000-2020/BWm2011.csv",
+				"2012": "Binnenwanderungen_m_2000-2020/BWm2012.csv",
+				"2013": "Binnenwanderungen_m_2000-2020/BWm2013.csv",
+				"2014": "Binnenwanderungen_m_2000-2020/BWm2014.csv",
+				"2015": "Binnenwanderungen_m_2000-2020/BWm2015.csv",
+				"2016": "Binnenwanderungen_m_2000-2020/BWm2016.csv",
+				"2017": "Binnenwanderungen_m_2000-2020/BWm2017.csv",
+				"2018": "Binnenwanderungen_m_2000-2020/BWm2018.csv",
+				"2019": "Binnenwanderungen_m_2000-2020/BWm2019.csv",
+				"2020": "Binnenwanderungen_m_2000-2020/BWm2020.csv",
+			}
 		}
 	]
 }
