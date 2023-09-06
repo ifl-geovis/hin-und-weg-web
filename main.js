@@ -1,3 +1,26 @@
+/*
+app is the general data holder for the applciation
+
+for controlling the application:
+	* status: diverse status information
+
+for the map:
+	* map: holds the leaflet map
+	* maplayer: holds the geojson-layer (once loaded)
+
+info-data (datasets and categories for controlling the application):
+	* dataset_list: list of the datasets defined in data/data.json as ids (should be filled by init process)
+	* datasets: the full content of the different data/${dataset}/info.json, each keyed with the id of the dataset (should be filled by init process)
+	* dataset_mapping: map of dataset-ids to their names for dropdown list (should be filled by init process)
+	* category_mapping: map of category-ids to their names for dropdown list (will be filled once dataset is selected)
+	* selected_dataset_id, selected_category_id: ids of currently selected dataset and category
+	* selected_dataset, selected_category: full content of currently selected dataset and category
+
+data:
+	* geodata: contains the geojson loaded dynamically specified in the selected dataset
+
+*/
+
 let app =
 {
 	map: null,
@@ -9,13 +32,12 @@ let app =
 		modal_dialog: true,
 	},
 	dataset_list: [],
-	datasets:
-	{
-	},
+	datasets: {},
 	selected_dataset_id: null,
 	selected_dataset: null,
 	selected_category_id: null,
-	selected_category: null
+	selected_category: null,
+	geodata: null,
 };
 
 function update_element_visibility()
