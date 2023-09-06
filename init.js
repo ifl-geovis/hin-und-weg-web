@@ -76,12 +76,4 @@ function init_datasetloader(dataset_list)
 function start()
 {
 	console.log("start!");
-	console.log("Papa: ", Papa);
-	const config =
-	{
-		complete: parsed_csv,
-		download: true,
-		skipEmptyLines: true,
-	}
-	Papa.parse("data/test.csv", config);
 }
