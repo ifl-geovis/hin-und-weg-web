@@ -28,8 +28,19 @@ let app =
 	status:
 	{
 		dataset_loads: 0,
+		migrations_loads: 0,
 		dataset_loaded: false,
 		modal_dialog: true,
+	},
+	configuration:
+	{
+	},
+	data:
+	{
+		migrations: {},
+	},
+	selection:
+	{
 	},
 	dataset_list: [],
 	datasets: {},
@@ -101,6 +112,17 @@ function load_dataset(event)
 	console.log("app.selected_category_id: ", app.selected_category_id);
 	let info = {};
 	load_url("data/" + app.selected_dataset_id + "/" + app.selected_dataset.geodata, info, load_geodata);
+	for (let year of app.selected_category.years)
+	{
+		app.status.migrations_loads++;
+		const config =
+		{
+			complete: load_migration_csv,
+			download: true,
+			skipEmptyLines: true,
+		}
+		Papa.parse("data/" + app.selected_dataset_id + "/" + app.selected_category.migrations[year] + "?year=" + year, config);
+	}
 	update_element_visibility();
 	app.status.modal_dialog = false;
 }
@@ -194,4 +216,15 @@ function load_geodata()
 		app.geodata = JSON.parse(this.responseText);
 		show_geojson_layer();
 	}
+}
+
+function load_migration_csv(results, file)
+{
+	//console.log("load_migration_csv");
+	//console.log("results: ", results);
+	//console.log("file: ", file);
+	//console.log("filematcher: ", /^.*year=([01-9]+)$/.exec(file));
+	let year = /^.*year=([01-9]+)$/.exec(file)[1];
+	if (year) app.data.migrations[year] = results;
+	app.status.migrations_loads--;
 }
