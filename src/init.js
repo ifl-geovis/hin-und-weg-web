@@ -18,7 +18,7 @@ function init()
 
 function init_db()
 {
-	alasql("CREATE TABLE migrations (fromid TEXT, toid TEXT, from TEXT, to TEXT, year TEXT, migrations INT)");
+	alasql("CREATE TABLE migrations (fromid TEXT, toid TEXT, fromname TEXT, toname TEXT, year TEXT, migrations INT)");
 }
 
 function init_datalist()

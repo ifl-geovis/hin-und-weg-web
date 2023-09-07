@@ -59,19 +59,9 @@ function load_dataset(event)
 	dataset_dialog.style.display = "none";
 	console.log("app.selected_dataset_id: ", app.selected_dataset_id);
 	console.log("app.selected_category_id: ", app.selected_category_id);
+	alasql("DELETE FROM migrations");
 	let info = {};
 	load_url("data/" + app.selected_dataset_id + "/" + app.selected_dataset.geodata, info, load_geodata);
-	for (let year of app.selected_category.years)
-	{
-		app.status.migrations_loads++;
-		const config =
-		{
-			complete: load_migration_csv,
-			download: true,
-			skipEmptyLines: true,
-		}
-		Papa.parse("data/" + app.selected_dataset_id + "/" + app.selected_category.migrations[year] + "?year=" + year, config);
-	}
 	update_element_visibility();
 	app.status.modal_dialog = false;
 }
@@ -136,6 +126,17 @@ function load_geodata()
 		show_geojson_layer();
 		create_featurename_mapping();
 	}
+	for (let year of app.selected_category.years)
+	{
+		app.status.migrations_loads++;
+		const config =
+		{
+			complete: load_migration_csv,
+			download: true,
+			skipEmptyLines: true,
+		}
+		Papa.parse("data/" + app.selected_dataset_id + "/" + app.selected_category.migrations[year] + "?year=" + year, config);
+	}
 }
 
 function create_featurename_mapping()
@@ -162,6 +163,22 @@ function load_migration_csv(results, file)
 	//console.log("file: ", file);
 	//console.log("filematcher: ", /^.*year=([01-9]+)$/.exec(file));
 	let year = /^.*year=([01-9]+)$/.exec(file)[1];
-	if (year) app.data.migrations[year] = results;
+	if (year)
+	{
+		app.data.migrations[year] = results;
+		let headers = results.data[2];
+		for (let row = 3; row < results.data.length; row++)
+		{
+			for (let col = 1; col < results.data[row].length; col++)
+			{
+				let fromid = results.data[row][0];
+				let toid = headers[col];
+				let from = app.data.featurename_mapping[fromid];
+				let to = app.data.featurename_mapping[toid];
+				let value = parseInt(results.data[row][col], 10);
+				alasql("INSERT INTO migrations (fromid, toid, fromname, toname, year, migrations) VALUES (?, ?, ?, ?, ?, ?)", [fromid, toid, from, to, year, value]);
+			}
+		}
+	}
 	app.status.migrations_loads--;
 }
