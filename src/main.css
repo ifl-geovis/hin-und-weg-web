@@ -7,9 +7,9 @@ div#datasetloader_dialog
 {
 	display: block;
 	position: fixed;
-	top: 0px;
+	top: 200px;
 	left: 0px;
-	margin-top: 25%;
+	margin-top: 0px;
 	margin-left: 25%;
 	margin-right: 25%;
 	width: 50%;
