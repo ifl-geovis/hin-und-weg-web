@@ -12,7 +12,13 @@ function init()
 {
 	console.log("initialize!");
 	init_map();
+	init_db();
 	load_url("data/data.json", null, init_datalist);
+}
+
+function init_db()
+{
+	alasql("CREATE TABLE migrations (fromid TEXT, toid TEXT, from TEXT, to TEXT, year TEXT, migrations INT)");
 }
 
 function init_datalist()
