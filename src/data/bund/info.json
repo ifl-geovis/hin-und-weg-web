@@ -1,6 +1,8 @@
 {
 	"name": "bundesweite Daten",
 	"geodata": "DE_Bundeslaender.geojson",
+	"id_property": "NUTS_CODE",
+	"name_property": "NUTS_NAME",
 	"categories":
 	[
 		{

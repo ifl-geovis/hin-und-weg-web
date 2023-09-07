@@ -134,6 +134,24 @@ function load_geodata()
 	{
 		app.data.geodata = JSON.parse(this.responseText);
 		show_geojson_layer();
+		create_featurename_mapping();
+	}
+}
+
+function create_featurename_mapping()
+{
+	if (!app.data.geodata)
+	{
+		app.data.featurename_mapping = {};
+		return;
+	}
+	let idprop = app.selected_dataset.id_property;
+	let nameprop = app.selected_dataset.name_property;
+	for (let feature of app.data.geodata.features)
+	{
+		let id = feature.properties[idprop];
+		let name = feature.properties[nameprop];
+		if (id && name) app.data.featurename_mapping[id] = name;
 	}
 }
 

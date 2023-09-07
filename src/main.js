@@ -38,6 +38,7 @@ let app =
 	data:
 	{
 		geodata: null,
+		featurename_mapping: {},
 		migrations: {},
 	},
 	selection:
