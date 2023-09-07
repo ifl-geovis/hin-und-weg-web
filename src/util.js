@@ -29,3 +29,12 @@ function extract_migration_years(dataset)
 		category.years = years;
 	}
 }
+
+function remove_item_from_list(list, item)
+{
+	let index = list.indexOf(item);
+	if (index !== -1)
+	{
+		list.splice(index, 1);
+	}
+}
