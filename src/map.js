@@ -14,7 +14,7 @@ function init_map()
 function show_geojson_layer()
 {
 	if (app.maplayer) app.maplayer.removeFrom(app.map);
-	if (app.geodata) app.maplayer = L.geoJSON(app.geodata);
+	if (app.data.geodata) app.maplayer = L.geoJSON(app.data.geodata);
 	app.maplayer.addTo(app.map);
 	app.map.fitBounds(app.maplayer.getBounds());
 }

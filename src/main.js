@@ -37,6 +37,7 @@ let app =
 	},
 	data:
 	{
+		geodata: null,
 		migrations: {},
 	},
 	selection:
@@ -48,7 +49,6 @@ let app =
 	selected_dataset: null,
 	selected_category_id: null,
 	selected_category: null,
-	geodata: null,
 };
 
 function update_element_visibility()
@@ -213,7 +213,7 @@ function load_geodata()
 	//console.log("content: ", this.responseText);
 	if (this.status === 200)
 	{
-		app.geodata = JSON.parse(this.responseText);
+		app.data.geodata = JSON.parse(this.responseText);
 		show_geojson_layer();
 	}
 }
