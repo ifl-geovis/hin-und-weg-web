@@ -68,7 +68,6 @@ function show_table(event)
 	if (app.status.modal_dialog) return;
 	console.log("show_table");
 	app.status.modal_dialog = true;
-	recalculate_data();
 	let table_view = document.getElementById("table_view");
 	table_view.style.display = "block";
 }
@@ -77,6 +76,7 @@ function area_selected(event)
 {
 	//console.log("area_selected: ", event.target.value);
 	app.selection.area_id = event.target.value;
+	process_selections();
 }
 
 function renew_area_selection()
@@ -92,11 +92,21 @@ function renew_area_selection()
 	}
 }
 
+function process_selections()
+{
+	recalculate_data();
+	//refresh_table_view();
+}
+
 function recalculate_data()
 {
 	app.data.processed = null;
 	if (!app.selection.area_id) return;
-	app.data.processed = alasql("SELECT toid, sum(migrations) from migrations WHERE fromid = ? GROUP BY toid", [app.selection.area_id]);
+	app.data.processed = alasql("SELECT ? AS fromid, ? AS fromname, toid, sum(migrations) from migrations WHERE fromid = ? GROUP BY toid", [app.selection.area_id, app.data.featurename_mapping[app.selection.area_id], app.selection.area_id]);
+	for (let row of app.data.processed)
+	{
+		row.toname = app.data.featurename_mapping[row.toid];
+	}
 }
 
 function close_table_view(event)
