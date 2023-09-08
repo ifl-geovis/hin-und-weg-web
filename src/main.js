@@ -67,6 +67,7 @@ function show_table(event)
 {
 	if (app.status.modal_dialog) return;
 	console.log("show_table");
+	process_selections();
 	app.status.modal_dialog = true;
 	let table_view = document.getElementById("table_view");
 	table_view.style.display = "block";
@@ -95,18 +96,47 @@ function renew_area_selection()
 function process_selections()
 {
 	recalculate_data();
-	//refresh_table_view();
+	refresh_table_view();
 }
 
 function recalculate_data()
 {
 	app.data.processed = null;
 	if (!app.selection.area_id) return;
-	app.data.processed = alasql("SELECT ? AS fromid, ? AS fromname, toid, sum(migrations) from migrations WHERE fromid = ? GROUP BY toid", [app.selection.area_id, app.data.featurename_mapping[app.selection.area_id], app.selection.area_id]);
+	app.data.processed = alasql("SELECT ? AS fromid, ? AS fromname, toid, sum(migrations) AS migrations from migrations WHERE fromid = ? GROUP BY toid", [app.selection.area_id, app.data.featurename_mapping[app.selection.area_id], app.selection.area_id]);
 	for (let row of app.data.processed)
 	{
 		row.toname = app.data.featurename_mapping[row.toid];
 	}
+}
+
+function refresh_table_view()
+{
+	console.log("refresh_table_view");
+	console.log("app.data.processed: ", app.data.processed);
+	let table_view_data = document.getElementById("table_view_data");
+	if (!app.data.processed)
+	{
+		table_view_data.innerHTML = "Für die gewählte Selektion sind keine Daten verfügbar!";
+		return;
+	}
+	let dataview = `
+	<table>
+	<tr>
+		<th>Von</th>
+		<th>Nach</th>
+		<th>Anzahl</th>
+	</tr>`;
+	for (let row of app.data.processed)
+	{
+		dataview += "<tr>";
+		dataview += "<td>" + row.fromname + "</td>";
+		dataview += "<td>" + row.toname + "</td>";
+		dataview += "<td>" + row.migrations + "</td>";
+		dataview += "</tr>";
+	}
+	dataview += "</table>";
+	table_view_data.innerHTML = dataview;
 }
 
 function close_table_view(event)
