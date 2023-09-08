@@ -40,6 +40,7 @@ let app =
 		geodata: null,
 		featurename_mapping: {},
 		migrations: {},
+		processed: null,
 	},
 	selection:
 	{
@@ -47,6 +48,7 @@ let app =
 		dataset: null,
 		category_id: null,
 		category: null,
+		area_id: null,
 	},
 	dataset_list: [],
 	datasets: {},
@@ -65,4 +67,34 @@ function show_table(event)
 {
 	if (app.status.modal_dialog) return;
 	console.log("show_table");
+	app.status.modal_dialog = true;
+	recalculate_data();
+	let table_view = document.getElementById("table_view");
+	table_view.style.display = "block";
+}
+
+function area_selected(event)
+{
+	//console.log("area_selected: ", event.target.value);
+	app.selection.area_id = event.target.value;
+}
+
+function renew_area_selection()
+{
+	let selection = document.getElementById("area_selector");
+	remove_select_options(selection);
+	selection.disabled = true;
+	if (app.data.featurename_mapping)
+	{
+		let featurename_list = Object.keys(app.data.featurename_mapping);
+		add_select_options(selection, featurename_list, app.data.featurename_mapping);
+		if (featurename_list.length > 0) selection.disabled = false;
+	}
+}
+
+function recalculate_data()
+{
+	app.data.processed = null;
+	if (!app.selection.area_id) return;
+	app.data.processed = alasql("SELECT toid, sum(migrations) from migrations WHERE fromid = ? GROUP BY toid", [app.selection.area_id]);
 }

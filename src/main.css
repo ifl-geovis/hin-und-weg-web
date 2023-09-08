@@ -12,7 +12,7 @@ div#datasetloader_dialog
 	margin-top: 0px;
 	margin-left: 15%;
 	min-width: 500px;
-	background-color: white;
+	background-color: seashell;
 	border-style: solid;
 	border-width: 3px;
 	padding: 10px;
@@ -32,6 +32,22 @@ div#selection_box
 	border-top-right-radius: 10px;
 	border-bottom-right-radius: 10px;
 	background-color: #fff5eecc;
+	z-index: 1000;
+}
+
+div#table_view
+{
+	display: none;
+	position: fixed;
+	top: 200px;
+	left: 200px;
+	margin-left: 15%;
+	margin-top: 0px;
+	min-width: 500px;
+	background-color: seashell;
+	border-style: solid;
+	border-width: 3px;
+	padding: 10px;
 	z-index: 1000;
 }
 
@@ -61,4 +77,14 @@ div#dataset_load_button
 div#table_button
 {
 	top: 150px;
+}
+
+div.close_button
+{
+	display: block;
+	position: absolute;
+	right: 3px;
+	top: 3px;
+	width: 30px;
+	height: 30px;
 }
