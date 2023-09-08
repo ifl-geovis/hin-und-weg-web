@@ -129,6 +129,11 @@ function create_featurename_mapping()
 	}
 	let idprop = app.selection.dataset.id_property;
 	let nameprop = app.selection.dataset.name_property;
+	if (!idprop || !nameprop)
+	{
+		app.data.featurename_mapping = {};
+		return;
+	}
 	for (let feature of app.data.geodata.features)
 	{
 		let id = feature.properties[idprop];
