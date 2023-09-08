@@ -20,6 +20,22 @@ div#datasetloader_dialog
 	z-index: 1000;
 }
 
+div#selection_box
+{
+	display: block;
+	position: fixed;
+	top: 175px;
+	left: -1px;
+	padding: 5px;
+	border-style: solid;
+	border-color: lightgray;
+	border-width: 1px;
+	border-top-right-radius: 10px;
+	border-bottom-right-radius: 10px;
+	background-color: #fff5eecc;
+	z-index: 1000;
+}
+
 div.action_button
 {
 	display: block;

@@ -40,9 +40,13 @@
 			<button name="load_dataset" id="load_dataset_button" onclick="load_dataset(event)" disabled>Daten einladen</button>
 		</div>
 
-		<!-- Infos -->
-		<div>gewählter Datensatz: <span id="dataset_name_value"></span></div>
-		<div>gewählte Datenkategorie: <span id="category_name_value"></span></div>
+		<!-- infos&selections -->
+		<div id="selection_box">
+			<label for="dataset_name_value">gewählter Datensatz:</label><br />
+			<input name="dataset_name_value" id="dataset_name_value" type="text" value="" disabled /><br />
+			<label for="category_name_value">gewählter Datenkategorie:</label><br />
+			<input name="category_name_value" id="category_name_value" type="text" value="" disabled /><br />
+		</div>
 
 		<!-- action buttons on the right -->
 		<div id="dataset_load_button" class="action_button" onclick="dataset_load(event)">

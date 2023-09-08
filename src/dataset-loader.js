@@ -20,8 +20,8 @@ function update_element_visibility()
 	{
 		load_dataset_button.disabled = true;
 	}
-	if (app.selected_dataset_id) document.getElementById("dataset_name_value").innerHTML = app.dataset_mapping[app.selected_dataset_id];
-	if (app.selected_category_id) document.getElementById("category_name_value").innerHTML = app.category_mapping[app.selected_category_id];
+	if (app.selected_dataset_id) document.getElementById("dataset_name_value").value = app.dataset_mapping[app.selected_dataset_id];
+	if (app.selected_category_id) document.getElementById("category_name_value").value = app.category_mapping[app.selected_category_id];
 }
 
 function dataset_selected(event)
