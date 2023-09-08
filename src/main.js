@@ -98,3 +98,9 @@ function recalculate_data()
 	if (!app.selection.area_id) return;
 	app.data.processed = alasql("SELECT toid, sum(migrations) from migrations WHERE fromid = ? GROUP BY toid", [app.selection.area_id]);
 }
+
+function close_table_view(event)
+{
+	app.status.modal_dialog = false;
+	table_view.style.display = "none";
+}
