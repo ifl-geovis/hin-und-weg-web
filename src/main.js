@@ -122,18 +122,21 @@ function refresh_table_view()
 	}
 	let dataview = `
 	<table>
-	<tr>
+	<tr class="header">
 		<th>Von</th>
 		<th>Nach</th>
 		<th>Anzahl</th>
 	</tr>`;
+	let odd = true;
 	for (let row of app.data.processed)
 	{
-		dataview += "<tr>";
+		if (odd) dataview += '<tr class="odd">';
+		else dataview += '<tr class="even">';
 		dataview += "<td>" + row.fromname + "</td>";
 		dataview += "<td>" + row.toname + "</td>";
 		dataview += "<td>" + row.migrations + "</td>";
 		dataview += "</tr>";
+		odd = !odd;
 	}
 	dataview += "</table>";
 	table_view_data.innerHTML = dataview;

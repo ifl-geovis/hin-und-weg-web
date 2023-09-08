@@ -51,6 +51,32 @@ div#table_view
 	z-index: 1000;
 }
 
+div#table_view table
+{
+	border-collapse: collapse;
+}
+
+div#table_view tr.header
+{
+	background-color: #00000055;
+}
+
+div#table_view tr.odd
+{
+	background-color: #ffffff33;
+}
+
+div#table_view tr.even
+{
+	background-color: #00000033;
+}
+
+div#table_view td,
+div#table_view th
+{
+	border: 1px solid;
+}
+
 div.action_button
 {
 	display: block;
