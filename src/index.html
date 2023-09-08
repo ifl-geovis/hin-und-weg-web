@@ -42,10 +42,15 @@
 
 		<!-- infos&selections -->
 		<div id="selection_box">
-			<label for="dataset_name_value">gewählter Datensatz:</label><br />
+			<label for="dataset_name_value">Datensatz:</label><br />
 			<input name="dataset_name_value" id="dataset_name_value" type="text" value="" disabled /><br />
-			<label for="category_name_value">gewählter Datenkategorie:</label><br />
+			<label for="category_name_value">Datenkategorie:</label><br />
 			<input name="category_name_value" id="category_name_value" type="text" value="" disabled /><br />
+			<hr />
+			<label for="category_selector">Fläche:</label><br />
+			<select name="area" id="area_selector" oninput="area_selected(event)" disabled>
+				<option value="">-- Fläche auswählen --</option>
+			</select>
 		</div>
 
 		<!-- action buttons on the right -->
