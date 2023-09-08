@@ -58,3 +58,16 @@ function remove_select_options(select)
 		select.lastElementChild.remove();
 	}
 }
+
+function renew_area_selection()
+{
+	let selection = document.getElementById("area_selector");
+	remove_select_options(selection);
+	selection.disabled = true;
+	if (app.data.featurename_mapping)
+	{
+		let featurename_list = Object.keys(app.data.featurename_mapping);
+		add_select_options(selection, featurename_list, app.data.featurename_mapping);
+		if (featurename_list.length > 0) selection.disabled = false;
+	}
+}
