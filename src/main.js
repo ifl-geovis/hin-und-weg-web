@@ -13,8 +13,8 @@ info-data (datasets and categories for controlling the application):
 	* datasets: the full content of the different data/${dataset}/info.json, each keyed with the id of the dataset (should be filled by init process)
 	* dataset_mapping: map of dataset-ids to their names for dropdown list (should be filled by init process)
 	* category_mapping: map of category-ids to their names for dropdown list (will be filled once dataset is selected)
-	* selected_dataset_id, selected_category_id: ids of currently selected dataset and category
-	* selected_dataset, selected_category: full content of currently selected dataset and category
+	* selection.dataset_id, selection.category_id: ids of currently selected dataset and category
+	* selection.dataset, selection.category: full content of currently selected dataset and category
 
 data:
 	* geodata: contains the geojson loaded dynamically specified in the selected dataset
@@ -43,13 +43,13 @@ let app =
 	},
 	selection:
 	{
+		dataset_id: null,
+		dataset: null,
+		category_id: null,
+		category: null,
 	},
 	dataset_list: [],
 	datasets: {},
-	selected_dataset_id: null,
-	selected_dataset: null,
-	selected_category_id: null,
-	selected_category: null,
 };
 
 function dataset_load(event)

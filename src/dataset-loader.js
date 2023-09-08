@@ -3,7 +3,7 @@
 function update_element_visibility()
 {
 	let category_selector = document.getElementById("category_selector");
-	if (app.selected_dataset_id)
+	if (app.selection.dataset_id)
 	{
 		category_selector.disabled = false;
 	}
@@ -12,7 +12,7 @@ function update_element_visibility()
 		category_selector.disabled = true;
 	}
 	let load_dataset_button = document.getElementById("load_dataset_button");
-	if (app.selected_dataset_id && app.selected_category_id)
+	if (app.selection.dataset_id && app.selection.category_id)
 	{
 		load_dataset_button.disabled = false;
 	}
@@ -20,21 +20,21 @@ function update_element_visibility()
 	{
 		load_dataset_button.disabled = true;
 	}
-	if (app.selected_dataset_id) document.getElementById("dataset_name_value").value = app.dataset_mapping[app.selected_dataset_id];
-	if (app.selected_category_id) document.getElementById("category_name_value").value = app.category_mapping[app.selected_category_id];
+	if (app.selection.dataset_id) document.getElementById("dataset_name_value").value = app.dataset_mapping[app.selection.dataset_id];
+	if (app.selection.category_id) document.getElementById("category_name_value").value = app.category_mapping[app.selection.category_id];
 }
 
 function dataset_selected(event)
 {
 	console.log("dataset_selected: ", event.target.value);
-	app.selected_dataset_id = event.target.value;
-	app.selected_dataset = app.datasets[app.selected_dataset_id];
+	app.selection.dataset_id = event.target.value;
+	app.selection.dataset = app.datasets[app.selection.dataset_id];
 	let selection = document.getElementById("category_selector");
 	//console.log("selection:", selection);
 	remove_select_options(selection);
-	if (app.selected_dataset_id)
+	if (app.selection.dataset_id)
 	{
-		let category_mapping = create_category_mapping(app.selected_dataset.categories);
+		let category_mapping = create_category_mapping(app.selection.dataset.categories);
 		app.category_mapping = category_mapping;
 		//console.log("category_mapping", category_mapping);
 		let category_list = Object.keys(category_mapping);
@@ -47,8 +47,8 @@ function dataset_selected(event)
 function category_selected(event)
 {
 	console.log("category_selected: ", event.target.value);
-	app.selected_category_id = event.target.value;
-	app.selected_category = select_category(app.selected_category_id, app.selected_dataset.categories);
+	app.selection.category_id = event.target.value;
+	app.selection.category = select_category(app.selection.category_id, app.selection.dataset.categories);
 	update_element_visibility();
 }
 
@@ -57,11 +57,11 @@ function load_dataset(event)
 	console.log("load_dataset");
 	let dataset_dialog = document.getElementById("datasetloader_dialog");
 	dataset_dialog.style.display = "none";
-	console.log("app.selected_dataset_id: ", app.selected_dataset_id);
-	console.log("app.selected_category_id: ", app.selected_category_id);
+	console.log("app.selection.dataset_id: ", app.selection.dataset_id);
+	console.log("app.selection.category_id: ", app.selection.category_id);
 	alasql("DELETE FROM migrations");
 	let info = {};
-	load_url("data/" + app.selected_dataset_id + "/" + app.selected_dataset.geodata, info, load_geodata);
+	load_url("data/" + app.selection.dataset_id + "/" + app.selection.dataset.geodata, info, load_geodata);
 	update_element_visibility();
 	app.status.modal_dialog = false;
 }
@@ -126,7 +126,7 @@ function load_geodata()
 		show_geojson_layer();
 		create_featurename_mapping();
 	}
-	for (let year of app.selected_category.years)
+	for (let year of app.selection.category.years)
 	{
 		app.status.migrations_loads++;
 		const config =
@@ -135,7 +135,7 @@ function load_geodata()
 			download: true,
 			skipEmptyLines: true,
 		}
-		Papa.parse("data/" + app.selected_dataset_id + "/" + app.selected_category.migrations[year] + "?year=" + year, config);
+		Papa.parse("data/" + app.selection.dataset_id + "/" + app.selection.category.migrations[year] + "?year=" + year, config);
 	}
 }
 
@@ -146,8 +146,8 @@ function create_featurename_mapping()
 		app.data.featurename_mapping = {};
 		return;
 	}
-	let idprop = app.selected_dataset.id_property;
-	let nameprop = app.selected_dataset.name_property;
+	let idprop = app.selection.dataset.id_property;
+	let nameprop = app.selection.dataset.name_property;
 	for (let feature of app.data.geodata.features)
 	{
 		let id = feature.properties[idprop];
