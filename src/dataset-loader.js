@@ -86,26 +86,6 @@ function create_category_mapping(categorylist)
 	return mapping;
 }
 
-function add_select_options(select, list, mapping)
-{
-	for (let id of list)
-	{
-		let option = document.createElement("option");
-		option.value = id;
-		option.text = mapping[id];
-		select.add(option);
-	}
-}
-
-function remove_select_options(select)
-{
-	while (select.lastElementChild.value)
-	{
-		//console.log(select.lastElementChild.value);
-		select.lastElementChild.remove();
-	}
-}
-
 function select_category(id, categories)
 {
 	for (let category of categories)

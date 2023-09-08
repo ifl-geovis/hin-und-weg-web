@@ -38,3 +38,23 @@ function remove_item_from_list(list, item)
 		list.splice(index, 1);
 	}
 }
+
+function add_select_options(select, list, mapping)
+{
+	for (let id of list)
+	{
+		let option = document.createElement("option");
+		option.value = id;
+		option.text = mapping[id];
+		select.add(option);
+	}
+}
+
+function remove_select_options(select)
+{
+	while (select.lastElementChild.value)
+	{
+		//console.log(select.lastElementChild.value);
+		select.lastElementChild.remove();
+	}
+}
