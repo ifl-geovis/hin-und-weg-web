@@ -134,7 +134,7 @@ function refresh_table_view()
 		else dataview += '<tr class="even">';
 		dataview += "<td>" + row.fromname + "</td>";
 		dataview += "<td>" + row.toname + "</td>";
-		dataview += "<td>" + row.migrations + "</td>";
+		dataview += '<td class="number">' + row.migrations + "</td>";
 		dataview += "</tr>";
 		odd = !odd;
 	}
