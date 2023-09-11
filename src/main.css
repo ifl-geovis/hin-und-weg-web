@@ -27,6 +27,12 @@ div#header
 	z-index: 1000;
 }
 
+span#versionsub
+{
+	font-size: xx-small;
+	font-weight: lighter;
+}
+
 h1
 {
 	margin-left: 10px;
