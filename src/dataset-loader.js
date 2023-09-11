@@ -122,18 +122,11 @@ function load_geodata()
 
 function create_featurename_mapping()
 {
-	if (!app.data.geodata)
-	{
-		app.data.featurename_mapping = {};
-		return;
-	}
+	app.data.featurename_mapping = {};
+	if (!app.data.geodata) return;
 	let idprop = app.selection.dataset.id_property;
 	let nameprop = app.selection.dataset.name_property;
-	if (!idprop || !nameprop)
-	{
-		app.data.featurename_mapping = {};
-		return;
-	}
+	if (!idprop || !nameprop) return;
 	for (let feature of app.data.geodata.features)
 	{
 		let id = feature.properties[idprop];
