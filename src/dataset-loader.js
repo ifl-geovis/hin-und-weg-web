@@ -105,6 +105,8 @@ function load_geodata()
 		app.data.geodata = JSON.parse(this.responseText);
 		show_geojson_layer();
 		create_featurename_mapping();
+		let selectors = document.getElementsByClassName("selector");
+		for (let selector of selectors) selector.disabled = false;
 		renew_area_selection();
 	}
 	for (let year of app.selection.category.years)

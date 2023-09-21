@@ -48,6 +48,7 @@ let app =
 		dataset: null,
 		category_id: null,
 		category: null,
+		theme: 'von',
 		area_id: null,
 	},
 	dataset_list: [],
@@ -71,6 +72,13 @@ function show_table(event)
 	app.status.modal_dialog = true;
 	let table_view = document.getElementById("table_view");
 	table_view.style.display = "block";
+}
+
+function theme_selected(event)
+{
+	//console.log("theme_selected: ", event.target.value);
+	app.selection.theme = event.target.value;
+	process_selections();
 }
 
 function area_selected(event)
@@ -103,10 +111,38 @@ function recalculate_data()
 {
 	app.data.processed = null;
 	if (!app.selection.area_id) return;
+	console.log("theme in recalculate_data: ", app.selection.theme);
+	if (app.selection.theme === 'von') recalculate_data_von();
+	else if (app.selection.theme === 'nach') recalculate_data_nach();
+	else if (app.selection.theme === 'saldi') recalculate_data_saldi();
+}
+
+function recalculate_data_von()
+{
 	app.data.processed = alasql("SELECT ? AS fromid, ? AS fromname, toid, sum(migrations) AS migrations from migrations WHERE fromid = ? GROUP BY toid", [app.selection.area_id, app.data.featurename_mapping[app.selection.area_id], app.selection.area_id]);
 	for (let row of app.data.processed)
 	{
 		row.toname = app.data.featurename_mapping[row.toid];
+	}
+}
+
+function recalculate_data_nach()
+{
+	app.data.processed = alasql("SELECT ? AS toid, ? AS toname, fromid, sum(migrations) AS migrations from migrations WHERE toid = ? GROUP BY fromid", [app.selection.area_id, app.data.featurename_mapping[app.selection.area_id], app.selection.area_id]);
+	for (let row of app.data.processed)
+	{
+		row.fromname = app.data.featurename_mapping[row.fromid];
+	}
+}
+
+function recalculate_data_saldi()
+{
+	app.data.processed = alasql("SELECT ? AS toid, ? AS toname, fromid, sum(migrations) AS migrations from migrations WHERE toid = ? GROUP BY fromid", [app.selection.area_id, app.data.featurename_mapping[app.selection.area_id], app.selection.area_id]);
+	for (let row of app.data.processed)
+	{
+		row.fromname = app.data.featurename_mapping[row.fromid];
+		let negative = alasql("SELECT sum(migrations) AS migrations from migrations WHERE fromid = ? AND toid = ? GROUP BY toid", [row.toid, row.fromid])[0];
+		row.migrations -= negative.migrations;
 	}
 }
 

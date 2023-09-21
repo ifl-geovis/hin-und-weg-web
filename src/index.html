@@ -49,8 +49,15 @@
 			<label for="category_name_value">Datenkategorie:</label><br />
 			<input name="category_name_value" id="category_name_value" type="text" value="" disabled /><br />
 			<hr />
-			<label for="category_selector">Fläche:</label><br />
-			<select name="area" id="area_selector" oninput="area_selected(event)" disabled>
+			<label for="theme_selector">Thema:</label><br />
+			<select name="theme" id="theme_selector" class="selector" oninput="theme_selected(event)" disabled>
+				<option value="von">Von</option>
+				<option value="nach">Nach</option>
+				<option value="saldi">Saldi</option>
+			</select>
+			<hr />
+			<label for="area_selector">Fläche:</label><br />
+			<select name="area" id="area_selector" class="selector" oninput="area_selected(event)" disabled>
 				<option value="">-- Fläche auswählen --</option>
 			</select>
 		</div>
