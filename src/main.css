@@ -120,6 +120,11 @@ div#table_view th
 	border: 1px solid;
 }
 
+div#table_view_data
+{
+	margin-right: 30px;
+}
+
 div.action_button
 {
 	display: block;
