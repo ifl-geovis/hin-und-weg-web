@@ -77,6 +77,9 @@
 
 		<!-- bar chart view -->
 		<div id="barchart_view" class="viewcomponent">
+			<div class="title_bar" draggable="true" ondragstart="move_start(event, 'table_view')" ondragend="move_stop(event, 'barchart_view')">
+				Balkendiagramm
+			</div>
 			<div id="barchart_view_close_button" class="close_button" onclick="close_view(event)">
 				<img src="img/x-square.svg" width="100%" height="100%" />
 			</div>
