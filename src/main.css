@@ -61,7 +61,7 @@ div#selection_box
 {
 	display: block;
 	position: fixed;
-	top: 175px;
+	top: 100px;
 	left: -1px;
 	padding: 5px;
 	border-style: solid;
