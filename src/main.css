@@ -153,6 +153,11 @@ div#table_button
 	top: 150px;
 }
 
+div#barchart_button
+{
+	top: 200px;
+}
+
 div.close_button
 {
 	display: block;
