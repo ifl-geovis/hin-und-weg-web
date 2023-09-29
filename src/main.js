@@ -133,6 +133,7 @@ function process_selections()
 {
 	recalculate_data();
 	refresh_table_view();
+	refresh_barchart_view();
 }
 
 function recalculate_data()
