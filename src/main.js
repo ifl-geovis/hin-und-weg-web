@@ -62,6 +62,11 @@ let app =
 				x: 200,
 				y: 200,
 			},
+			barchart_view:
+			{
+				x: 200,
+				y: 200,
+			},
 		},
 	},
 	dataset_list: [],
@@ -173,12 +178,7 @@ function close_view(event)
 {
 	app.status.modal_dialog = false;
 	let viewcomponents = document.getElementsByClassName("viewcomponent");
-	console.log("close_view: ", viewcomponents);
-	for (let view of viewcomponents)
-	{
-		console.log(view);
-		view.style.display = "none";
-	}
+	for (let view of viewcomponents) view.style.display = "none";
 }
 
 function move_start(event, viewid)
