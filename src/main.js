@@ -31,6 +31,8 @@ let app =
 		migrations_loads: 0,
 		dataset_loaded: false,
 		modal_dialog: true,
+		dragstart_x: 0,
+		dragstart_y: 0,
 	},
 	configuration:
 	{
@@ -50,6 +52,17 @@ let app =
 		category: null,
 		theme: 'von',
 		area_id: null,
+	},
+	view:
+	{
+		positions:
+		{
+			table_view:
+			{
+				x: 200,
+				y: 200,
+			},
+		},
 	},
 	dataset_list: [],
 	datasets: {},
@@ -168,12 +181,17 @@ function close_view(event)
 	}
 }
 
-function move_start(event)
+function move_start(event, viewid)
 {
-	console.log("move_start: ", event);
+	app.status.dragstart_x = event.screenX;
+	app.status.dragstart_y = event.screenY;
 }
 
-function move_stop(event)
+function move_stop(event, viewid)
 {
-	console.log("move_stop: ", event);
+	app.view.positions[viewid].x += event.screenX - app.status.dragstart_x;
+	app.view.positions[viewid].y += event.screenY - app.status.dragstart_y;
+	let view = document.getElementById(viewid);
+	view.style.left = app.view.positions[viewid].x + "px";
+	view.style.top = app.view.positions[viewid].y + "px";
 }

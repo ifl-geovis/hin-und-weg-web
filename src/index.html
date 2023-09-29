@@ -65,7 +65,7 @@
 
 		<!-- table view -->
 		<div id="table_view" class="viewcomponent">
-			<div class="title_bar" draggable="true" ondragstart="move_start(event)" ondragend="move_stop(event)">
+			<div class="title_bar" draggable="true" ondragstart="move_start(event, 'table_view')" ondragend="move_stop(event, 'table_view')">
 				tabellarische Ansicht
 			</div>
 			<div id="table_view_close_button" class="close_button" onclick="close_view(event)">
