@@ -73,7 +73,7 @@ div#selection_box
 	z-index: 1000;
 }
 
-div#table_view
+div.viewcomponent
 {
 	display: none;
 	position: fixed;

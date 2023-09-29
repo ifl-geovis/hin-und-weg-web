@@ -74,6 +74,16 @@ function show_table(event)
 	table_view.style.display = "block";
 }
 
+function show_barchart(event)
+{
+	if (app.status.modal_dialog) return;
+	console.log("show_barchart");
+	process_selections();
+	app.status.modal_dialog = true;
+	let barchart_view = document.getElementById("barchart_view");
+	barchart_view.style.display = "block";
+}
+
 function theme_selected(event)
 {
 	//console.log("theme_selected: ", event.target.value);
@@ -178,8 +188,14 @@ function refresh_table_view()
 	table_view_data.innerHTML = dataview;
 }
 
-function close_table_view(event)
+function close_view(event)
 {
 	app.status.modal_dialog = false;
-	table_view.style.display = "none";
+	let viewcomponents = document.getElementsByClassName("viewcomponent");
+	console.log("close_view: ", viewcomponents);
+	for (let view of viewcomponents)
+	{
+		console.log(view);
+		view.style.display = "none";
+	}
 }
