@@ -73,22 +73,6 @@ div#selection_box
 	z-index: 1000;
 }
 
-div.viewcomponent
-{
-	display: none;
-	position: fixed;
-	top: 200px;
-	left: 200px;
-	margin-left: 15%;
-	margin-top: 0px;
-	min-width: 300px;
-	background-color: seashell;
-	border-style: solid;
-	border-width: 3px;
-	padding: 10px;
-	z-index: 1000;
-}
-
 div#table_view table
 {
 	border-collapse: collapse;
@@ -118,11 +102,6 @@ div#table_view td,
 div#table_view th
 {
 	border: 1px solid;
-}
-
-div#table_view_data
-{
-	margin-right: 30px;
 }
 
 div.action_button
@@ -158,12 +137,52 @@ div#barchart_button
 	top: 200px;
 }
 
+div.viewcomponent
+{
+	display: none;
+	position: fixed;
+	top: 200px;
+	left: 200px;
+	margin-left: 15%;
+	margin-top: 0px;
+	min-width: 300px;
+	min-height: 40px;
+	background-color: seashell;
+	border-style: solid;
+	border-width: 3px;
+	padding: 0px;
+	z-index: 1000;
+}
+
+div.view_content
+{
+	margin: 10px;
+}
+
 div.close_button
 {
 	display: block;
 	position: absolute;
-	right: 3px;
-	top: 3px;
-	width: 30px;
-	height: 30px;
+	right: 0px;
+	top: 0px;
+	width: 25px;
+	height: 25px;
+}
+
+div.title_bar
+{
+	margin-left: 0px;
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 5px;
+	background-color: #00000066;
+	padding-left: 3px;
+	padding-right: 0px;
+	padding-top: 3px;
+	padding-bottom: 3px;
+	width: 100%;
+	height: 20px;
+	text-align: center;
+	font-weight: bold;
+	font-family: sans-serif;
 }

@@ -167,3 +167,13 @@ function close_view(event)
 		view.style.display = "none";
 	}
 }
+
+function move_start(event)
+{
+	console.log("move_start: ", event);
+}
+
+function move_stop(event)
+{
+	console.log("move_stop: ", event);
+}
