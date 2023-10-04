@@ -16,10 +16,9 @@ function show_geojson_layer()
 	let style =
 	{
 		fillColor: 'white',
-		weight: 2,
+		weight: 1.5,
 		opacity: 1,
-		color: 'black',
-		dashArray: '3',
+		color: 'grey',
 		fillOpacity: 0.5,
 	};
 	if (app.map.datalayer) app.map.datalayer.removeFrom(app.map.map);
