@@ -23,8 +23,11 @@ data:
 
 let app =
 {
-	map: null,
-	maplayer: null,
+	map:
+	{
+		map: null,
+		datalayer: null,
+	},
 	status:
 	{
 		dataset_loads: 0,
