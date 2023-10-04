@@ -27,6 +27,7 @@ let app =
 	{
 		map: null,
 		datalayer: null,
+		selectionlayer: null,
 	},
 	status:
 	{
@@ -136,6 +137,7 @@ function process_selections()
 {
 	recalculate_data();
 	if (app.map.datalayer) app.map.datalayer.setStyle(map_style);
+	if (app.map.selectionlayer) app.map.selectionlayer.setStyle(map_style_selected);
 	refresh_table_view();
 	refresh_barchart_view();
 }
