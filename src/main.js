@@ -135,6 +135,7 @@ function renew_area_selection()
 function process_selections()
 {
 	recalculate_data();
+	if (app.map.datalayer) app.map.datalayer.setStyle(map_style);
 	refresh_table_view();
 	refresh_barchart_view();
 }
