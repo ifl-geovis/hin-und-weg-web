@@ -1,7 +1,7 @@
 function refresh_table_view()
 {
-	console.log("refresh_table_view");
-	console.log("app.data.processed: ", app.data.processed);
+	//console.log("refresh_table_view");
+	//console.log("app.data.processed: ", app.data.processed);
 	let table_view_data = document.getElementById("table_view_data");
 	if (!app.data.processed)
 	{
