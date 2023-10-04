@@ -40,6 +40,17 @@ function map_style_selected(feature)
 	return style;
 }
 
+function map_interactivity(feature, layer)
+{
+	let interactivity_mapping =
+	{
+		mouseover: highlight_feature,
+		mouseout: reset_highlight_feature,
+		click: select_highlight_feature,
+	}
+	layer.on(interactivity_mapping);
+}
+
 function show_geojson_layer()
 {
 	if (app.map.datalayer) app.map.datalayer.removeFrom(app.map.map);
@@ -47,7 +58,7 @@ function show_geojson_layer()
 	if (app.data.geodata)
 	{
 		app.map.datalayer = L.geoJSON(app.data.geodata, {style: map_style});
-		app.map.selectionlayer = L.geoJSON(app.data.geodata, {style: map_style_selected});
+		app.map.selectionlayer = L.geoJSON(app.data.geodata, {style: map_style_selected, onEachFeature: map_interactivity});
 	}
 	if (app.map.datalayer)
 	{
@@ -64,13 +75,26 @@ function get_feature_id(feature)
 
 function is_selected_feature(feature_id)
 {
-	console.log(app.selection.area_id);
 	if (app.selection.area_id === feature_id) return true;
 	return false;
 }
 
-function get_feature_border_color(feature_id)
+function highlight_feature(e)
 {
-	console.log("get_feature_border_color:", feature_id);
-	return ;
+	console.log("highlight_feature:", e);
+}
+
+function reset_highlight_feature(e)
+{
+	console.log("reset_highlight_feature:", e);
+}
+
+function select_highlight_feature(e)
+{
+	//console.log("select_highlight_feature:", e);
+	let feature_id = get_feature_id(e.target.feature);
+	app.selection.area_id = feature_id;
+	let area_selector = document.getElementById("area_selector");
+	area_selector.value = feature_id;
+	process_selections();
 }

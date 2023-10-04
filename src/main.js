@@ -146,7 +146,7 @@ function recalculate_data()
 {
 	app.data.processed = null;
 	if (!app.selection.area_id) return;
-	console.log("theme in recalculate_data:", app.selection.theme);
+	//console.log("theme in recalculate_data:", app.selection.theme);
 	if (app.selection.theme === 'von') recalculate_data_von();
 	else if (app.selection.theme === 'nach') recalculate_data_nach();
 	else if (app.selection.theme === 'saldi') recalculate_data_saldi();
