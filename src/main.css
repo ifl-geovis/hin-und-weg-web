@@ -17,6 +17,7 @@ div#header
 	position: fixed;
 	top: 20px;
 	left: 75px;
+	font-family: sans-serif;
 	border-style: solid;
 	border-color: lightgray;
 	border-width: 1px;
