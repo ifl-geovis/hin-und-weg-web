@@ -1,7 +1,7 @@
 function refresh_barchart_view()
 {
 	console.log("refresh_barchart_view");
-	console.log("app.data.processed: ", app.data.processed);
+	console.log("app.data.processed:", app.data.processed);
 	let barchart_view_data = document.getElementById("barchart_view_data");
 	let dataview = '';
 	if (!app.data.processed)

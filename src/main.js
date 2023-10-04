@@ -104,14 +104,14 @@ function show_barchart(event)
 
 function theme_selected(event)
 {
-	//console.log("theme_selected: ", event.target.value);
+	//console.log("theme_selected:", event.target.value);
 	app.selection.theme = event.target.value;
 	process_selections();
 }
 
 function area_selected(event)
 {
-	//console.log("area_selected: ", event.target.value);
+	//console.log("area_selected:", event.target.value);
 	app.selection.area_id = event.target.value;
 	process_selections();
 }
@@ -140,7 +140,7 @@ function recalculate_data()
 {
 	app.data.processed = null;
 	if (!app.selection.area_id) return;
-	console.log("theme in recalculate_data: ", app.selection.theme);
+	console.log("theme in recalculate_data:", app.selection.theme);
 	if (app.selection.theme === 'von') recalculate_data_von();
 	else if (app.selection.theme === 'nach') recalculate_data_nach();
 	else if (app.selection.theme === 'saldi') recalculate_data_saldi();

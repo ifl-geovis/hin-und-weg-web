@@ -26,7 +26,7 @@ function update_element_visibility()
 
 function dataset_selected(event)
 {
-	console.log("dataset_selected: ", event.target.value);
+	console.log("dataset_selected:", event.target.value);
 	app.selection.dataset_id = event.target.value;
 	app.selection.dataset = app.datasets[app.selection.dataset_id];
 	let selection = document.getElementById("category_selector");
@@ -36,9 +36,9 @@ function dataset_selected(event)
 	{
 		let category_mapping = create_category_mapping(app.selection.dataset.categories);
 		app.category_mapping = category_mapping;
-		//console.log("category_mapping", category_mapping);
+		//console.log("category_mapping:", category_mapping);
 		let category_list = Object.keys(category_mapping);
-		//console.log("category_list", category_list);
+		//console.log("category_list:", category_list);
 		add_select_options(selection, category_list, category_mapping);
 	}
 	update_element_visibility();
@@ -46,7 +46,7 @@ function dataset_selected(event)
 
 function category_selected(event)
 {
-	console.log("category_selected: ", event.target.value);
+	console.log("category_selected:", event.target.value);
 	app.selection.category_id = event.target.value;
 	app.selection.category = select_category(app.selection.category_id, app.selection.dataset.categories);
 	update_element_visibility();
@@ -57,8 +57,8 @@ function load_dataset(event)
 	console.log("load_dataset");
 	let dataset_dialog = document.getElementById("datasetloader_dialog");
 	dataset_dialog.style.display = "none";
-	console.log("app.selection.dataset_id: ", app.selection.dataset_id);
-	console.log("app.selection.category_id: ", app.selection.category_id);
+	console.log("app.selection.dataset_id:", app.selection.dataset_id);
+	console.log("app.selection.category_id:", app.selection.category_id);
 	alasql("DELETE FROM migrations");
 	let info = {};
 	load_url("data/" + app.selection.dataset_id + "/" + app.selection.dataset.geodata, info, load_geodata);
@@ -97,9 +97,9 @@ function select_category(id, categories)
 
 function load_geodata()
 {
-	console.log("load_geodata: ", this);
-	//console.log("status: ", this.status);
-	//console.log("content: ", this.responseText);
+	console.log("load_geodata:", this);
+	//console.log("status:", this.status);
+	//console.log("content:", this.responseText);
 	if (this.status === 200)
 	{
 		app.data.geodata = JSON.parse(this.responseText);
@@ -140,9 +140,9 @@ function create_featurename_mapping()
 function load_migration_csv(results, file)
 {
 	//console.log("load_migration_csv");
-	//console.log("results: ", results);
-	//console.log("file: ", file);
-	//console.log("filematcher: ", /^.*year=([01-9]+)$/.exec(file));
+	//console.log("results:", results);
+	//console.log("file:", file);
+	//console.log("filematcher:", /^.*year=([01-9]+)$/.exec(file));
 	let year = /^.*year=([01-9]+)$/.exec(file)[1];
 	if (year)
 	{
