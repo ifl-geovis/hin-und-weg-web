@@ -81,12 +81,24 @@ function is_selected_feature(feature_id)
 
 function highlight_feature(e)
 {
-	console.log("highlight_feature:", e);
+	//console.log("highlight_feature:", e);
+	var layer = e.target;
+	let layer_style =
+	{
+		fillColor: 'black',
+		fillOpacity: 0.3,
+		color: 'blue',
+		weight: 2.5,
+		opacity: 1,
+	};
+	layer.setStyle(layer_style);
+	layer.bringToFront();
 }
 
 function reset_highlight_feature(e)
 {
-	console.log("reset_highlight_feature:", e);
+	//console.log("reset_highlight_feature:", e);
+	app.map.selectionlayer.resetStyle(e.target);
 }
 
 function select_highlight_feature(e)
