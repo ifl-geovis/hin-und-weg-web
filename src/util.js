@@ -58,3 +58,12 @@ function remove_select_options(select)
 		select.lastElementChild.remove();
 	}
 }
+
+function calculate_classcount(choices)
+{
+	if (!choices) return 1;
+	if (choices < 1) return 1;
+	const classcount = Math.round(Math.sqrt(choices));
+	if (classcount > 9) return 9;
+	return classcount;
+}
