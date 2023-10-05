@@ -71,12 +71,11 @@ function init_datasetinfo()
 
 function init_datasetloader(dataset_list)
 {
-	let dataset_mapping = create_dataset_mapping(dataset_list);
-	app.dataset_mapping = dataset_mapping;
-	//console.log("dataset_mapping:", dataset_mapping);
+	app.data.dataset_mapping = create_dataset_mapping(dataset_list);
+	//console.log("app.data.dataset_mapping:", app.data.dataset_mapping);
 	//console.log("selector-element:", document.getElementById("dataset_selector"));
 	let selection = document.getElementById("dataset_selector");
-	add_select_options(selection, dataset_list, dataset_mapping);
+	add_select_options(selection, dataset_list, app.data.dataset_mapping);
 }
 
 function start()

@@ -20,8 +20,8 @@ function update_element_visibility()
 	{
 		load_dataset_button.disabled = true;
 	}
-	if (app.selection.dataset_id) document.getElementById("dataset_name_value").value = app.dataset_mapping[app.selection.dataset_id];
-	if (app.selection.category_id) document.getElementById("category_name_value").value = app.category_mapping[app.selection.category_id];
+	if (app.selection.dataset_id) document.getElementById("dataset_name_value").value = app.data.dataset_mapping[app.selection.dataset_id];
+	if (app.selection.category_id) document.getElementById("category_name_value").value = app.data.category_mapping[app.selection.category_id];
 }
 
 function dataset_selected(event)
@@ -34,12 +34,11 @@ function dataset_selected(event)
 	remove_select_options(selection);
 	if (app.selection.dataset_id)
 	{
-		let category_mapping = create_category_mapping(app.selection.dataset.categories);
-		app.category_mapping = category_mapping;
-		//console.log("category_mapping:", category_mapping);
-		let category_list = Object.keys(category_mapping);
+		app.data.category_mapping = create_category_mapping(app.selection.dataset.categories);
+		//console.log("app.data.category_mapping:", app.data.category_mapping);
+		let category_list = Object.keys(app.data.category_mapping);
 		//console.log("category_list:", category_list);
-		add_select_options(selection, category_list, category_mapping);
+		add_select_options(selection, category_list, app.data.category_mapping);
 	}
 	update_element_visibility();
 }

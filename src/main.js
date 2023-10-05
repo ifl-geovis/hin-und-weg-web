@@ -1,5 +1,5 @@
 /*
-app is the general data holder for the applciation
+app is the general data holder for the application
 
 for controlling the application:
 	* status: diverse status information
