@@ -71,6 +71,16 @@ function calculate_classcount(choices)
 
 function getColorForValue(value)
 {
-	if (!app.data.geostats) return "#000000";
+	if (!app.data.geostats) return "white";
 	return app.data.geostats.colors[app.data.geostats.getClass(value)];
+}
+
+function getColorForFeatureId(feature_id)
+{
+	if (!app.data.processed) return "white";
+	for (let row of app.data.processed)
+	{
+		if (row.id === feature_id) return row.color;
+	}
+	return "white";
 }

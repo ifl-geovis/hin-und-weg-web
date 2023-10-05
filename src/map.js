@@ -15,9 +15,10 @@ function map_style(feature)
 {
 	let feature_id = get_feature_id(feature);
 	let is_selected = is_selected_feature(feature_id);
+	let color = getColorForFeatureId(feature_id);
 	let style =
 	{
-		fillColor: 'white',
+		fillColor: color,
 		weight: 1.5,
 		opacity: 1,
 		color: 'grey',
