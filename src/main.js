@@ -192,12 +192,8 @@ function recalculate_classification()
 	app.data.geostats = new geostats(data);
 	app.data.geostats.setColors(chroma.scale('RdYlBu').colors(classcount));
 	app.data.geostats.getClassQuantile(classcount);
+	for (let row of app.data.processed) row.color = getColor(row.migrations);
 	console.log("recalculate_classification:", app.data.geostats.getHtmlLegend());
-	console.log("recalculate_classification:", app.data.geostats.colors);
-	console.log("recalculate_classification:", app.data.geostats.getClass(0));
-	console.log("recalculate_classification:", app.data.geostats.getClass(1000));
-	console.log("recalculate_classification:", app.data.geostats.getClass(50000));
-	console.log("recalculate_classification:", app.data.geostats.getClass(100000));
 }
 
 function close_view(event)

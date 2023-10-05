@@ -68,3 +68,9 @@ function calculate_classcount(choices)
 	if (classcount > 9) return 9;
 	return classcount;
 }
+
+function getColor(value)
+{
+	if (!app.data.geostats) return "#000000";
+	return app.data.geostats.colors[app.data.geostats.getClass(value)];
+}

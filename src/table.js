@@ -11,6 +11,7 @@ function refresh_table_view()
 	let dataview = `
 	<table>
 	<tr class="header">
+		<th></th>
 		<th>Von</th>
 		<th>Nach</th>
 		<th>Anzahl</th>
@@ -20,6 +21,7 @@ function refresh_table_view()
 	{
 		if (odd) dataview += '<tr class="odd">';
 		else dataview += '<tr class="even">';
+		dataview += '<td><span style="color: ' + row.color + '">⬤</span></td>';
 		dataview += "<td>" + row.fromname + "</td>";
 		dataview += "<td>" + row.toname + "</td>";
 		dataview += '<td class="number">' + row.migrations + "</td>";
