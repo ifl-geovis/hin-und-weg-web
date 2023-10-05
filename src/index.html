@@ -5,6 +5,7 @@
 		<meta charset="UTF-8">
 		<link rel="icon" type="image/x-icon" href="img/huw-logo_32.ico">
 		<link rel="stylesheet" href="lib/leaflet.css">
+		<link rel="stylesheet" href="lib/geostats.css">
 		<link rel="stylesheet" href="main.css">
 		<script type="text/javascript" src="lib/leaflet.js"></script>
 		<script type="text/javascript" src="lib/papaparse.min.js"></script>
@@ -69,6 +70,12 @@
 			<select name="area" id="area_selector" class="selector" oninput="area_selected(event)" disabled>
 				<option value="">-- Fläche auswählen --</option>
 			</select>
+			<div id="legend">
+				<hr />
+				<label for="legend_content">Legende:</label><br />
+				<div id="legend_content">
+				</div
+			</div>
 		</div>
 
 		<!-- table view -->

@@ -193,3 +193,8 @@ div.title_bar
 	font-weight: bold;
 	font-family: sans-serif;
 }
+
+div#legend
+{
+	display: none;
+}

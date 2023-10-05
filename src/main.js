@@ -140,6 +140,7 @@ function process_selections()
 	if (app.map.selectionlayer) app.map.selectionlayer.setStyle(map_style_selected);
 	refresh_table_view();
 	refresh_barchart_view();
+	refresh_legend();
 }
 
 function recalculate_data()
@@ -193,7 +194,16 @@ function recalculate_classification()
 	app.data.geostats.setColors(chroma.scale('RdYlBu').colors(classcount));
 	app.data.geostats.getClassQuantile(classcount);
 	for (let row of app.data.processed) row.color = getColor(row.migrations);
-	console.log("recalculate_classification:", app.data.geostats.getHtmlLegend());
+}
+
+function refresh_legend()
+{
+	const legend = document.getElementById("legend");
+	const legend_content = document.getElementById("legend_content");
+	legend.style.display = "none";
+	if (!app.data.geostats) return;
+	legend_content.innerHTML = app.data.geostats.getHtmlLegend();
+	legend.style.display = "block";
 }
 
 function close_view(event)
