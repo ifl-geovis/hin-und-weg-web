@@ -156,7 +156,7 @@ function recalculate_data()
 
 function recalculate_data_von()
 {
-	app.data.processed = alasql("SELECT ? AS fromid, ? AS fromname, toid, sum(migrations) AS migrations from migrations WHERE fromid = ? GROUP BY toid", [app.selection.area_id, app.data.featurename_mapping[app.selection.area_id], app.selection.area_id]);
+	app.data.processed = alasql("SELECT toid AS id, ? AS fromid, ? AS fromname, toid, sum(migrations) AS migrations from migrations WHERE fromid = ? GROUP BY toid", [app.selection.area_id, app.data.featurename_mapping[app.selection.area_id], app.selection.area_id]);
 	for (let row of app.data.processed)
 	{
 		row.toname = app.data.featurename_mapping[row.toid];
@@ -165,7 +165,7 @@ function recalculate_data_von()
 
 function recalculate_data_nach()
 {
-	app.data.processed = alasql("SELECT ? AS toid, ? AS toname, fromid, sum(migrations) AS migrations from migrations WHERE toid = ? GROUP BY fromid", [app.selection.area_id, app.data.featurename_mapping[app.selection.area_id], app.selection.area_id]);
+	app.data.processed = alasql("SELECT fromid AS id, ? AS toid, ? AS toname, fromid, sum(migrations) AS migrations from migrations WHERE toid = ? GROUP BY fromid", [app.selection.area_id, app.data.featurename_mapping[app.selection.area_id], app.selection.area_id]);
 	for (let row of app.data.processed)
 	{
 		row.fromname = app.data.featurename_mapping[row.fromid];
@@ -174,7 +174,7 @@ function recalculate_data_nach()
 
 function recalculate_data_saldi()
 {
-	app.data.processed = alasql("SELECT ? AS toid, ? AS toname, fromid, sum(migrations) AS migrations from migrations WHERE toid = ? GROUP BY fromid", [app.selection.area_id, app.data.featurename_mapping[app.selection.area_id], app.selection.area_id]);
+	app.data.processed = alasql("SELECT fromid AS id, ? AS toid, ? AS toname, fromid, sum(migrations) AS migrations from migrations WHERE toid = ? GROUP BY fromid", [app.selection.area_id, app.data.featurename_mapping[app.selection.area_id], app.selection.area_id]);
 	for (let row of app.data.processed)
 	{
 		row.fromname = app.data.featurename_mapping[row.fromid];
@@ -193,7 +193,7 @@ function recalculate_classification()
 	app.data.geostats = new geostats(data);
 	app.data.geostats.setColors(chroma.scale('RdYlBu').colors(classcount));
 	app.data.geostats.getClassQuantile(classcount);
-	for (let row of app.data.processed) row.color = getColor(row.migrations);
+	for (let row of app.data.processed) row.color = getColorForValue(row.migrations);
 }
 
 function refresh_legend()

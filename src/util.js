@@ -69,7 +69,7 @@ function calculate_classcount(choices)
 	return classcount;
 }
 
-function getColor(value)
+function getColorForValue(value)
 {
 	if (!app.data.geostats) return "#000000";
 	return app.data.geostats.colors[app.data.geostats.getClass(value)];
