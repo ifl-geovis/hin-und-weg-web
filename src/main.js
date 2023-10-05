@@ -40,6 +40,57 @@ let app =
 	},
 	configuration:
 	{
+		colorschemes:
+		{
+			orange:
+			[
+				["#fdae6b"],
+				["#fee6ce", "#fdae6b"],
+				["#fee6ce", "#fdae6b", "#e6550d"],
+				["#feedde", "#fdbe85", "#fd8d3c", "#d94701"],
+				["#feedde", "#fdbe85", "#fd8d3c", "#e6550d", "#a63603"],
+				["#feedde", "#fdd0a2", "#fdae6b", "#fd8d3c", "#e6550d", "#a63603"],
+				["#feedde", "#fdd0a2", "#fdae6b", "#fd8d3c", "#f16913", "#d94801", "#8c2d04"],
+				["#fff5eb", "#fee6ce", "#fdd0a2", "#fdae6b", "#fd8d3c", "#f16913", "#d94801", "#8c2d04"],
+				["#fff5eb", "#fee6ce", "#fdd0a2", "#fdae6b", "#fd8d3c", "#f16913", "#d94801", "#a63603", "#7f2704"]
+			],
+			"grün":
+			[
+				["#a1d99b"],
+				["#e5f5e0", "#a1d99b"],
+				["#e5f5e0", "#a1d99b", "#31a354"],
+				["#edf8e9", "#bae4b3", "#74c476", "#238b45"],
+				["#edf8e9", "#bae4b3", "#74c476", "#31a354", "#006d2c"],
+				["#edf8e9", "#c7e9c0", "#a1d99b", "#74c476", "#31a354", "#006d2c"],
+				["#edf8e9", "#c7e9c0", "#a1d99b", "#74c476", "#41ab5d", "#238b45", "#005a32"],
+				["#f7fcf5", "#e5f5e0", "#c7e9c0", "#a1d99b", "#74c476", "#41ab5d", "#238b45", "#005a32"],
+				["#f7fcf5", "#e5f5e0", "#c7e9c0", "#a1d99b", "#74c476", "#41ab5d", "#238b45", "#006d2c", "#00441b"]
+			],
+			"rot":
+			[
+				["#fc9272"],
+				["#fee0d2", "#fc9272"],
+				["#fee0d2", "#fc9272", "#de2d26"],
+				["#fee5d9", "#fcae91", "#fb6a4a", "#cb181d"],
+				["#fee5d9", "#fcae91", "#fb6a4a", "#de2d26", "#a50f15"],
+				["#fee5d9", "#fcbba1", "#fc9272", "#fb6a4a", "#de2d26", "#a50f15"],
+				["#fee5d9", "#fcbba1", "#fc9272", "#fb6a4a", "#ef3b2c", "#cb181d", "#99000d"],
+				["#fff5f0", "#fee0d2", "#fcbba1", "#fc9272", "#fb6a4a", "#ef3b2c", "#cb181d", "#99000d"],
+				["#fff5f0", "#fee0d2", "#fcbba1", "#fc9272", "#fb6a4a", "#ef3b2c", "#cb181d", "#a50f15", "#67000d"]
+			],
+			"blau":
+			[
+				["#9ecae1"],
+				["#deebf7", "#9ecae1"],
+				["#deebf7", "#9ecae1", "#3182bd"],
+				["#eff3ff", "#bdd7e7", "#6baed6", "#2171b5"],
+				["#eff3ff", "#bdd7e7", "#6baed6", "#3182bd", "#08519c"],
+				["#eff3ff", "#c6dbef", "#9ecae1", "#6baed6", "#3182bd", "#08519c"],
+				["#eff3ff", "#c6dbef", "#9ecae1", "#6baed6", "#4292c6", "#2171b5", "#084594"],
+				["#f7fbff", "#deebf7", "#c6dbef", "#9ecae1", "#6baed6", "#4292c6", "#2171b5", "#084594"],
+				["#f7fbff", "#deebf7", "#c6dbef", "#9ecae1", "#6baed6", "#4292c6", "#2171b5", "#08519c", "#08306b"],
+			],
+		},
 	},
 	data:
 	{
