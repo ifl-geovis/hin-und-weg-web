@@ -15,8 +15,8 @@ div#header
 {
 	display: block;
 	position: fixed;
-	top: 20px;
-	left: 75px;
+	top: 15px;
+	left: 50px;
 	border-style: solid;
 	border-color: lightgray;
 	border-width: 1px;
@@ -68,7 +68,7 @@ div#selection_box
 {
 	display: block;
 	position: fixed;
-	top: 100px;
+	top: 85px;
 	left: -1px;
 	padding: 5px;
 	border-style: solid;
@@ -131,17 +131,17 @@ div.action_button
 
 div#dataset_load_button
 {
-	top: 100px;
+	top: 50px;
 }
 
 div#table_button
 {
-	top: 150px;
+	top: 100px;
 }
 
 div#barchart_button
 {
-	top: 200px;
+	top: 150px;
 }
 
 div.viewcomponent
