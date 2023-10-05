@@ -81,4 +81,5 @@ function init_datasetloader(dataset_list)
 function start()
 {
 	console.log("start!");
+	console.log(chroma.scale('RdYlBu').colors(7));
 }
