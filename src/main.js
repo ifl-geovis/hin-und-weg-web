@@ -150,6 +150,7 @@ function recalculate_data()
 	if (app.selection.theme === 'von') recalculate_data_von();
 	else if (app.selection.theme === 'nach') recalculate_data_nach();
 	else if (app.selection.theme === 'saldi') recalculate_data_saldi();
+	recalculate_classification();
 }
 
 function recalculate_data_von()
@@ -179,6 +180,24 @@ function recalculate_data_saldi()
 		let negative = alasql("SELECT sum(migrations) AS migrations from migrations WHERE fromid = ? AND toid = ? GROUP BY toid", [row.toid, row.fromid])[0];
 		row.migrations -= negative.migrations;
 	}
+}
+
+function recalculate_classification()
+{
+	app.data.geostats = null;
+	if (!app.data.processed) return;
+	const classcount = calculate_classcount(app.data.processed.length);
+	let data = [];
+	for (let row of app.data.processed) data.push(row.migrations);
+	app.data.geostats = new geostats(data);
+	app.data.geostats.setColors(chroma.scale('RdYlBu').colors(classcount));
+	app.data.geostats.getClassQuantile(classcount);
+	console.log("recalculate_classification:", app.data.geostats.getHtmlLegend());
+	console.log("recalculate_classification:", app.data.geostats.colors);
+	console.log("recalculate_classification:", app.data.geostats.getClass(0));
+	console.log("recalculate_classification:", app.data.geostats.getClass(1000));
+	console.log("recalculate_classification:", app.data.geostats.getClass(50000));
+	console.log("recalculate_classification:", app.data.geostats.getClass(100000));
 }
 
 function close_view(event)
