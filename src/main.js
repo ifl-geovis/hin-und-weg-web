@@ -209,7 +209,7 @@ function recalculate_classification()
 	app.data.geostats = new geostats(data);
 	app.data.geostats.setColors(chroma.scale('RdYlBu').colors(classcount));
 	app.data.geostats.getClassQuantile(classcount);
-	for (let row of app.data.processed) row.color = getColorForValue(row.migrations);
+	for (let row of app.data.processed) row.color = get_color_for_value(row.migrations);
 }
 
 function refresh_legend()

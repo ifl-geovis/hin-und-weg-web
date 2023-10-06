@@ -69,13 +69,13 @@ function calculate_classcount(choices)
 	return classcount;
 }
 
-function getColorForValue(value)
+function get_color_for_value(value)
 {
 	if (!app.data.geostats) return "white";
 	return app.data.geostats.colors[app.data.geostats.getClass(value)];
 }
 
-function getColorForFeatureId(feature_id)
+function get_color_for_feature_id(feature_id)
 {
 	if (!app.data.processed) return "white";
 	for (let row of app.data.processed)
