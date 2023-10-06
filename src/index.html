@@ -90,6 +90,18 @@
 			</div>
 		</div>
 
+		<!-- statistics view -->
+		<div id="statistics_view" class="viewcomponent">
+			<div class="title_bar" draggable="true" ondragstart="move_start(event, 'statistics_view')" ondragend="move_stop(event, 'statistics_view')">
+				Statistiken
+			</div>
+			<div id="statistics_view_close_button" class="close_button" onclick="close_view(event, 'statistics_view')">
+				<img src="img/x-square.svg" width="100%" height="100%" />
+			</div>
+			<div id="statistics_view_data" class="view_content">
+			</div>
+		</div>
+
 		<!-- bar chart view -->
 		<div id="barchart_view" class="viewcomponent">
 			<div class="title_bar" draggable="true" ondragstart="move_start(event, 'barchart_view')" ondragend="move_stop(event, 'barchart_view')">
@@ -108,6 +120,9 @@
 		</div>
 		<div id="table_button" class="action_button" title="tabellarische Ansicht" onclick="show_table(event)">
 			<img src="img/table-data.svg" width="100%" height="100%" />
+		</div>
+		<div id="statistics_button" class="action_button" title="Statistiken" onclick="show_statistics(event)">
+			<img src="img/calculator.svg" width="100%" height="100%" />
 		</div>
 		<div id="barchart_button" class="action_button" title="Balkendiagramm" onclick="show_barchart(event)">
 			<img src="img/chart-bar.svg" width="100%" height="100%" />

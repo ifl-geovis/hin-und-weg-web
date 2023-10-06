@@ -139,9 +139,14 @@ div#table_button
 	top: 100px;
 }
 
-div#barchart_button
+div#statistics_button
 {
 	top: 150px;
+}
+
+div#barchart_button
+{
+	top: 200px;
 }
 
 div.viewcomponent
