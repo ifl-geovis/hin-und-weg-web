@@ -56,6 +56,7 @@ let app =
 		category: null,
 		theme: 'von',
 		area_id: null,
+		area_inside: true,
 	},
 	view:
 	{
@@ -97,6 +98,13 @@ function area_selected(event)
 {
 	//console.log("area_selected:", event.target.value);
 	app.selection.area_id = event.target.value;
+	process_selections();
+}
+
+function area_inside_changed(event)
+{
+	//console.log("area_inside_changed:", event.target.checked);
+	app.selection.area_inside = event.target.value;
 	process_selections();
 }
 
