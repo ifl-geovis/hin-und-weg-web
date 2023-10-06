@@ -43,11 +43,26 @@ function refresh_statistics_view()
 		statistics_view_data.innerHTML = "Für die gewählte Selektion sind keine Daten verfügbar!";
 		return;
 	}
+	let data = [];
+	data.push(['Gebiete', app.data.geostats.pop()]);
+	data.push(['Summe', app.data.geostats.sum()]);
+	data.push(['Minimum', app.data.geostats.min()]);
+	data.push(['Maximum', app.data.geostats.max()]);
+	statistics_view_data.innerHTML = create_statistics_table(data);
+}
+
+function create_statistics_table(data)
+{
 	let dataview = '<table>';
-	dataview += '<tr class="odd"><th>Gebiete</th><td class="number">' + app.data.geostats.pop() + '</td></tr>';
-	dataview += '<tr class="even"><th>Summe</th><td class="number">' + app.data.geostats.sum() + '</td></tr>';
-	dataview += '<tr class="odd"><th>Minimum</th><td class="number">' + app.data.geostats.min() + '</td></tr>';
-	dataview += '<tr class="even"><th>Maximum</th><td class="number">' + app.data.geostats.max() + '</td></tr>';
+	let odd = true;
+	for (let row of data)
+	{
+		if (odd) dataview += '<tr class="odd">';
+		else dataview += '<tr class="even">';
+		dataview += "<th>" + row[0] + "</th>";
+		dataview += '<td class="number">' + row[1] + '</td>';
+		odd = !odd;
+	}
 	dataview += '</table>';
-	statistics_view_data.innerHTML = dataview;
+	return dataview;
 }
