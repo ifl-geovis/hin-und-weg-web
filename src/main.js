@@ -206,11 +206,11 @@ function refresh_legend()
 	legend.style.display = "block";
 }
 
-function close_view(event)
+function close_view(event, viewid)
 {
 	app.status.modal_dialog = false;
-	let viewcomponents = document.getElementsByClassName("viewcomponent");
-	for (let view of viewcomponents) view.style.display = "none";
+	let view = document.getElementById(viewid);
+	view.style.display = "none";
 }
 
 function move_start(event, viewid)
