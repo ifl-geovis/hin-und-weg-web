@@ -80,10 +80,10 @@ function is_selected_feature(feature_id)
 	return false;
 }
 
-function highlight_feature(e)
+function highlight_feature(event)
 {
-	//console.log("highlight_feature:", e);
-	var layer = e.target;
+	//console.log("highlight_feature:", event);
+	var layer = event.target;
 	let layer_style =
 	{
 		fillColor: 'black',
@@ -94,18 +94,36 @@ function highlight_feature(e)
 	};
 	layer.setStyle(layer_style);
 	layer.bringToFront();
+	show_info_popup(event);
 }
 
-function reset_highlight_feature(e)
+function show_info_popup(event)
 {
-	//console.log("reset_highlight_feature:", e);
-	app.map.selectionlayer.resetStyle(e.target);
+	const feature_id = get_feature_id(event.target.feature);
+	const feature_info = get_feature_by_id(feature_id);
+	const feature_name = app.data.featurename_mapping[feature_id];
+	let feature_info_popup = document.getElementById("feature_info_popup");
+	let info_text = "";
+	info_text += feature_name + " (" + feature_id + ")<br />";
+	if (feature_info)
+	{
+	}
+	feature_info_popup.innerHTML = info_text;
+	feature_info_popup.style.display = "block";
 }
 
-function select_feature(e)
+function reset_highlight_feature(event)
 {
-	//console.log("select_feature:", e);
-	let feature_id = get_feature_id(e.target.feature);
+	//console.log("reset_highlight_feature:", event);
+	app.map.selectionlayer.resetStyle(event.target);
+	let feature_info_popup = document.getElementById("feature_info_popup");
+	feature_info_popup.style.display = "none";
+}
+
+function select_feature(event)
+{
+	//console.log("select_feature:", event);
+	let feature_id = get_feature_id(event.target.feature);
 	app.selection.area_id = feature_id;
 	let area_selector = document.getElementById("area_selector");
 	area_selector.value = feature_id;

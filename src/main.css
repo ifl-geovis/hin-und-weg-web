@@ -48,6 +48,21 @@ h2
 	font-family: sans-serif;
 }
 
+div#feature_info_popup
+{
+	display: none;
+	position: fixed;
+	top: 200px;
+	left: 200px;
+	border-style: solid;
+	border-color: lightgray;
+	border-width: 1px;
+	border-radius: 10px;
+	background-color: #fff5eecc;
+	padding: 10px;
+	z-index: 1000;
+}
+
 div#datasetloader_dialog
 {
 	display: block;

@@ -84,3 +84,13 @@ function get_color_for_feature_id(feature_id)
 	}
 	return "white";
 }
+
+function get_feature_by_id(feature_id)
+{
+	if (!app.data.processed) return null;
+	for (let row of app.data.processed)
+	{
+		if (row.id === feature_id) return row;
+	}
+	return null;
+}
