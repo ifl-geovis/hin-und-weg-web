@@ -48,6 +48,10 @@ function refresh_statistics_view()
 	data.push(['Summe', app.data.geostats.sum()]);
 	data.push(['Minimum', app.data.geostats.min()]);
 	data.push(['Maximum', app.data.geostats.max()]);
+	data.push(['Durchschnitt', app.data.geostats.mean()]);
+	data.push(['Median', app.data.geostats.median()]);
+	data.push(['Varianz', app.data.geostats.variance()]);
+	data.push(['Standardabweichung', app.data.geostats.stddev()]);
 	statistics_view_data.innerHTML = create_statistics_table(data);
 }
 
