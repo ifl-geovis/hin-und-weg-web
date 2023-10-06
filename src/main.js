@@ -86,24 +86,14 @@ function dataset_load(event)
 	dataset_dialog.style.display = "block";
 }
 
-function show_table(event)
+function show_viewcomponent(event, viewid)
 {
 	if (app.status.modal_dialog) return;
-	console.log("show_table");
+	console.log("show_viewcomponent", viewid);
 	process_selections();
 	app.status.modal_dialog = true;
-	let table_view = document.getElementById("table_view");
+	let table_view = document.getElementById(viewid);
 	table_view.style.display = "block";
-}
-
-function show_barchart(event)
-{
-	if (app.status.modal_dialog) return;
-	console.log("show_barchart");
-	process_selections();
-	app.status.modal_dialog = true;
-	let barchart_view = document.getElementById("barchart_view");
-	barchart_view.style.display = "block";
 }
 
 function theme_selected(event)
