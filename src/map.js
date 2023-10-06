@@ -47,7 +47,7 @@ function map_interactivity(feature, layer)
 	{
 		mouseover: highlight_feature,
 		mouseout: reset_highlight_feature,
-		click: select_highlight_feature,
+		click: select_feature,
 	}
 	layer.on(interactivity_mapping);
 }
@@ -102,9 +102,9 @@ function reset_highlight_feature(e)
 	app.map.selectionlayer.resetStyle(e.target);
 }
 
-function select_highlight_feature(e)
+function select_feature(e)
 {
-	//console.log("select_highlight_feature:", e);
+	//console.log("select_feature:", e);
 	let feature_id = get_feature_id(e.target.feature);
 	app.selection.area_id = feature_id;
 	let area_selector = document.getElementById("area_selector");
