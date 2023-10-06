@@ -31,3 +31,23 @@ function refresh_table_view()
 	dataview += "</table>";
 	table_view_data.innerHTML = dataview;
 }
+
+function refresh_statistics_view()
+{
+	//console.log("refresh_statistics_view");
+	//console.log("app.data.processed:", app.data.processed);
+	//console.log("app.data.geostats:", app.data.geostats);
+	let statistics_view_data = document.getElementById("statistics_view_data");
+	if (!app.data.geostats)
+	{
+		statistics_view_data.innerHTML = "Für die gewählte Selektion sind keine Daten verfügbar!";
+		return;
+	}
+	let dataview = '<table>';
+	dataview += '<tr class="odd"><th>Gebiete</th><td class="number">' + app.data.geostats.pop() + '</td></tr>';
+	dataview += '<tr class="even"><th>Summe</th><td class="number">' + app.data.geostats.sum() + '</td></tr>';
+	dataview += '<tr class="odd"><th>Minimum</th><td class="number">' + app.data.geostats.min() + '</td></tr>';
+	dataview += '<tr class="even"><th>Maximum</th><td class="number">' + app.data.geostats.max() + '</td></tr>';
+	dataview += '</table>';
+	statistics_view_data.innerHTML = dataview;
+}
