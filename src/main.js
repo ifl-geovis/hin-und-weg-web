@@ -104,7 +104,7 @@ function area_selected(event)
 function area_inside_changed(event)
 {
 	//console.log("area_inside_changed:", event.target.checked);
-	app.selection.area_inside = event.target.value;
+	app.selection.area_inside = event.target.checked;
 	process_selections();
 }
 
@@ -143,9 +143,33 @@ function recalculate_data()
 	recalculate_classification();
 }
 
+function create_where_clause(elements)
+{
+	if (!elements) return "";
+	if (elements.length < 1) return "";
+	let clause = " WHERE";
+	let first = true;
+	for (element of elements)
+	{
+		if (!first) clause += " AND";
+		clause += " (" + element + ")";
+		first = false;
+	}
+	return clause;
+}
+
+function list_selection_for_sql(additionals)
+{
+	let list = [];
+	if (additionals) list = additionals;
+	if (!app.selection.area_inside) list.push("fromid <> toid");
+	return list;
+}
+
 function recalculate_data_von()
 {
-	app.data.processed = alasql("SELECT toid AS id, ? AS fromid, ? AS fromname, toid, sum(migrations) AS migrations from migrations WHERE fromid = ? GROUP BY toid", [app.selection.area_id, app.data.featurename_mapping[app.selection.area_id], app.selection.area_id]);
+	const where_clause = create_where_clause(list_selection_for_sql(["fromid = ?"]));
+	app.data.processed = alasql("SELECT toid AS id, ? AS fromid, ? AS fromname, toid, sum(migrations) AS migrations from migrations " + where_clause + " GROUP BY toid", [app.selection.area_id, app.data.featurename_mapping[app.selection.area_id], app.selection.area_id]);
 	for (let row of app.data.processed)
 	{
 		row.toname = app.data.featurename_mapping[row.toid];
@@ -154,7 +178,8 @@ function recalculate_data_von()
 
 function recalculate_data_nach()
 {
-	app.data.processed = alasql("SELECT fromid AS id, ? AS toid, ? AS toname, fromid, sum(migrations) AS migrations from migrations WHERE toid = ? GROUP BY fromid", [app.selection.area_id, app.data.featurename_mapping[app.selection.area_id], app.selection.area_id]);
+	const where_clause = create_where_clause(list_selection_for_sql(["toid = ?"]));
+	app.data.processed = alasql("SELECT fromid AS id, ? AS toid, ? AS toname, fromid, sum(migrations) AS migrations from migrations " + where_clause + " GROUP BY fromid", [app.selection.area_id, app.data.featurename_mapping[app.selection.area_id], app.selection.area_id]);
 	for (let row of app.data.processed)
 	{
 		row.fromname = app.data.featurename_mapping[row.fromid];
@@ -163,11 +188,13 @@ function recalculate_data_nach()
 
 function recalculate_data_saldi()
 {
-	app.data.processed = alasql("SELECT fromid AS id, ? AS toid, ? AS toname, fromid, sum(migrations) AS migrations from migrations WHERE toid = ? GROUP BY fromid", [app.selection.area_id, app.data.featurename_mapping[app.selection.area_id], app.selection.area_id]);
+	let where_clause = create_where_clause(list_selection_for_sql(["toid = ?"]));
+	app.data.processed = alasql("SELECT fromid AS id, ? AS toid, ? AS toname, fromid, sum(migrations) AS migrations from migrations " + where_clause + " GROUP BY fromid", [app.selection.area_id, app.data.featurename_mapping[app.selection.area_id], app.selection.area_id]);
 	for (let row of app.data.processed)
 	{
+		where_clause = create_where_clause(list_selection_for_sql(["fromid = ?", "toid = ?"]));
 		row.fromname = app.data.featurename_mapping[row.fromid];
-		let negative = alasql("SELECT sum(migrations) AS migrations from migrations WHERE fromid = ? AND toid = ? GROUP BY toid", [row.toid, row.fromid])[0];
+		let negative = alasql("SELECT sum(migrations) AS migrations from migrations " + where_clause + " GROUP BY toid", [row.toid, row.fromid])[0];
 		row.migrations -= negative.migrations;
 	}
 }
