@@ -47,6 +47,7 @@ function map_interactivity(feature, layer)
 	{
 		mouseover: highlight_feature,
 		mouseout: reset_highlight_feature,
+		mousemove: move_feature_popup,
 		click: select_feature,
 	}
 	layer.on(interactivity_mapping);
@@ -107,9 +108,23 @@ function show_info_popup(event)
 	info_text += feature_name + " (" + feature_id + ")<br />";
 	if (feature_info)
 	{
+		info_text += feature_info.fromname;
+		if (app.selection.theme === 'von') info_text += "→";
+		else if (app.selection.theme === 'nach') info_text += "←";
+		else if (app.selection.theme === 'saldi') info_text += "←→";
+		info_text += feature_info.toname + ":<br />" + feature_info.migrations;
 	}
 	feature_info_popup.innerHTML = info_text;
 	feature_info_popup.style.display = "block";
+	feature_info_popup.style.left = event.originalEvent.layerX + "px";
+	feature_info_popup.style.top = event.originalEvent.layerY + "px";
+}
+
+function move_feature_popup(event)
+{
+	let feature_info_popup = document.getElementById("feature_info_popup");
+	feature_info_popup.style.left = (event.originalEvent.layerX -10) + "px";
+	feature_info_popup.style.top = (event.originalEvent.layerY + 20) + "px";
 }
 
 function reset_highlight_feature(event)
