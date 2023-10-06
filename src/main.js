@@ -61,16 +61,6 @@ let app =
 	{
 		positions:
 		{
-			table_view:
-			{
-				x: 200,
-				y: 200,
-			},
-			barchart_view:
-			{
-				x: 200,
-				y: 200,
-			},
 		},
 	},
 	dataset_list: [],

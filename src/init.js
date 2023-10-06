@@ -12,8 +12,23 @@ function init()
 {
 	console.log("initialize!");
 	init_map();
+	init_view();
 	init_db();
 	load_url("data/data.json", null, init_datalist);
+}
+
+function init_view()
+{
+	const viewids = ["table_view", "statistics_view", "barchart_view"];
+	const initialview =
+	{
+		x: 200,
+		y: 200,
+	};
+	for (let viewid of viewids)
+	{
+		app.view.positions[viewid] = initialview;
+	}
 }
 
 function init_db()
