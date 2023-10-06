@@ -80,6 +80,11 @@ div#selection_box
 	z-index: 1000;
 }
 
+input#area_inside_selector
+{
+	margin-left: 0px;
+}
+
 div#table_view table,
 div#statistics_view table
 {
