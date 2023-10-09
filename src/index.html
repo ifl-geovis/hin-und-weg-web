@@ -77,6 +77,12 @@
 			<br />
 			<input type="checkbox" id="area_inside_selector" class="selector" name="area_inside" value="area_inside" onchange="area_inside_changed(event)" disabled checked>
 			<label for="area_inside_selector"> Umzüge innerhalb</label><br />
+			<div id="years_selection">
+				<hr />
+				<label for="year_selector">Jahre:</label><br />
+				<select name="years" id="year_selector" class="selector" size="5" oninput="year_selected(event)" multiple>
+				</select>
+			</div>
 			<div id="legend">
 				<hr />
 				<span>Legende:</span><br />

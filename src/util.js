@@ -52,10 +52,22 @@ function add_select_options(select, list, mapping)
 
 function remove_select_options(select)
 {
-	while (select.lastElementChild.value)
+	while (select.lastElementChild && select.lastElementChild.value)
 	{
 		//console.log(select.lastElementChild.value);
 		select.lastElementChild.remove();
+	}
+}
+
+function add_select_options_year(select, list)
+{
+	for (let year of list)
+	{
+		let option = document.createElement("option");
+		option.value = "" + year;
+		option.text = "Jahr: " + year;
+		option.classList.add("year_option");
+		select.add(option);
 	}
 }
 

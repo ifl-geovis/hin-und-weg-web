@@ -234,3 +234,14 @@ div#legend
 {
 	display: none;
 }
+
+div#years_selection
+{
+	display: none;
+}
+
+option.year_option
+{
+	margin-left: 5px;
+	margin-right: 15px;
+}

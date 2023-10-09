@@ -121,6 +121,19 @@ function renew_area_selection()
 	}
 }
 
+function renew_year_selection()
+{
+	let section = document.getElementById("years_selection");
+	section.style.display = "none";
+	let selection = document.getElementById("year_selector");
+	remove_select_options(selection);
+	if (app.selection.category.years)
+	{
+		add_select_options_year(selection, app.selection.category.years);
+		if (app.selection.category.years.length > 0) section.style.display = "block";
+	}
+}
+
 function process_selections()
 {
 	recalculate_data();

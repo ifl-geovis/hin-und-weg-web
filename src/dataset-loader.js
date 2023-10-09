@@ -160,5 +160,6 @@ function load_migration_csv(results, file)
 			}
 		}
 	}
+	renew_year_selection();
 	app.status.migrations_loads--;
 }
