@@ -11,10 +11,26 @@
 function init()
 {
 	console.log("initialize!");
+	init_selections();
 	init_map();
 	init_view();
 	init_db();
 	load_url("data/data.json", null, init_datalist);
+}
+
+function init_selections()
+{
+	let themes = document.getElementById("theme_selector");
+	themes.disabled = true;
+	let areas = document.getElementById("area_selector");
+	areas.disabled = true;
+	let area_inside = document.getElementById("area_inside_selector");
+	area_inside.disabled = true;
+	area_inside.checked = true;
+	let category = document.getElementById("category_selector");
+	category.disabled = true;
+	let load_dataset = document.getElementById("load_dataset_button");
+	load_dataset.disabled = true;
 }
 
 function init_view()

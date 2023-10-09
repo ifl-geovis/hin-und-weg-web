@@ -66,6 +66,7 @@ function add_select_options_year(select, list)
 		let option = document.createElement("option");
 		option.value = "" + year;
 		option.text = "Jahr: " + year;
+		option.selected = true;
 		option.classList.add("year_option");
 		select.add(option);
 	}
