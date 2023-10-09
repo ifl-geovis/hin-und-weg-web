@@ -116,15 +116,15 @@ function show_info_popup(event)
 	}
 	feature_info_popup.innerHTML = info_text;
 	feature_info_popup.style.display = "block";
-	feature_info_popup.style.left = event.originalEvent.layerX + "px";
-	feature_info_popup.style.top = event.originalEvent.layerY + "px";
+	feature_info_popup.style.left = event.originalEvent.clientX + "px";
+	feature_info_popup.style.top = event.originalEvent.clientY + "px";
 }
 
 function move_feature_popup(event)
 {
 	let feature_info_popup = document.getElementById("feature_info_popup");
-	feature_info_popup.style.left = (event.originalEvent.layerX -10) + "px";
-	feature_info_popup.style.top = (event.originalEvent.layerY + 20) + "px";
+	feature_info_popup.style.left = (event.originalEvent.clientX -10) + "px";
+	feature_info_popup.style.top = (event.originalEvent.clientY + 20) + "px";
 }
 
 function reset_highlight_feature(event)

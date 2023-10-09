@@ -231,14 +231,14 @@ function close_view(event, viewid)
 
 function move_start(event, viewid)
 {
-	app.status.dragstart_x = event.screenX;
-	app.status.dragstart_y = event.screenY;
+	app.status.dragstart_x = event.clientX;
+	app.status.dragstart_y = event.clientY;
 }
 
 function move_stop(event, viewid)
 {
-	app.view.positions[viewid].x += event.screenX - app.status.dragstart_x;
-	app.view.positions[viewid].y += event.screenY - app.status.dragstart_y;
+	app.view.positions[viewid].x += event.clientX - app.status.dragstart_x;
+	app.view.positions[viewid].y += event.clientY - app.status.dragstart_y;
 	let view = document.getElementById(viewid);
 	view.style.left = app.view.positions[viewid].x + "px";
 	view.style.top = app.view.positions[viewid].y + "px";
