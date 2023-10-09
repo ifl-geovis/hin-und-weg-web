@@ -185,6 +185,7 @@ function list_selection_for_sql(additionals)
 	let list = [];
 	if (additionals) list = additionals;
 	if (!app.selection.area_inside) list.push("fromid <> toid");
+	if (app.selection.years && (app.selection.years.length > 0)) list.push("year IN ('" + app.selection.years.join("', '") + "')");
 	return list;
 }
 
