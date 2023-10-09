@@ -108,6 +108,14 @@ function area_inside_changed(event)
 	process_selections();
 }
 
+function year_selected(event)
+{
+	//console.log("year_selected:", event.target.selectedOptions);
+	app.selection.years = [];
+	for (let option of event.target.selectedOptions) app.selection.years.push(option.value);
+	process_selections();
+}
+
 function renew_area_selection()
 {
 	let selection = document.getElementById("area_selector");
@@ -132,6 +140,7 @@ function renew_year_selection()
 		add_select_options_year(selection, app.selection.category.years);
 		if (app.selection.category.years.length > 0) section.style.display = "block";
 	}
+	app.selection.years = app.selection.category.years;
 }
 
 function process_selections()
