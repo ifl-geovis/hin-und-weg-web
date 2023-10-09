@@ -1,7 +1,14 @@
+@font-face
+{
+	font-family: opensans;
+	src: url("lib/OpenSans-Regular.ttf") format("truetype");
+}
+
 html, body
 {
 	height: 100%;
 	margin: 0px;
+	font-family: opensans, sans-serif;
 }
 
 div#leafletmap
@@ -39,13 +46,11 @@ h1
 	margin-right: 10px;
 	margin-top: 5px;
 	margin-bottom: 5px;
-	font-family: sans-serif;
 }
 
 h2
 {
 	margin-top: 0px;
-	font-family: sans-serif;
 }
 
 div#feature_info_popup
@@ -223,7 +228,6 @@ div.title_bar
 	height: 20px;
 	text-align: center;
 	font-weight: bold;
-	font-family: sans-serif;
 }
 
 div#legend
