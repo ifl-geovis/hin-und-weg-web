@@ -20,12 +20,9 @@ function init()
 
 function init_selections()
 {
-	let themes = document.getElementById("theme_selector");
-	themes.disabled = true;
-	let areas = document.getElementById("area_selector");
-	areas.disabled = true;
+	let selectors = document.getElementsByClassName("selector");
+	for (let selector of selectors) selector.disabled = true;
 	let area_inside = document.getElementById("area_inside_selector");
-	area_inside.disabled = true;
 	area_inside.checked = true;
 	let category = document.getElementById("category_selector");
 	category.disabled = true;
