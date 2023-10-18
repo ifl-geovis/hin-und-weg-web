@@ -22,6 +22,8 @@ function init_selections()
 {
 	let selectors = document.getElementsByClassName("selector");
 	for (let selector of selectors) selector.disabled = true;
+	let filters = document.getElementsByClassName("filter");
+	for (let filter of filters) filter.disabled = true;
 	let area_inside = document.getElementById("area_inside_selector");
 	area_inside.checked = true;
 	let category = document.getElementById("category_selector");
