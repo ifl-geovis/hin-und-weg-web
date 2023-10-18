@@ -146,8 +146,19 @@ function renew_year_selection()
 function renew_filters()
 {
 	if (!app.data.processed) return;
+	if (!app.data.geostats) return;
 	let filters = document.getElementsByClassName("filter");
 	for (let filter of filters) filter.disabled = false;
+	const min = app.data.geostats.min();
+	const max = app.data.geostats.max();
+	let filter_min = document.getElementById("filter_min");
+	filter_min.value = min;
+	filter_min.min = min;
+	filter_min.max = max;
+	let filter_max = document.getElementById("filter_max");
+	filter_max.value = max;
+	filter_max.min = min;
+	filter_max.max = max;
 }
 
 function process_selections()
