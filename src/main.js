@@ -83,8 +83,8 @@ function show_viewcomponent(event, viewid)
 	console.log("show_viewcomponent", viewid);
 	process_selections();
 	app.status.modal_dialog = true;
-	let table_view = document.getElementById(viewid);
-	table_view.style.display = "block";
+	let viewcomponent = document.getElementById(viewid);
+	viewcomponent.style.display = "block";
 }
 
 function theme_selected(event)
