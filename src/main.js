@@ -202,6 +202,7 @@ function recalculate_data()
 	else if (app.selection.theme === 'nach') recalculate_data_nach();
 	else if (app.selection.theme === 'saldi') recalculate_data_saldi();
 	recalculate_classification();
+	post_process();
 }
 
 function create_where_clause(elements)
@@ -258,6 +259,33 @@ function recalculate_data_saldi()
 		row.fromname = app.data.featurename_mapping[row.fromid];
 		let negative = alasql("SELECT sum(migrations) AS migrations from migrations " + where_clause + " GROUP BY toid", [row.toid, row.fromid])[0];
 		row.migrations -= negative.migrations;
+	}
+}
+
+function post_process()
+{
+	if (!app.status.filter_changed)
+	{
+		app.selection.filter.min = app.data.geostats.min();
+		app.selection.filter.max = app.data.geostats.max();
+	}
+	let new_data = [];
+	if (app.selection.filter.min && (app.selection.filter.min != ""))
+	{
+		for (let row of app.data.processed)
+		{
+			if (row.migrations >= app.selection.filter.min) new_data.push(row);
+		}
+		app.data.processed = new_data;
+	}
+	new_data = [];
+	if (app.selection.filter.max && (app.selection.filter.max != ""))
+	{
+		for (let row of app.data.processed)
+		{
+			if (row.migrations <= app.selection.filter.max) new_data.push(row);
+		}
+		app.data.processed = new_data;
 	}
 }
 
