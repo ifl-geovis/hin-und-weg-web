@@ -142,5 +142,5 @@ function select_feature(event)
 	app.selection.area_id = feature_id;
 	let area_selector = document.getElementById("area_selector");
 	area_selector.value = feature_id;
-	process_selections();
+	process_selections(true);
 }

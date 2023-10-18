@@ -37,7 +37,6 @@ let app =
 		modal_dialog: true,
 		dragstart_x: 0,
 		dragstart_y: 0,
-		filter_changed: false,
 	},
 	configuration:
 	{
@@ -87,7 +86,7 @@ function show_viewcomponent(event, viewid)
 {
 	if (app.status.modal_dialog) return;
 	console.log("show_viewcomponent", viewid);
-	process_selections();
+	process_selections(false);
 	app.status.modal_dialog = true;
 	let viewcomponent = document.getElementById(viewid);
 	viewcomponent.style.display = "block";
@@ -97,21 +96,21 @@ function theme_selected(event)
 {
 	//console.log("theme_selected:", event.target.value);
 	app.selection.theme = event.target.value;
-	process_selections();
+	process_selections(true);
 }
 
 function area_selected(event)
 {
 	//console.log("area_selected:", event.target.value);
 	app.selection.area_id = event.target.value;
-	process_selections();
+	process_selections(true);
 }
 
 function area_inside_changed(event)
 {
 	//console.log("area_inside_changed:", event.target.checked);
 	app.selection.area_inside = event.target.checked;
-	process_selections();
+	process_selections(true);
 }
 
 function year_selected(event)
@@ -119,7 +118,7 @@ function year_selected(event)
 	//console.log("year_selected:", event.target.selectedOptions);
 	app.selection.years = [];
 	for (let option of event.target.selectedOptions) app.selection.years.push(option.value);
-	process_selections();
+	process_selections(true);
 }
 
 function filter_changed(event)
@@ -128,8 +127,7 @@ function filter_changed(event)
 	let filter_max = document.getElementById("filter_max");
 	app.selection.filter.min = filter_min.value;
 	app.selection.filter.max = filter_max.value;
-	app.status.filter_changed = true;
-	process_selections();
+	process_selections(false);
 }
 
 function renew_area_selection()
@@ -159,7 +157,7 @@ function renew_year_selection()
 	app.selection.years = app.selection.category.years;
 }
 
-function renew_filters()
+function renew_filters(reset_filters)
 {
 	if (!app.data.processed) return;
 	if (!app.data.geostats) return;
@@ -167,7 +165,7 @@ function renew_filters()
 	for (let filter of filters) filter.disabled = false;
 	const min = app.data.geostats.min();
 	const max = app.data.geostats.max();
-	if (!app.status.filter_changed)
+	if (reset_filters)
 	{
 		let filter_min = document.getElementById("filter_min");
 		filter_min.value = min;
@@ -181,19 +179,19 @@ function renew_filters()
 	app.status.filter_changed = false;
 }
 
-function process_selections()
+function process_selections(reset_filters)
 {
-	recalculate_data();
+	recalculate_data(reset_filters);
 	if (app.map.datalayer) app.map.datalayer.setStyle(map_style);
 	if (app.map.selectionlayer) app.map.selectionlayer.setStyle(map_style_selected);
-	renew_filters();
+	renew_filters(reset_filters);
 	refresh_table_view();
 	refresh_statistics_view();
 	refresh_barchart_view();
 	refresh_legend();
 }
 
-function recalculate_data()
+function recalculate_data(reset_filters)
 {
 	app.data.processed = null;
 	if (!app.selection.area_id) return;
@@ -202,7 +200,7 @@ function recalculate_data()
 	else if (app.selection.theme === 'nach') recalculate_data_nach();
 	else if (app.selection.theme === 'saldi') recalculate_data_saldi();
 	recalculate_classification();
-	post_process();
+	post_process(reset_filters);
 }
 
 function create_where_clause(elements)
@@ -262,13 +260,9 @@ function recalculate_data_saldi()
 	}
 }
 
-function post_process()
+function post_process(reset_filters)
 {
-	if (!app.status.filter_changed)
-	{
-		app.selection.filter.min = app.data.geostats.min();
-		app.selection.filter.max = app.data.geostats.max();
-	}
+	if (reset_filters) return;
 	let new_data = [];
 	if (app.selection.filter.min && (app.selection.filter.min != ""))
 	{
