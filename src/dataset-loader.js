@@ -162,4 +162,10 @@ function load_migration_csv(results, file)
 	}
 	renew_year_selection();
 	app.status.migrations_loads--;
+	if (app.status.migrations_loads === 0) load_completed();
+}
+
+function load_completed()
+{
+	//console.log('dataset_load completed');
 }
