@@ -143,11 +143,19 @@ function renew_year_selection()
 	app.selection.years = app.selection.category.years;
 }
 
+function renew_filters()
+{
+	if (!app.data.processed) return;
+	let filters = document.getElementsByClassName("filter");
+	for (let filter of filters) filter.disabled = false;
+}
+
 function process_selections()
 {
 	recalculate_data();
 	if (app.map.datalayer) app.map.datalayer.setStyle(map_style);
 	if (app.map.selectionlayer) app.map.selectionlayer.setStyle(map_style_selected);
+	renew_filters();
 	refresh_table_view();
 	refresh_statistics_view();
 	refresh_barchart_view();
