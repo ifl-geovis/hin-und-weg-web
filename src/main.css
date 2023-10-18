@@ -91,6 +91,7 @@ div#selection_box
 	top: 85px;
 	left: -1px;
 	padding: 5px;
+	font-size: smaller;
 	border-style: solid;
 	border-color: lightgray;
 	border-width: 1px;
