@@ -45,6 +45,9 @@
 			<h2 class="title_bar" draggable="true" ondragstart="move_start(event, 'datasetloader_dialog')" ondragend="move_stop(event, 'datasetloader_dialog')">
 				Datensatz einladen
 			</h2>
+			<div id="datasetloader_close_button" class="close_button" onclick="close_view(event, 'datasetloader_dialog')">
+				<img src="img/x-square.svg" width="100%" height="100%" />
+			</div>
 			<div id="datasetloader_content">
 				<p>Bitte laden sie den gewünschten Datensatz</p>
 				<label for="dataset_selector">Datensatz:</label>
