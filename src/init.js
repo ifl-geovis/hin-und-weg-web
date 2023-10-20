@@ -44,6 +44,11 @@ function init_view()
 		};
 		app.view.positions[viewcomponent.id] = initialview;
 	}
+	app.view.positions.legend_view =
+	{
+		x: 10,
+		y: 30,
+	};
 }
 
 function init_db()

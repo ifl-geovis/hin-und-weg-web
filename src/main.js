@@ -37,6 +37,8 @@ let app =
 		modal_dialog: true,
 		dragstart_x: 0,
 		dragstart_y: 0,
+		dragstart_x_legend: 0,
+		dragstart_y_legend: 0,
 	},
 	configuration:
 	{
@@ -331,4 +333,19 @@ function move_stop(event, viewid)
 	let view = document.getElementById(viewid);
 	view.style.left = app.view.positions[viewid].x + "px";
 	view.style.top = app.view.positions[viewid].y + "px";
+}
+
+function move_start_legend(event, viewid)
+{
+	app.status.dragstart_x_legend = event.clientX;
+	app.status.dragstart_y_legend = event.clientY;
+}
+
+function move_stop_legend(event, viewid)
+{
+	app.view.positions[viewid].x -= event.clientX - app.status.dragstart_x_legend;
+	app.view.positions[viewid].y -= event.clientY - app.status.dragstart_y_legend;
+	let view = document.getElementById(viewid);
+	view.style.right = app.view.positions[viewid].x + "px";
+	view.style.bottom = app.view.positions[viewid].y + "px";
 }

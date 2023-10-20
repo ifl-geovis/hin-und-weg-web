@@ -205,6 +205,21 @@ div#barchart_button
 	top: 200px;
 }
 
+div#legend_view
+{
+	display: none;
+	position: fixed;
+	right: 10px;
+	bottom: 30px;
+	min-width: 100px;
+	min-height: 40px;
+	background-color: seashell;
+	border-style: solid;
+	border-width: 3px;
+	padding: 0px;
+	z-index: 1000;
+}
+
 div.viewcomponent
 {
 	display: none;
@@ -220,6 +235,11 @@ div.viewcomponent
 	border-width: 3px;
 	padding: 0px;
 	z-index: 1000;
+}
+
+div#legend_content
+{
+	margin-left: 0px;
 }
 
 div.view_content
