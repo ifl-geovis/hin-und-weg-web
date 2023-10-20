@@ -93,13 +93,13 @@ div#datasetloader_content label
 {
 	display: inline-block;
 	min-width: 50px;
-	margin-bottom: 5px;
+	margin-bottom: 10px;
 }
 
 div#datasetloader_content select
 {
 	position: absolute;
-	left: 8em;
+	left: 9em;
 	width: 25em;
 }
 
@@ -209,7 +209,7 @@ div#legend_view
 {
 	display: none;
 	position: fixed;
-	right: 10px;
+	right: 50px;
 	bottom: 30px;
 	min-width: 100px;
 	min-height: 40px;

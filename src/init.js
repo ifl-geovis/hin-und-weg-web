@@ -46,7 +46,7 @@ function init_view()
 	}
 	app.view.positions.legend_view =
 	{
-		x: 10,
+		x: 50,
 		y: 30,
 	};
 }
