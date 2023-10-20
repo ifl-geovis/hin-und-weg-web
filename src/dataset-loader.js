@@ -168,4 +168,7 @@ function load_completed()
 	//console.log('dataset_load completed');
 	let selectors = document.getElementsByClassName("selector");
 	for (let selector of selectors) selector.disabled = false;
+	let dataset_title = document.getElementById("dataset_title");
+	if (app.selection.dataset.name) dataset_title.innerHTML = app.selection.dataset.name;
+	if (app.selection.dataset.title) dataset_title.innerHTML = app.selection.dataset.title;
 }

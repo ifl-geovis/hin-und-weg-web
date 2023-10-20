@@ -55,6 +55,14 @@ h1
 	bottom: 6px;
 }
 
+h3
+{
+	margin: 0px;
+	position: relative;
+	top: -5px;
+	font-weight: normal;
+}
+
 div#feature_info_popup
 {
 	display: none;
