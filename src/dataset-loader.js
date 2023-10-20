@@ -171,4 +171,7 @@ function load_completed()
 	let dataset_title = document.getElementById("dataset_title");
 	if (app.selection.dataset.name) dataset_title.innerHTML = app.selection.dataset.name;
 	if (app.selection.dataset.title) dataset_title.innerHTML = app.selection.dataset.title;
+	let year_selector = document.getElementById("year_selector");
+	year_selector.size = 10;
+	if (app.selection.years && (app.selection.years.length > 0) && (app.selection.years.length < 10)) year_selector.size = app.selection.years.length;
 }
