@@ -317,12 +317,14 @@ function close_view(event, viewid)
 
 function move_start(event, viewid)
 {
+	//console.log("move_start (" + viewid + "):", event);
 	app.status.dragstart_x = event.clientX;
 	app.status.dragstart_y = event.clientY;
 }
 
 function move_stop(event, viewid)
 {
+	//console.log("move_stop (" + viewid + "):", event);
 	app.view.positions[viewid].x += event.clientX - app.status.dragstart_x;
 	app.view.positions[viewid].y += event.clientY - app.status.dragstart_y;
 	let view = document.getElementById(viewid);
