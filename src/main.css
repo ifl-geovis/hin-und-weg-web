@@ -11,6 +11,11 @@ html, body
 	font-family: opensans, sans-serif;
 }
 
+body
+{
+	font-size: 75%;
+}
+
 div#leafletmap
 {
 	width: 100%;
@@ -28,7 +33,10 @@ div#header
 	border-color: lightgray;
 	border-width: 1px;
 	border-radius: 10px;
-	padding: 0px;
+	padding-top: 5px;
+	padding-left: 5px;
+	padding-right: 5px;
+	padding-bottom: 0px;
 	margin: 0px;
 	background-color: #fff5eecc;
 	z-index: 1000;
@@ -42,10 +50,9 @@ span#versionsub
 
 h1
 {
-	margin-left: 10px;
-	margin-right: 10px;
-	margin-top: 5px;
-	margin-bottom: 5px;
+	display: inline;
+	position: relative;
+	bottom: 6px;
 }
 
 h2
@@ -91,7 +98,6 @@ div#selection_box
 	top: 85px;
 	left: -1px;
 	padding: 5px;
-	font-size: smaller;
 	border-style: solid;
 	border-color: lightgray;
 	border-width: 1px;
