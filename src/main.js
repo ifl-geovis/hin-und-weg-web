@@ -196,6 +196,7 @@ function process_selections(reset_filters)
 function recalculate_data(reset_filters)
 {
 	app.data.processed = null;
+	app.data.geostats = null;
 	if (!app.selection.area_id) return;
 	//console.log("theme in recalculate_data:", app.selection.theme);
 	if (app.selection.theme === 'von') recalculate_data_von();
