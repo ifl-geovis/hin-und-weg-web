@@ -109,6 +109,11 @@ div#datasetloader_content select
 	width: 25em;
 }
 
+div#datasetloader_close_button
+{
+	display: none;
+}
+
 div#selection_box
 {
 	display: block;

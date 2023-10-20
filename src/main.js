@@ -80,6 +80,8 @@ function dataset_load(event)
 	app.status.modal_dialog = true;
 	let dataset_dialog = document.getElementById("datasetloader_dialog");
 	dataset_dialog.style.display = "block";
+	let datasetloader_close_button = document.getElementById("datasetloader_close_button");
+	datasetloader_close_button.style.display = "block";
 }
 
 function show_viewcomponent(event, viewid)
