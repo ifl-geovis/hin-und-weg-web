@@ -1,14 +1,8 @@
-@font-face
-{
-	font-family: opensans;
-	src: url("lib/OpenSans-Regular.ttf") format("truetype");
-}
-
 html, body
 {
 	height: 100%;
 	margin: 0px;
-	font-family: opensans, sans-serif;
+	font-family: sans-serif;
 }
 
 body
