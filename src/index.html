@@ -99,11 +99,14 @@
 				<label for="filter_max">max:</label><br />
 				<input name="filter_max" id="filter_max" class="filter" type="number" value="" oninput="filter_changed(event)" disabled /><br />
 			</div>
-			<div id="legend">
-				<hr />
-				<span>Legende:</span><br />
-				<div id="legend_content">
-				</div>
+		</div>
+
+		<!-- legend view -->
+		<div id="legend_view" class="viewcomponent">
+			<h2 class="title_bar" draggable="true" ondragstart="move_start(event, 'legend_view')" ondragend="move_stop(event, 'legend_view')">
+				Legende
+			</h2>
+			<div id="legend_content" class="view_content">
 			</div>
 		</div>
 
