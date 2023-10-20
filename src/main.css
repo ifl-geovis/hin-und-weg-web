@@ -73,16 +73,32 @@ div#feature_info_popup
 div#datasetloader_dialog
 {
 	display: block;
-	position: fixed;
-	top: 200px;
-	left: 200px;
-	margin-top: 0px;
-	margin-left: 15%;
 	min-width: 500px;
-	background-color: seashell;
-	border-style: solid;
-	border-width: 3px;
-	z-index: 1000;
+}
+
+div#datasetloader_content
+{
+	padding: 5px;
+}
+
+div#datasetloader_content p
+{
+	margin-top: 0px;
+	margin-bottom: 3px;
+}
+
+div#datasetloader_content label
+{
+	display: inline-block;
+	min-width: 50px;
+	margin-bottom: 5px;
+}
+
+div#datasetloader_content select
+{
+	position: absolute;
+	left: 8em;
+	width: 25em;
 }
 
 div#selection_box

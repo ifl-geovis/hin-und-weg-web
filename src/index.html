@@ -44,18 +44,20 @@
 			<h2 class="title_bar" draggable="true" ondragstart="move_start(event, 'datasetloader_dialog')" ondragend="move_stop(event, 'datasetloader_dialog')">
 				Datensatz einladen
 			</h2>
-			<p>Bitte laden sie den gewünschten Datensatz</p>
-			<label for="dataset_selector">Datensatz:</label>
-			<select name="dataset" id="dataset_selector" oninput="dataset_selected(event)">
-				<option value="">-- Bitte wählen sie einen Datensatz aus --</option>
-			</select>
-			<br />
-			<label for="category_selector">Datenkategorie:</label>
-			<select name="category" id="category_selector" oninput="category_selected(event)" disabled>
-				<option value="">-- Bitte wählen sie eine Datenkategorie aus --</option>
-			</select>
-			<br />
-			<button name="load_dataset" id="load_dataset_button" onclick="load_dataset(event)" disabled>Daten einladen</button>
+			<div id="datasetloader_content">
+				<p>Bitte laden sie den gewünschten Datensatz</p>
+				<label for="dataset_selector">Datensatz:</label>
+				<select name="dataset" id="dataset_selector" oninput="dataset_selected(event)">
+					<option value="">-- Bitte wählen sie einen Datensatz aus --</option>
+				</select>
+				<br />
+				<label for="category_selector">Datenkategorie:</label>
+				<select name="category" id="category_selector" oninput="category_selected(event)" disabled>
+					<option value="">-- Bitte wählen sie eine Datenkategorie aus --</option>
+				</select>
+				<br />
+				<button name="load_dataset" id="load_dataset_button" onclick="load_dataset(event)" disabled>Daten einladen</button>
+			</div>
 		</div>
 
 		<!-- infos&selections -->
