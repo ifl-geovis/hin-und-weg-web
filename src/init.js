@@ -34,15 +34,15 @@ function init_selections()
 
 function init_view()
 {
-	const viewids = ["datasetloader_dialog", "table_view", "statistics_view", "barchart_view"];
-	for (let viewid of viewids)
+	let viewcomponents = document.getElementsByClassName("viewcomponent");
+	for (let viewcomponent of viewcomponents)
 	{
 		let initialview =
 		{
 			x: 200,
 			y: 200,
 		};
-		app.view.positions[viewid] = initialview;
+		app.view.positions[viewcomponent.id] = initialview;
 	}
 }
 
