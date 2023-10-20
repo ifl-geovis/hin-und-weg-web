@@ -34,7 +34,7 @@ function init_selections()
 
 function init_view()
 {
-	const viewids = ["table_view", "statistics_view", "barchart_view"];
+	const viewids = ["datasetloader_dialog", "table_view", "statistics_view", "barchart_view"];
 	const initialview =
 	{
 		x: 200,
