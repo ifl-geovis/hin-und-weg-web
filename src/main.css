@@ -27,7 +27,7 @@ div#header
 {
 	display: block;
 	position: fixed;
-	top: 15px;
+	top: 10px;
 	left: 50px;
 	border-style: solid;
 	border-color: lightgray;
