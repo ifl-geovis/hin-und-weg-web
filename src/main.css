@@ -290,3 +290,25 @@ option.year_option
 	padding-left: 5px;
 	padding-right: 15px;
 }
+
+div#credits
+{
+	display: block;
+	position: fixed;
+	left: -1px;
+	bottom: -1px;
+	border-style: solid;
+	border-color: lightgray;
+	border-width: 1px;
+	border-top-right-radius: 5px;
+	padding: 5px;
+	margin: 0px;
+	background-color: #fff5eecc;
+	z-index: 1000;
+}
+
+div#credits img
+{
+	float: left;
+	padding-right: 5px;
+}
