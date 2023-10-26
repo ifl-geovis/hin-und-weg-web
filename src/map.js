@@ -9,6 +9,14 @@ function init_map()
 		attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 	};
 	L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', mapconfig).addTo(app.map.map);
+
+	const swoopy = L.swoopyArrow([52.5, 13.4], [51.20, 12.22],
+		{
+			color: "#cc3333",
+			weight: 10,
+			arrowFilled: false,
+			hideArrowHead: true,
+		}).addTo(app.map.map);
 }
 
 function map_style(feature)
