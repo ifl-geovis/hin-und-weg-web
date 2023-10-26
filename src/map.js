@@ -9,14 +9,34 @@ function init_map()
 		attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 	};
 	L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', mapconfig).addTo(app.map.map);
+}
 
+function refresh_swoopy_arrows()
+{
+	//console.log("refresh_swoopy_arrows");
+	remove_swoopy_arrows();
+	if (!app.selection.swoopy_arrows) return;
 	const swoopy = L.swoopyArrow([52.5, 13.4], [51.20, 12.22],
 		{
 			color: "#cc3333",
 			weight: 10,
 			arrowFilled: false,
 			hideArrowHead: true,
-		}).addTo(app.map.map);
+		});
+	app.view.swoopy_arrows.push(swoopy);
+	show_swoopy_arrows();
+}
+
+function remove_swoopy_arrows()
+{
+	for (let arrow of app.view.swoopy_arrows) arrow.removeFrom(app.map.map);
+	app.view.swoopy_arrows = [];
+}
+
+function show_swoopy_arrows()
+{
+	if (!app.selection.swoopy_arrows) return;
+	for (let arrow of app.view.swoopy_arrows) arrow.addTo(app.map.map);
 }
 
 function map_style(feature)

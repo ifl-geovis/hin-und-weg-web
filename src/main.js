@@ -57,6 +57,7 @@ let app =
 		category_id: null,
 		category: null,
 		theme: 'von',
+		swoopy_arrows: false,
 		area_id: null,
 		area_inside: true,
 		filter:
@@ -70,6 +71,7 @@ let app =
 		positions:
 		{
 		},
+		swoopy_arrows: [],
 	},
 	dataset_list: [],
 	datasets: {},
@@ -101,6 +103,13 @@ function theme_selected(event)
 	//console.log("theme_selected:", event.target.value);
 	app.selection.theme = event.target.value;
 	process_selections(true);
+}
+
+function swoopy_arrows_changed(event)
+{
+	//console.log("swoopy_arrows_changed:", event.target.checked);
+	app.selection.swoopy_arrows = event.target.checked;
+	process_selections(false);
 }
 
 function area_selected(event)
@@ -188,6 +197,7 @@ function process_selections(reset_filters)
 	recalculate_data(reset_filters);
 	if (app.map.datalayer) app.map.datalayer.setStyle(map_style);
 	if (app.map.selectionlayer) app.map.selectionlayer.setStyle(map_style_selected);
+	refresh_swoopy_arrows();
 	renew_filters(reset_filters);
 	refresh_table_view();
 	refresh_statistics_view();
