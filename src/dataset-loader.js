@@ -144,7 +144,7 @@ function create_centroid_mapping()
 	{
 		let id = feature.properties[idprop];
 		let centroid = turf.centerOfMass(feature);
-		if (centroid && centroid.geometry && centroid.geometry.coordinates) app.data.centroid_mapping[id] = centroid.geometry.coordinates;
+		if (centroid && centroid.geometry && centroid.geometry.coordinates) app.data.centroid_mapping[id] = [centroid.geometry.coordinates[1], centroid.geometry.coordinates[0]];
 	}
 }
 

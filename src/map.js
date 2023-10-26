@@ -13,17 +13,10 @@ function init_map()
 
 function refresh_swoopy_arrows()
 {
-	//console.log("refresh_swoopy_arrows");
+	console.log("refresh_swoopy_arrows");
 	remove_swoopy_arrows();
 	if (!app.selection.swoopy_arrows) return;
-	const swoopy = L.swoopyArrow([52.5, 13.4], [51.20, 12.22],
-		{
-			color: "#cc3333",
-			weight: 10,
-			arrowFilled: false,
-			hideArrowHead: true,
-		});
-	app.view.swoopy_arrows.push(swoopy);
+	add_swoopy_arrows();
 	show_swoopy_arrows();
 }
 
@@ -31,6 +24,26 @@ function remove_swoopy_arrows()
 {
 	for (let arrow of app.view.swoopy_arrows) arrow.removeFrom(app.map.map);
 	app.view.swoopy_arrows = [];
+}
+
+function add_swoopy_arrows()
+{
+	if (!app.selection.swoopy_arrows) return;
+	if (!app.data.geodata) return;
+	if (!app.data.geostats) return;
+	if (!app.data.centroid_mapping) return;
+	if (!app.data.processed) return;
+	for (let dataset of app.data.processed)
+	{
+		const swoopy = L.swoopyArrow(app.data.centroid_mapping[dataset.fromid], app.data.centroid_mapping[dataset.toid],
+		{
+			color: "#cc3333",
+			weight: 10,
+			arrowFilled: false,
+			hideArrowHead: true,
+		});
+		app.view.swoopy_arrows.push(swoopy);
+	}
 }
 
 function show_swoopy_arrows()
