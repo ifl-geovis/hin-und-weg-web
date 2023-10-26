@@ -103,6 +103,7 @@ function load_geodata()
 	{
 		app.data.geodata = JSON.parse(this.responseText);
 		show_geojson_layer();
+		create_centroid_mapping();
 		create_featurename_mapping();
 		renew_area_selection();
 	}
@@ -131,6 +132,19 @@ function create_featurename_mapping()
 		let id = feature.properties[idprop];
 		let name = feature.properties[nameprop];
 		if (id && name) app.data.featurename_mapping[id] = name;
+	}
+}
+
+function create_centroid_mapping()
+{
+	app.data.centroid_mapping = {};
+	if (!app.data.geodata) return;
+	let idprop = app.selection.dataset.id_property;
+	for (let feature of app.data.geodata.features)
+	{
+		let id = feature.properties[idprop];
+		let centroid = turf.centerOfMass(feature);
+		if (centroid && centroid.geometry && centroid.geometry.coordinates) app.data.centroid_mapping[id] = centroid.geometry.coordinates;
 	}
 }
 
