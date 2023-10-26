@@ -106,6 +106,7 @@ function load_geodata()
 		create_centroid_mapping();
 		create_featurename_mapping();
 		renew_area_selection();
+		remove_swoopy_arrows();
 	}
 	for (let year of app.selection.category.years)
 	{
