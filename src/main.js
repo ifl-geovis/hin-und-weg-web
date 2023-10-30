@@ -322,7 +322,7 @@ function recalculate_classification()
 	let data = [];
 	for (let row of app.data.processed) data.push(row.migrations);
 	app.data.geostats = new geostats(data);
-	app.data.geostats.setColors(chroma.scale('RdYlBu').colors(classcount));
+	app.data.geostats.setColors(chroma.scale(select_color(app.selection.colors)).colors(classcount));
 	set_classification_algorithm(classcount);
 	for (let row of app.data.processed) row.color = get_color_for_value(row.migrations);
 }
