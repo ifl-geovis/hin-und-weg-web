@@ -187,12 +187,12 @@ div.action_button
 
 div#dataset_load_button
 {
-	top: 50px;
+	top: 40px;
 }
 
-div#table_button
+div#classification_button
 {
-	top: 100px;
+	top: 90px;
 }
 
 div#statistics_button
@@ -200,9 +200,14 @@ div#statistics_button
 	top: 150px;
 }
 
-div#barchart_button
+div#table_button
 {
 	top: 200px;
+}
+
+div#barchart_button
+{
+	top: 250px;
 }
 
 div#legend_view
