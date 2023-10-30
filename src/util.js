@@ -74,6 +74,8 @@ function add_select_options_year(select, list)
 
 function calculate_classcount(choices)
 {
+	let count = parseInt(app.selection.class_number, 10);
+	if (!isNaN(count)) return count;
 	if (!choices) return 1;
 	if (choices < 1) return 1;
 	const classcount = Math.round(Math.sqrt(choices));
