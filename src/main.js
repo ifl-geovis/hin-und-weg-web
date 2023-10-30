@@ -64,7 +64,8 @@ let app =
 		{
 			min: 0,
 			max: 0,
-		}
+		},
+		classification: 'quantile',
 	},
 	view:
 	{
@@ -141,6 +142,13 @@ function filter_changed(event)
 	app.selection.filter.min = filter_min.value;
 	app.selection.filter.max = filter_max.value;
 	process_selections(false);
+}
+
+function classification_selected(event)
+{
+	//console.log("classification_selected:", event.target.value);
+	app.selection.classification = event.target.value;
+	process_selections(true);
 }
 
 function renew_area_selection()
@@ -307,8 +315,19 @@ function recalculate_classification()
 	for (let row of app.data.processed) data.push(row.migrations);
 	app.data.geostats = new geostats(data);
 	app.data.geostats.setColors(chroma.scale('RdYlBu').colors(classcount));
-	app.data.geostats.getClassQuantile(classcount);
+	set_classification_algorithm(classcount);
 	for (let row of app.data.processed) row.color = get_color_for_value(row.migrations);
+}
+
+function set_classification_algorithm(classcount)
+{
+	if (app.selection.classification === "equidistant") app.data.geostats.getClassEqInterval(classcount);
+	else if (app.selection.classification === "stddeviation") app.data.geostats.getClassStdDeviation(classcount);
+	else if (app.selection.classification === "arithmetic_progression") app.data.geostats.getClassArithmeticProgression(classcount);
+	else if (app.selection.classification === "geometric_progression") app.data.geostats.getClassGeometricProgression(classcount);
+	else if (app.selection.classification === "quantile") app.data.geostats.getClassQuantile(classcount);
+	else if (app.selection.classification === "jenks") app.data.geostats.getClassJenks(classcount);
+	else app.data.geostats.getClassQuantile(classcount);
 }
 
 function refresh_legend()

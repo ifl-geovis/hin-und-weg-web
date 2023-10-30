@@ -160,6 +160,15 @@
 				<img src="img/x-square.svg" width="100%" height="100%" />
 			</div>
 			<div id="classification_view_data" class="view_content">
+				<label for="classification_selector">Klassifikationen:</label><br />
+				<select name="area" id="classification_selector" class="selector" oninput="classification_selected(event)">
+					<option value="equidistant">abstandsgetreu</option>
+					<option value="stddeviation">Standardabweichung</option>
+					<option value="arithmetic_progression">arithmetische Reihe</option>
+					<!-- <option value="geometric_progression">geometrische Reihe</option> -->
+					<option value="quantile" selected>Quantile</option>
+					<option value="jenks">Brüche nach Jenks</option>
+				</select>
 			</div>
 		</div>
 
