@@ -107,3 +107,9 @@ function get_feature_by_id(feature_id)
 	}
 	return null;
 }
+
+function select_color(id)
+{
+	if (id === 'yellow_red_black') return ['yellow', 'red', 'black'];
+	return id;
+}

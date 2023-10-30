@@ -121,7 +121,7 @@ function init_color_gradients()
 	{
 		const domain = 100;
 		const step = 1.0 / domain;
-		let scale = chroma.scale(gradient.id);
+		let scale = chroma.scale(select_color(gradient.id));
 		let html = '';
 		for (let i = 0; i < domain; i++)
 		{
