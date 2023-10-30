@@ -139,18 +139,6 @@
 			</div>
 		</div>
 
-		<!-- statistics view -->
-		<div id="statistics_view" class="viewcomponent">
-			<h2 class="title_bar" draggable="true" ondragstart="move_start(event, 'statistics_view')" ondragend="move_stop(event, 'statistics_view')">
-				Statistiken
-			</h2>
-			<div id="statistics_view_close_button" class="close_button" onclick="close_view(event, 'statistics_view')">
-				<img src="img/x-square.svg" width="100%" height="100%" />
-			</div>
-			<div id="statistics_view_data" class="view_content">
-			</div>
-		</div>
-
 		<!-- classification view -->
 		<div id="classification_view" class="viewcomponent">
 			<h2 class="title_bar" draggable="true" ondragstart="move_start(event, 'classification_view')" ondragend="move_stop(event, 'classification_view')">
@@ -169,6 +157,18 @@
 					<option value="quantile" selected>Quantile</option>
 					<option value="jenks">Brüche nach Jenks</option>
 				</select>
+			</div>
+		</div>
+
+		<!-- statistics view -->
+		<div id="statistics_view" class="viewcomponent">
+			<h2 class="title_bar" draggable="true" ondragstart="move_start(event, 'statistics_view')" ondragend="move_stop(event, 'statistics_view')">
+				Statistiken
+			</h2>
+			<div id="statistics_view_close_button" class="close_button" onclick="close_view(event, 'statistics_view')">
+				<img src="img/x-square.svg" width="100%" height="100%" />
+			</div>
+			<div id="statistics_view_data" class="view_content">
 			</div>
 		</div>
 
