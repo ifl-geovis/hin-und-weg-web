@@ -42,6 +42,23 @@
 			<a href="impressum.html">Impressum</a>
 		</div>
 
+		<!-- action buttons on the right -->
+		<div id="dataset_load_button" class="action_button" title="anderen Datensatz laden" onclick="dataset_load(event)">
+			<img src="img/document-download.svg" width="100%" height="100%" />
+		</div>
+		<div id="classification_button" class="action_button" title="Klassifikation und Farben einstellen" onclick="show_viewcomponent(event, 'classification_view')">
+			<img src="img/cog.svg" width="100%" height="100%" />
+		</div>
+		<div id="statistics_button" class="action_button" title="Statistiken" onclick="show_viewcomponent(event, 'statistics_view')">
+			<img src="img/calculator.svg" width="100%" height="100%" />
+		</div>
+		<div id="table_button" class="action_button" title="tabellarische Ansicht" onclick="show_viewcomponent(event, 'table_view')">
+			<img src="img/table-data.svg" width="100%" height="100%" />
+		</div>
+		<div id="barchart_button" class="action_button" title="Balkendiagramm" onclick="show_viewcomponent(event, 'barchart_view')">
+			<img src="img/chart-bar.svg" width="100%" height="100%" />
+		</div>
+
 		<!-- map -->
 		<div id="leafletmap"></div>
 
@@ -156,23 +173,6 @@
 			</div>
 			<div id="barchart_view_data" class="view_content">
 			</div>
-		</div>
-
-		<!-- action buttons on the right -->
-		<div id="dataset_load_button" class="action_button" title="anderen Datensatz laden" onclick="dataset_load(event)">
-			<img src="img/document-download.svg" width="100%" height="100%" />
-		</div>
-		<div id="classification_button" class="action_button" title="Klassifikation und Farben einstellen" onclick="show_viewcomponent(event, 'classification_view')">
-			<img src="img/cog.svg" width="100%" height="100%" />
-		</div>
-		<div id="statistics_button" class="action_button" title="Statistiken" onclick="show_viewcomponent(event, 'statistics_view')">
-			<img src="img/calculator.svg" width="100%" height="100%" />
-		</div>
-		<div id="table_button" class="action_button" title="tabellarische Ansicht" onclick="show_viewcomponent(event, 'table_view')">
-			<img src="img/table-data.svg" width="100%" height="100%" />
-		</div>
-		<div id="barchart_button" class="action_button" title="Balkendiagramm" onclick="show_viewcomponent(event, 'barchart_view')">
-			<img src="img/chart-bar.svg" width="100%" height="100%" />
 		</div>
 
 		<!-- scripting load -->
