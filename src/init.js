@@ -15,6 +15,7 @@ function init()
 	init_map();
 	init_view();
 	init_db();
+	init_color_gradients();
 	load_url("data/data.json", null, init_datalist);
 }
 
@@ -111,6 +112,23 @@ function init_datasetloader(dataset_list)
 	//console.log("selector-element:", document.getElementById("dataset_selector"));
 	let selection = document.getElementById("dataset_selector");
 	add_select_options(selection, dataset_list, app.data.dataset_mapping);
+}
+
+function init_color_gradients()
+{
+	let gradients = document.getElementsByClassName("color_gradient");
+	for (let gradient of gradients)
+	{
+		const domain = 100;
+		const step = 1.0 / domain;
+		let scale = chroma.scale(gradient.id);
+		let html = '';
+		for (let i = 0; i < domain; i++)
+		{
+			html += '<div class="gradient_color" style="background-color: ' + scale(i * step) + ';"></div>';
+		}
+		gradient.innerHTML = html;
+	}
 }
 
 function start()

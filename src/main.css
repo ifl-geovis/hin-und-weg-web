@@ -317,3 +317,17 @@ div#credits img
 	float: left;
 	padding-right: 5px;
 }
+
+div.color_gradient
+{
+	display: inline-block;
+	width: 100px;
+	height: 1em;
+}
+
+div.gradient_color
+{
+	display: inline-block;
+	width: 1px;
+	height: 1em;
+}
