@@ -66,6 +66,7 @@ let app =
 			max: 0,
 		},
 		classification: 'quantile',
+		class_number: 'automatic',
 		colors: 'RdYlBu',
 	},
 	view:
@@ -145,17 +146,24 @@ function filter_changed(event)
 	process_selections(false);
 }
 
-function colors_changed(event)
-{
-	//console.log("colors_changed:", event.target.checked);
-	app.selection.colors = event.target.value;
-	process_selections(true);
-}
-
 function classification_selected(event)
 {
 	//console.log("classification_selected:", event.target.value);
 	app.selection.classification = event.target.value;
+	process_selections(true);
+}
+
+function class_number_selected(event)
+{
+	//console.log("class_number_selected:", event.target.value);
+	app.selection.class_number = event.target.value;
+	process_selections(true);
+}
+
+function colors_changed(event)
+{
+	//console.log("colors_changed:", event.target.checked);
+	app.selection.colors = event.target.value;
 	process_selections(true);
 }
 
