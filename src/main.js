@@ -66,6 +66,7 @@ let app =
 			max: 0,
 		},
 		classification: 'quantile',
+		colors: 'RdYlBu',
 	},
 	view:
 	{
@@ -142,6 +143,13 @@ function filter_changed(event)
 	app.selection.filter.min = filter_min.value;
 	app.selection.filter.max = filter_max.value;
 	process_selections(false);
+}
+
+function colors_changed(event)
+{
+	//console.log("colors_changed:", event.target.checked);
+	app.selection.colors = event.target.value;
+	process_selections(true);
 }
 
 function classification_selected(event)
