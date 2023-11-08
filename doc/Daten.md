@@ -28,6 +28,13 @@ Im Datensatz-Verzeichnis liegt eine `info.json`, eine GeoJSON-Datei und mehrere 
 
 Die GeoJSON-Datei kann einen beliebigen Namen haben, erneut sollten aber Leer- und Sonderzeichen vermieden werden.
 
+Hat man Daten in anderen Formaten als GeoJSON, kann man den Befehl `ogr2ogr` aus GDAL benutzen, um sie in das GeoJSON-Format zu überführen. Hier ist ein Beispiel-Befehl:
+
+```
+ogr2ogr DE_Bundeslaender.geojson DE_Bundeslaender.shp -f "GeoJSON"
+```
+In diesem Beispiel wird die Shape-Datei `DE_Bundeslaender.shp` in die GeoJSON-Datei `DE_Bundeslaender.geojson` konvertiert.
+
 Die GeoJSON-Datei wird im Koordinatensysten WGS84 (EPSG:4326) erwartet. Daten die in anderen Koordinatensystemen kann man mithilfe von GDAL transformieren mit folgendem Beispiel-Befehl:
 
 ```
