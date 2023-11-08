@@ -250,7 +250,7 @@ div#legend_content
 div.view_content
 {
 	margin: 10px;
-	max-height: 750px;
+	max-height: 700px;
 	max-width: 1000px;
 	overflow: auto;
 }
