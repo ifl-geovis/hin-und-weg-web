@@ -229,7 +229,7 @@ div.viewcomponent
 {
 	display: none;
 	position: fixed;
-	top: 200px;
+	top: 100px;
 	left: 200px;
 	margin-left: 15%;
 	margin-top: 0px;
@@ -250,6 +250,9 @@ div#legend_content
 div.view_content
 {
 	margin: 10px;
+	max-height: 750px;
+	max-width: 1000px;
+	overflow: auto;
 }
 
 div.close_button

@@ -41,7 +41,7 @@ function init_view()
 		let initialview =
 		{
 			x: 200,
-			y: 200,
+			y: 100,
 		};
 		app.view.positions[viewcomponent.id] = initialview;
 	}
