@@ -11,7 +11,7 @@
 			"name": "Gesamtdaten",
 			"migrations":
 			{
-				"2000": "Landkreise_2017.csv"
+				"2017": "Landkreise_2017.csv"
 			}
 		}
 	]
