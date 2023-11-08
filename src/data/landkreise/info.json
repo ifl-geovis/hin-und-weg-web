@@ -1,0 +1,18 @@
+{
+	"name": "Landkreise",
+	"title": "Landkreisdaten mit zufällig generierten Umzugsdaten",
+	"geodata": "Landkreise.geojson",
+	"id_property": "AGS_0",
+	"name_property": "GEN",
+	"categories":
+	[
+		{
+			"id": "all",
+			"name": "Gesamtdaten",
+			"migrations":
+			{
+				"2000": "Landkreise_2017.csv"
+			}
+		}
+	]
+}
