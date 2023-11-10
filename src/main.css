@@ -334,3 +334,18 @@ div.gradient_color
 	width: 1px;
 	height: 1em;
 }
+
+div#load_indicator
+{
+	display: none;
+	position: fixed;
+	top: 100px;
+	left: 100px;
+	margin-top: 15%;
+	margin-left: 30%;
+	background-color: seashell;
+	border-style: solid;
+	border-width: 3px;
+	padding: 10px;
+	z-index: 1000;
+}
