@@ -58,7 +58,7 @@ function load_dataset(event)
 	dataset_dialog.style.display = "none";
 	console.log("app.selection.dataset_id:", app.selection.dataset_id);
 	console.log("app.selection.category_id:", app.selection.category_id);
-	show_load_indicator();
+	show_load_indicator("Daten werden geladen.");
 	alasql("DELETE FROM migrations");
 	let info = {};
 	load_url("data/" + app.selection.dataset_id + "/" + app.selection.dataset.geodata, info, load_geodata);

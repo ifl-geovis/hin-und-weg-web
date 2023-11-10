@@ -125,11 +125,13 @@ function keep_load_indicator()
 		return;
 	}
 	load_indicator.style.display = "block";
-	setTimeout(keep_load_indicator, 10000);
+	setTimeout(keep_load_indicator, 100000);
 }
 
-function show_load_indicator()
+function show_load_indicator(message)
 {
+	let load_indicator_message = document.getElementById("load_indicator_message");
+	load_indicator_message.innerHTML = message;
 	app.status.loading = true;
-	setTimeout(keep_load_indicator, 50);
+	setTimeout(keep_load_indicator, 1);
 }
