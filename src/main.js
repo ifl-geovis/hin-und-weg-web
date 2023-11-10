@@ -76,6 +76,7 @@ let app =
 		{
 		},
 		swoopy_arrows: [],
+		load_indicator_state: -1,
 	},
 	dataset_list: [],
 	datasets: {},

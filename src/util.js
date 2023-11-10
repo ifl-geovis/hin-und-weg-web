@@ -125,7 +125,20 @@ function keep_load_indicator()
 		return;
 	}
 	load_indicator.style.display = "block";
-	setTimeout(keep_load_indicator, 100000);
+	let indicators = document.getElementsByClassName("load_inidicator_block");
+	for (let i = 0; i < indicators.length; i++) highlight_load_indicator(i, indicators[i]);
+	app.view.load_indicator_state++;
+	if (app.view.load_indicator_state > 15) app.view.load_indicator_state = 0;
+	setTimeout(keep_load_indicator, 150);
+}
+
+function highlight_load_indicator(index, indicator)
+{
+	if (index === app.view.load_indicator_state) indicator.style.backgroundColor = "#000000cc";
+	else if ((index + 1) === app.view.load_indicator_state) indicator.style.backgroundColor = "#00000099";
+	else if ((index + 2) === app.view.load_indicator_state) indicator.style.backgroundColor = "#00000066";
+	else if ((index + 3) === app.view.load_indicator_state) indicator.style.backgroundColor = "#00000033";
+	else indicator.style.backgroundColor = "#00000000";
 }
 
 function show_load_indicator(message)
@@ -133,5 +146,6 @@ function show_load_indicator(message)
 	let load_indicator_message = document.getElementById("load_indicator_message");
 	load_indicator_message.innerHTML = message;
 	app.status.loading = true;
-	setTimeout(keep_load_indicator, 1);
+	app.view.load_indicator_state = -1;
+	setTimeout(keep_load_indicator, 500);
 }
