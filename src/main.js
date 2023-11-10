@@ -294,12 +294,19 @@ function recalculate_data_saldi()
 {
 	let where_clause = create_where_clause(list_selection_for_sql(["toid = ?"]));
 	app.data.processed = alasql("SELECT fromid AS id, ? AS toid, ? AS toname, fromid, sum(migrations) AS migrations from migrations " + where_clause + " GROUP BY fromid", [app.selection.area_id, app.data.featurename_mapping[app.selection.area_id], app.selection.area_id]);
+	where_clause = create_where_clause(list_selection_for_sql(["fromid = ?"]));
+	data_von = alasql("SELECT toid, sum(migrations) AS migrations from migrations " + where_clause + " GROUP BY toid", [app.selection.area_id]);
 	for (let row of app.data.processed)
 	{
-		where_clause = create_where_clause(list_selection_for_sql(["fromid = ?", "toid = ?"]));
 		row.fromname = app.data.featurename_mapping[row.fromid];
-		let negative = alasql("SELECT sum(migrations) AS migrations from migrations " + where_clause + " GROUP BY toid", [row.toid, row.fromid])[0];
-		row.migrations -= negative.migrations;
+		for (let negative of data_von)
+		{
+			if (negative.toid == row.fromid)
+			{
+				row.migrations -= negative.migrations;
+				break;
+			}
+		}
 	}
 }
 
