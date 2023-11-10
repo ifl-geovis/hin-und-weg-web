@@ -115,3 +115,21 @@ function select_color(id)
 	if (id === 'yellow_red_black') return ['yellow', 'red', 'black'];
 	return id;
 }
+
+function keep_load_indicator()
+{
+	let load_indicator = document.getElementById("load_indicator");
+	if (!app.status.loading)
+	{
+		load_indicator.style.display = "none";
+		return;
+	}
+	load_indicator.style.display = "block";
+	setTimeout(keep_load_indicator, 10000);
+}
+
+function show_load_indicator()
+{
+	app.status.loading = true;
+	setTimeout(keep_load_indicator, 50);
+}

@@ -58,6 +58,7 @@ function load_dataset(event)
 	dataset_dialog.style.display = "none";
 	console.log("app.selection.dataset_id:", app.selection.dataset_id);
 	console.log("app.selection.category_id:", app.selection.category_id);
+	show_load_indicator();
 	alasql("DELETE FROM migrations");
 	let info = {};
 	load_url("data/" + app.selection.dataset_id + "/" + app.selection.dataset.geodata, info, load_geodata);
@@ -191,4 +192,5 @@ function load_completed()
 	if (app.selection.years && (app.selection.years.length > 0) && (app.selection.years.length < 10)) year_selector.size = app.selection.years.length;
 	const legend = document.getElementById("legend_view");
 	legend.style.display = "none";
+	app.status.loading = false;
 }

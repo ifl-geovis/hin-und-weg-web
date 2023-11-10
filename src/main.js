@@ -39,6 +39,7 @@ let app =
 		dragstart_y: 0,
 		dragstart_x_legend: 0,
 		dragstart_y_legend: 0,
+		loading: false,
 	},
 	configuration:
 	{
