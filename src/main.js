@@ -313,6 +313,7 @@ function recalculate_data_saldi()
 
 function post_process(reset_filters)
 {
+	app.data.unfiltered = app.data.processed;
 	if (reset_filters) return;
 	let new_data = [];
 	if (app.selection.filter.min && (app.selection.filter.min != ""))
