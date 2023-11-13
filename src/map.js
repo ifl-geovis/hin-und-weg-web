@@ -28,6 +28,8 @@ function remove_swoopy_arrows()
 
 function add_swoopy_arrows()
 {
+	const arrow_weight_head = 1;
+	const arrow_weight_body = 3.5;
 	if (!app.selection.swoopy_arrows) return;
 	if (!app.data.geodata) return;
 	if (!app.data.geostats) return;
@@ -37,8 +39,8 @@ function add_swoopy_arrows()
 	let max = app.data.geostats.max();
 	for (let dataset of app.data.processed)
 	{
-		let weight_head = (((dataset.migrations - min) / (max - min)) * 2) + 1;
-		let weight_body = (((dataset.migrations - min) / (max - min)) * 7) + 1;
+		let weight_head = (((dataset.migrations - min) / (max - min)) * arrow_weight_head) + 1;
+		let weight_body = (((dataset.migrations - min) / (max - min)) * arrow_weight_body) + 1;
 		let color = "#3333dd";
 		let hide_arrow_head = true;
 		if (app.selection.theme === "von")
@@ -55,13 +57,13 @@ function add_swoopy_arrows()
 			to = tmp;
 			color = "#dd3333";
 			hide_arrow_head = false;
-			weight_head = (((dataset.migrations) / (min)) * 2) + 1;
-			weight_body = (((dataset.migrations) / (min)) * 7) + 1;
+			weight_head = (((dataset.migrations) / (min)) * arrow_weight_head) + 1;
+			weight_body = (((dataset.migrations) / (min)) * arrow_weight_body) + 1;
 		}
 		if ((app.selection.theme === "saldi") && (dataset.migrations >= 0))
 		{
-			weight_head = (((dataset.migrations) / (max)) * 2) + 1;
-			weight_body = (((dataset.migrations) / (max)) * 7) + 1;
+			weight_head = (((dataset.migrations) / (max)) * arrow_weight_head) + 1;
+			weight_body = (((dataset.migrations) / (max)) * arrow_weight_body) + 1;
 		}
 		const swoopy_head = L.swoopyArrow(from, to,
 		{
