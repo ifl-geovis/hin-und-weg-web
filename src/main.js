@@ -224,6 +224,7 @@ function process_selections(reset_filters)
 	recalculate_data(reset_filters);
 	if (app.map.datalayer) app.map.datalayer.setStyle(map_style);
 	if (app.map.selectionlayer) app.map.selectionlayer.setStyle(map_style_selected);
+	refresh_title_years();
 	refresh_swoopy_arrows();
 	renew_filters(reset_filters);
 	refresh_table_view();
@@ -355,6 +356,14 @@ function set_classification_algorithm(classcount)
 	else if (app.selection.classification === "quantile") app.data.geostats.getClassQuantile(classcount);
 	else if (app.selection.classification === "jenks") app.data.geostats.getClassJenks(classcount);
 	else app.data.geostats.getClassQuantile(classcount);
+}
+
+function refresh_title_years()
+{
+	let dataset_title_years = document.getElementById("dataset_title_years");
+	let years = "";
+	if (app.selection.years && (app.selection.years.length > 0)) years = " (" + app.selection.years.join(", ") + ")";
+	dataset_title_years.innerHTML = years;
 }
 
 function refresh_legend()
