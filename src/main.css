@@ -23,6 +23,7 @@ div#header
 	position: fixed;
 	top: 10px;
 	left: 50px;
+	max-width: 80%;
 	border-style: solid;
 	border-color: lightgray;
 	border-width: 1px;
