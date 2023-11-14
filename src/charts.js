@@ -6,14 +6,12 @@ function refresh_barchart_view()
 	let dataview = '';
 	if (!app.data.processed)
 	{
-		dataview = "Für die gewählte Selektion sind keine Daten verfügbar!";
+		barchart_view_data.innerHTML = "Für die gewählte Selektion sind keine Daten verfügbar!";
+		return;
 	}
-	else
-	{
-		dataview = `
-		<div>
-			Dieser Inhalt ist noch nicht implementiert.
-		</div>`;
-	}
+	dataview = `
+	<div>
+		Dieser Inhalt ist noch nicht implementiert.
+	</div>`;
 	barchart_view_data.innerHTML = dataview;
 }
