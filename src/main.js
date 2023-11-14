@@ -50,6 +50,7 @@ let app =
 		featurename_mapping: {},
 		migrations: {},
 		processed: null,
+		unfiltered: null,
 	},
 	selection:
 	{

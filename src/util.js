@@ -93,7 +93,7 @@ function get_color_for_value(value)
 function get_color_for_feature_id(feature_id)
 {
 	if (!app.data.processed) return "white";
-	for (let row of app.data.processed)
+	for (let row of app.data.unfiltered)
 	{
 		if (row.id === feature_id) return row.color;
 	}
