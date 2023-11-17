@@ -57,6 +57,7 @@ function init_view()
 function init_db()
 {
 	alasql("CREATE TABLE migrations (fromid TEXT, toid TEXT, fromname TEXT, toname TEXT, year TEXT, migrations INT)");
+	alasql("CREATE TABLE population (areaid TEXT, year TEXT, population INT)");
 }
 
 function init_datalist()

@@ -60,6 +60,7 @@ function load_dataset(event)
 	console.log("app.selection.category_id:", app.selection.category_id);
 	show_load_indicator("Daten werden geladen.");
 	alasql("DELETE FROM migrations");
+	alasql("DELETE FROM population");
 	let info = {};
 	load_url("data/" + app.selection.dataset_id + "/" + app.selection.dataset.geodata, info, load_geodata);
 	update_element_visibility();
@@ -108,6 +109,18 @@ function load_geodata()
 		create_featurename_mapping();
 		renew_area_selection();
 		remove_swoopy_arrows();
+	}
+	app.data.population = null;
+	if (app.selection.category.population)
+	{
+		app.status.migrations_loads++;
+		const popconfig =
+		{
+			complete: load_population_csv,
+			download: true,
+			skipEmptyLines: true,
+		}
+		Papa.parse("data/" + app.selection.dataset_id + "/" + app.selection.category.population, popconfig);
 	}
 	for (let year of app.selection.category.years)
 	{
@@ -176,6 +189,24 @@ function load_migration_csv(results, file)
 	}
 	renew_year_selection();
 	app.status.migrations_loads--;
+	if (app.status.migrations_loads === 0) load_completed();
+}
+
+function load_population_csv(results, file)
+{
+	app.data.population = results;
+	app.status.migrations_loads--;
+	let headers = results.data[2];
+	for (let row = 3; row < results.data.length; row++)
+	{
+		for (let col = 1; col < results.data[row].length; col++)
+		{
+			let areaid = results.data[row][0];
+			let year = headers[col];
+			let value = parseInt(results.data[row][col], 10);
+			alasql("INSERT INTO population (areaid, year, population) VALUES (?, ?, ?)", [areaid, year, value]);
+		}
+	}
 	if (app.status.migrations_loads === 0) load_completed();
 }
 
