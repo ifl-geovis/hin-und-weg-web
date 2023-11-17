@@ -9,6 +9,7 @@
 		{
 			"id": "all",
 			"name": "Gesamtdaten",
+			"population": "Bevölkerung_Bundesländer/Bevölkerung_Bundesländer_insgesamt_2000-2020.csv",
 			"migrations":
 			{
 				"2000": "Binnenwanderungen_ingesamt_2000-2020/BWinsg2000.csv",
@@ -37,6 +38,7 @@
 		{
 			"id": "female",
 			"name": "weiblich",
+			"population": "Bevölkerung_Bundesländer/Bevölkerung_Bundesländer_weiblich_2000-2020.csv",
 			"migrations":
 			{
 				"2000": "Binnenwanderungen_w_2000-2020/BWw2000.csv",
@@ -65,6 +67,7 @@
 		{
 			"id": "male",
 			"name": "männlich",
+			"population": "Bevölkerung_Bundesländer/Bevölkerung_Bundesländer_männlich_2000-2020.csv",
 			"migrations":
 			{
 				"2000": "Binnenwanderungen_m_2000-2020/BWm2000.csv",
