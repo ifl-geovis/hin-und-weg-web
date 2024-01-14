@@ -86,9 +86,9 @@
 		<!-- infos&selections -->
 		<div id="selection_box">
 			<label for="dataset_name_value">Datensatz:</label><br />
-			<input name="dataset_name_value" id="dataset_name_value" type="text" value="" disabled /><br />
+			<input name="dataset_name_value" id="dataset_name_value" type="text" value="" readonly onclick="dataset_load(event)" /><br />
 			<label for="category_name_value">Datenkategorie:</label><br />
-			<input name="category_name_value" id="category_name_value" type="text" value="" disabled /><br />
+			<input name="category_name_value" id="category_name_value" type="text" value="" readonly onclick="dataset_load(event)" /><br />
 			<hr />
 			<label for="theme_selector">Thema:</label><br />
 			<select name="theme" id="theme_selector" class="selector" oninput="theme_selected(event)" disabled>
