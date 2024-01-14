@@ -100,10 +100,11 @@ function get_color_for_feature_id(feature_id)
 	return "white";
 }
 
-function get_feature_by_id(feature_id)
+function get_feature_by_id(feature_id, filtered)
 {
-	if (!app.data.processed) return null;
-	for (let row of app.data.processed)
+	const data = (filtered) ? app.data.processed : app.data.unfiltered;
+	if (!data) return null;
+	for (let row of data)
 	{
 		if (row.id === feature_id) return row;
 	}

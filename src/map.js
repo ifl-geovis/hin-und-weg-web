@@ -180,7 +180,7 @@ function highlight_feature(event)
 function show_info_popup(event)
 {
 	const feature_id = get_feature_id(event.target.feature);
-	const feature_info = get_feature_by_id(feature_id);
+	const feature_info = get_feature_by_id(feature_id, false);
 	const feature_name = app.data.featurename_mapping[feature_id];
 	let feature_info_popup = document.getElementById("feature_info_popup");
 	let info_text = "";
