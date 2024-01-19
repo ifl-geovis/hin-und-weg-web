@@ -280,10 +280,16 @@ function list_selection_for_sql(additionals)
 	return list;
 }
 
+function get_migration_select(direction)
+{
+	if (app.selection.data_interpretation === 'migration_rate') return 'ROUND(AVG(migration_rate_' + direction + '), 3) AS migrations';
+	return 'SUM(migrations) AS migrations';
+}
+
 function recalculate_data_von()
 {
 	const where_clause = create_where_clause(list_selection_for_sql(["fromid = ?"]));
-	app.data.processed = alasql("SELECT toid AS id, ? AS fromid, ? AS fromname, toid, sum(migrations) AS migrations from migrations " + where_clause + " GROUP BY toid", [app.selection.area_id, app.data.featurename_mapping[app.selection.area_id], app.selection.area_id]);
+	app.data.processed = alasql("SELECT toid AS id, ? AS fromid, ? AS fromname, toid, " + get_migration_select('from') + " from migrations " + where_clause + " GROUP BY toid", [app.selection.area_id, app.data.featurename_mapping[app.selection.area_id], app.selection.area_id]);
 	for (let row of app.data.processed)
 	{
 		row.toname = app.data.featurename_mapping[row.toid];
@@ -293,7 +299,7 @@ function recalculate_data_von()
 function recalculate_data_nach()
 {
 	const where_clause = create_where_clause(list_selection_for_sql(["toid = ?"]));
-	app.data.processed = alasql("SELECT fromid AS id, ? AS toid, ? AS toname, fromid, sum(migrations) AS migrations from migrations " + where_clause + " GROUP BY fromid", [app.selection.area_id, app.data.featurename_mapping[app.selection.area_id], app.selection.area_id]);
+	app.data.processed = alasql("SELECT fromid AS id, ? AS toid, ? AS toname, fromid, " + get_migration_select('to') + " from migrations " + where_clause + " GROUP BY fromid", [app.selection.area_id, app.data.featurename_mapping[app.selection.area_id], app.selection.area_id]);
 	for (let row of app.data.processed)
 	{
 		row.fromname = app.data.featurename_mapping[row.fromid];
@@ -303,9 +309,9 @@ function recalculate_data_nach()
 function recalculate_data_saldi()
 {
 	let where_clause = create_where_clause(list_selection_for_sql(["toid = ?"]));
-	app.data.processed = alasql("SELECT fromid AS id, ? AS toid, ? AS toname, fromid, sum(migrations) AS migrations from migrations " + where_clause + " GROUP BY fromid", [app.selection.area_id, app.data.featurename_mapping[app.selection.area_id], app.selection.area_id]);
+	app.data.processed = alasql("SELECT fromid AS id, ? AS toid, ? AS toname, fromid, " + get_migration_select('to') + " from migrations " + where_clause + " GROUP BY fromid", [app.selection.area_id, app.data.featurename_mapping[app.selection.area_id], app.selection.area_id]);
 	where_clause = create_where_clause(list_selection_for_sql(["fromid = ?"]));
-	data_von = alasql("SELECT toid, sum(migrations) AS migrations from migrations " + where_clause + " GROUP BY toid", [app.selection.area_id]);
+	data_von = alasql("SELECT toid, " + get_migration_select('from') + " from migrations " + where_clause + " GROUP BY toid", [app.selection.area_id]);
 	for (let row of app.data.processed)
 	{
 		row.fromname = app.data.featurename_mapping[row.fromid];
@@ -314,6 +320,7 @@ function recalculate_data_saldi()
 			if (negative.toid == row.fromid)
 			{
 				row.migrations -= negative.migrations;
+				if (app.selection.data_interpretation === 'migration_rate') row.migrations = row.migrations.toFixed(3);
 				break;
 			}
 		}
