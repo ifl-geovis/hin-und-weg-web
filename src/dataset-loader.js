@@ -195,7 +195,6 @@ function load_migration_csv(results, file)
 function load_population_csv(results, file)
 {
 	app.data.population = results;
-	app.status.migrations_loads--;
 	let headers = results.data[2];
 	for (let row = 3; row < results.data.length; row++)
 	{
@@ -207,6 +206,7 @@ function load_population_csv(results, file)
 			alasql("INSERT INTO population (areaid, year, population) VALUES (?, ?, ?)", [areaid, year, value]);
 		}
 	}
+	app.status.migrations_loads--;
 	if (app.status.migrations_loads === 0) load_completed();
 }
 
@@ -218,6 +218,7 @@ function load_completed()
 	let dataset_title = document.getElementById("dataset_title");
 	if (app.selection.dataset.name) dataset_title.innerHTML = app.selection.dataset.name;
 	if (app.selection.dataset.title) dataset_title.innerHTML = app.selection.dataset.title;
+	if (app.selection.years) refresh_title_years();
 	let year_selector = document.getElementById("year_selector");
 	year_selector.size = 10;
 	if (app.selection.years && (app.selection.years.length > 0) && (app.selection.years.length < 10)) year_selector.size = app.selection.years.length;
