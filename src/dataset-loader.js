@@ -227,6 +227,8 @@ function load_completed()
 	if (app.data.population) calculate_migration_rates();
 	let data_interpretation = document.getElementById("data_interpretation");
 	data_interpretation.style.display = (app.data.population) ? "block" : "none";
+	let absolute_selector = document.getElementById("absolute_selector");
+	absolute_selector.checked = true;
 	app.selection.data_interpretation = 'absolute';
 	app.status.loading = false;
 }
