@@ -212,7 +212,7 @@ function load_population_csv(results, file)
 
 function load_completed()
 {
-	//console.log('dataset_load completed');
+	//console.log("dataset_load completed");
 	let selectors = document.getElementsByClassName("selector");
 	for (let selector of selectors) selector.disabled = false;
 	let dataset_title = document.getElementById("dataset_title");
@@ -224,5 +224,28 @@ function load_completed()
 	if (app.selection.years && (app.selection.years.length > 0) && (app.selection.years.length < 10)) year_selector.size = app.selection.years.length;
 	const legend = document.getElementById("legend_view");
 	legend.style.display = "none";
+	if (app.data.population) calculate_migration_rates();
 	app.status.loading = false;
+}
+
+function calculate_migration_rates()
+{
+	//console.log("calculate_migration_rates");
+	for (let id in app.data.featurename_mapping)
+	{
+		const populations = alasql("SELECT * FROM population WHERE areaid = ?", [id]);
+		update_populations(id, populations);
+	}
+	alasql("UPDATE migrations SET migration_rate_from = ROUND(1000 * migrations / population_from, 3)");
+	alasql("UPDATE migrations SET migration_rate_to = ROUND(1000 * migrations / population_to, 3)");
+}
+
+function update_populations(id, populations)
+{
+	if (!populations) return;
+	for (let pop of populations)
+	{
+		alasql("UPDATE migrations SET population_from = ? WHERE fromid = ? AND year = ?", [pop.population, id, pop.year]);
+		alasql("UPDATE migrations SET population_to = ? WHERE toid = ? AND year = ?", [pop.population, id, pop.year]);
+	}
 }
