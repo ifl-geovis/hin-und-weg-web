@@ -90,6 +90,9 @@
 			<label for="category_name_value">Datenkategorie:</label><br />
 			<input name="category_name_value" id="category_name_value" type="text" value="" readonly onclick="dataset_load(event)" /><br />
 			<hr />
+			<input type="checkbox" id="swoopy_arrows_selector" class="selector" name="swoopy_arrows" value="swoopy_arrows" onchange="swoopy_arrows_changed(event)" disabled>
+			<label for="swoopy_arrows_selector"> Bewegungen visualisieren</label>
+			<hr />
 			<label for="theme_selector">Thema:</label><br />
 			<select name="theme" id="theme_selector" class="selector" oninput="theme_selected(event)" disabled>
 				<option value="von" selected>Von</option>
@@ -97,8 +100,13 @@
 				<option value="saldi">Saldi</option>
 			</select>
 			<br />
-			<input type="checkbox" id="swoopy_arrows_selector" class="selector" name="swoopy_arrows" value="swoopy_arrows" onchange="swoopy_arrows_changed(event)" disabled>
-			<label for="swoopy_arrows_selector"> Bewegungen visualisieren</label>
+			<fieldset class="data_interpretation">
+				<input type="radio" id="absolute" class="selector" name="data_interpretation" value="absolute" checked />
+				<label for="absolute">Umzüge</label>
+				<br />
+				<input type="radio" id="migration_rate" class="selector" name="data_interpretation" value="migration_rate" />
+				<label for="migration_rate">Wanderungsrate</label>
+			</fieldset>
 			<hr />
 			<label for="area_selector">Fläche:</label><br />
 			<select name="area" id="area_selector" class="selector" oninput="area_selected(event)" disabled>
