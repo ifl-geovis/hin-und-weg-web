@@ -379,3 +379,9 @@ fieldset#data_interpretation
 	border-width: 0px;
 	display: none;
 }
+
+label.classborder_label
+{
+	display: inline-block;
+	width: 9.5em;
+}
