@@ -33,6 +33,13 @@ function init_selections()
 	category.disabled = true;
 	let load_dataset = document.getElementById("load_dataset_button");
 	load_dataset.disabled = true;
+	let classification_selector = document.getElementById("classification_selector");
+	classification_selector.value = app.selection.classification;
+	for (let i = 1; i <= 10; i++)
+	{
+		let classborder = document.getElementById("classborder" + i + "_selector");
+		classborder.value = i;
+	}
 }
 
 function init_view()
