@@ -225,6 +225,8 @@ function load_completed()
 	const legend = document.getElementById("legend_view");
 	legend.style.display = "none";
 	if (app.data.population) calculate_migration_rates();
+	let data_interpretation = document.getElementById("data_interpretation");
+	data_interpretation.style.display = (app.data.population) ? "block" : "none";
 	app.status.loading = false;
 }
 

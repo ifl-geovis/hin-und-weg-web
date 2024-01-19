@@ -373,8 +373,9 @@ div.load_inidicator_block
 	border-width: 1px;
 }
 
-fieldset.data_interpretation
+fieldset#data_interpretation
 {
 	border-style: none;
 	border-width: 0px;
+	display: none;
 }
