@@ -382,7 +382,21 @@ function set_classification_algorithm(classcount)
 	else if (app.selection.classification === "geometric_progression") app.data.geostats.getClassGeometricProgression(classcount);
 	else if (app.selection.classification === "quantile") app.data.geostats.getClassQuantile(classcount);
 	else if (app.selection.classification === "jenks") app.data.geostats.getClassJenks(classcount);
+	else if (app.selection.classification === "own") app.data.geostats.setClassManually(generate_classification_array(classcount));
 	else app.data.geostats.getClassQuantile(classcount);
+}
+
+function generate_classification_array(classcount)
+{
+	let classification = [];
+	classification.push(app.data.geostats.min());
+	for (let i = 0; i < (classcount - 1); i++)
+	{
+		classification.push(app.selection.classborders[i]);
+	}
+	classification.push(app.data.geostats.max());
+	console.log("generate_classification_array: " + classification);
+	return classification;
 }
 
 function refresh_title_years()
