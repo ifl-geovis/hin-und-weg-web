@@ -71,6 +71,7 @@ let app =
 		classification: 'quantile',
 		class_number: 'automatic',
 		colors: 'RdYlBu',
+		classborders: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
 	},
 	view:
 	{
@@ -169,6 +170,15 @@ function class_number_selected(event)
 	//console.log("class_number_selected:", event.target.value);
 	app.selection.class_number = event.target.value;
 	process_selections(true);
+}
+
+function classborder_changed(event)
+{
+	for (let i = 1; i <= 10; i++)
+	{
+		let selection = document.getElementById("classborder" + i + "_selector");
+		app.selection.classborders[i - 1] = selection.value;
+	}
 }
 
 function colors_changed(event)
