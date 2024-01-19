@@ -59,6 +59,7 @@ let app =
 		category_id: null,
 		category: null,
 		theme: 'von',
+		data_interpretation: 'absolute',
 		swoopy_arrows: false,
 		area_id: null,
 		area_inside: true,
@@ -115,6 +116,13 @@ function swoopy_arrows_changed(event)
 {
 	//console.log("swoopy_arrows_changed:", event.target.checked);
 	app.selection.swoopy_arrows = event.target.checked;
+	process_selections(false);
+}
+
+function data_interpretation_changed(event)
+{
+	//console.log("data_interpretation_changed:", event.target.checked);
+	app.selection.data_interpretation = event.target.value;
 	process_selections(false);
 }
 

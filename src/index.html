@@ -100,11 +100,11 @@
 				<option value="saldi">Saldi</option>
 			</select>
 			<br />
-			<fieldset class="data_interpretation">
-				<input type="radio" id="absolute" class="selector" name="data_interpretation" value="absolute" checked />
+			<fieldset class="data_interpretation" onchange="data_interpretation_changed(event)">
+				<input type="radio" id="absolute" class="selector" name="data_interpretation" value="absolute" checked disabled />
 				<label for="absolute">Umzüge</label>
 				<br />
-				<input type="radio" id="migration_rate" class="selector" name="data_interpretation" value="migration_rate" />
+				<input type="radio" id="migration_rate" class="selector" name="data_interpretation" value="migration_rate" disabled />
 				<label for="migration_rate">Wanderungsrate</label>
 			</fieldset>
 			<hr />
