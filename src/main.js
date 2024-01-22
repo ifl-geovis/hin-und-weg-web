@@ -179,6 +179,10 @@ function classborder_changed(event)
 		let selection = document.getElementById("classborder" + i + "_selector");
 		app.selection.classborders[i - 1] = selection.value;
 	}
+	if (app.selection.classification === 'own')
+	{
+		process_selections(true);
+	}
 }
 
 function colors_changed(event)
