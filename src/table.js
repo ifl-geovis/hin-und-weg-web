@@ -8,13 +8,15 @@ function refresh_table_view()
 		table_view_data.innerHTML = "Für die gewählte Selektion sind keine Daten verfügbar!";
 		return;
 	}
+	let numberrow = "Anzahl";
+	if (app.selection.data_interpretation === "migration_rate") numberrow = "Wanderungsrate";
 	let dataview = `
 	<table>
 	<tr class="header">
 		<th></th>
 		<th>Von</th>
 		<th>Nach</th>
-		<th>Anzahl</th>
+		<th>${numberrow}</th>
 	</tr>`;
 	let odd = true;
 	for (let row of app.data.processed)
