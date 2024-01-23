@@ -385,3 +385,14 @@ label.classborder_label
 	display: inline-block;
 	width: 9.5em;
 }
+
+div#table_heading_arrow
+{
+	position: absolute;
+	right: 0px;
+}
+
+div#table_view_data th
+{
+	position: relative;
+}
