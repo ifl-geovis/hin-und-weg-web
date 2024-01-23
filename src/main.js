@@ -52,7 +52,6 @@ let app =
 		migrations: {},
 		unfiltered: null,
 		processed: null,
-		sorted: null,
 	},
 	selection:
 	{
@@ -356,7 +355,6 @@ function post_process(reset_filters)
 {
 	app.data.unfiltered = app.data.processed;
 	process_filters(reset_filters);
-	process_tablesort();
 }
 
 function process_filters(reset_filters)
@@ -380,30 +378,6 @@ function process_filters(reset_filters)
 		}
 		app.data.processed = new_data;
 	}
-}
-
-function process_tablesort()
-{
-	console.log("process_tablesort");
-	app.data.sorted = app.data.processed;
-	if (!app.selection.tablesort) return;
-	if (app.status.viewcomponent != "table_view") return;
-	tablesort(0, app.data.sorted.length - 1);
-}
-
-function tablesort(min, max)
-{
-	if (min === max) return;
-	const center = Math.floor(((max - min) / 2) + min);
-	console.log("tablesort:", "" + min + " - " + max + " → " + center);
-}
-
-function tablesort_compare(element1, element2)
-{
-	if (app.selection.tablesort === "number") return element1.migrations - element2.migrations;
-	if (app.selection.tablesort === "from") return element1.fromname.localeCompare(element2.fromname);
-	if (app.selection.tablesort === "to") return element1.toname.localeCompare(element2.toname);
-	return element1.id.localeCompare(element2.id);
 }
 
 function recalculate_classification()
