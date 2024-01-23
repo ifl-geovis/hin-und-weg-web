@@ -35,6 +35,7 @@ let app =
 		migrations_loads: 0,
 		dataset_loaded: false,
 		modal_dialog: true,
+		viewcomponent: null,
 		dragstart_x: 0,
 		dragstart_y: 0,
 		dragstart_x_legend: 0,
@@ -49,8 +50,9 @@ let app =
 		geodata: null,
 		featurename_mapping: {},
 		migrations: {},
-		processed: null,
 		unfiltered: null,
+		processed: null,
+		sorted: null,
 	},
 	selection:
 	{
@@ -102,6 +104,7 @@ function show_viewcomponent(event, viewid)
 	console.log("show_viewcomponent", viewid);
 	process_selections(false);
 	app.status.modal_dialog = true;
+	app.status.viewcomponent = viewid;
 	let viewcomponent = document.getElementById(viewid);
 	viewcomponent.style.display = "block";
 }
@@ -344,6 +347,12 @@ function recalculate_data_saldi()
 function post_process(reset_filters)
 {
 	app.data.unfiltered = app.data.processed;
+	process_filters(reset_filters);
+	process_tablesort();
+}
+
+function process_filters(reset_filters)
+{
 	if (reset_filters) return;
 	let new_data = [];
 	if (app.selection.filter.min && (app.selection.filter.min != ""))
@@ -363,6 +372,30 @@ function post_process(reset_filters)
 		}
 		app.data.processed = new_data;
 	}
+}
+
+function process_tablesort()
+{
+	console.log("process_tablesort");
+	app.data.sorted = app.data.processed;
+	if (!app.selection.tablesort) return;
+	if (app.status.viewcomponent != "table_view") return;
+	tablesort(0, app.data.sorted.length - 1);
+}
+
+function tablesort(min, max)
+{
+	if (min === max) return;
+	const center = Math.floor(((max - min) / 2) + min);
+	console.log("tablesort:", "" + min + " - " + max + " → " + center);
+}
+
+function tablesort_compare(element1, element2)
+{
+	if (app.selection.tablesort === "number") return element1.migrations - element2.migrations;
+	if (app.selection.tablesort === "from") return element1.fromname.localeCompare(element2.fromname);
+	if (app.selection.tablesort === "to") return element1.toname.localeCompare(element2.toname);
+	return element1.id.localeCompare(element2.id);
 }
 
 function recalculate_classification()
@@ -424,6 +457,7 @@ function refresh_legend()
 function close_view(event, viewid)
 {
 	app.status.modal_dialog = false;
+	app.status.viewcomponent = null;
 	let view = document.getElementById(viewid);
 	view.style.display = "none";
 }

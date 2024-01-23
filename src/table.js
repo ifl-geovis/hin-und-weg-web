@@ -53,6 +53,7 @@ function tablesort(column)
 	else app.selection.tablesort_ascending = false;
 	app.selection.tablesort = column;
 	refresh_table_view();
+	process_selections(true);
 }
 
 function refresh_statistics_view()
