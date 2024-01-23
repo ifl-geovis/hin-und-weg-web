@@ -13,9 +13,9 @@ function init_map()
 
 function refresh_swoopy_arrows()
 {
-	console.log("refresh_swoopy_arrows");
 	remove_swoopy_arrows();
 	if (!app.selection.swoopy_arrows) return;
+	console.log("refresh_swoopy_arrows");
 	add_swoopy_arrows();
 	show_swoopy_arrows();
 }
