@@ -107,6 +107,14 @@ function show_viewcomponent(event, viewid)
 	app.status.viewcomponent = viewid;
 	let viewcomponent = document.getElementById(viewid);
 	viewcomponent.style.display = "block";
+	refresh_view(viewid);
+}
+
+function refresh_view(viewid)
+{
+	if (viewid === "table_view") refresh_table_view();
+	if (viewid === "statistics_view") refresh_statistics_view();
+	if (viewid === "barchart_view") refresh_barchart_view();
 }
 
 function theme_selected(event)
