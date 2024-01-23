@@ -1,5 +1,6 @@
 function refresh_barchart_view()
 {
+	if (app.status.viewcomponent != "barchart_view") return;
 	console.log("refresh_barchart_view");
 	console.log("app.data.processed:", app.data.processed);
 	let barchart_view_data = document.getElementById("barchart_view_data");
