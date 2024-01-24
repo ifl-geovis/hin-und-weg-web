@@ -27,6 +27,7 @@ let app =
 	{
 		map: null,
 		datalayer: null,
+		backgroundlayer: null,
 		selectionlayer: null,
 	},
 	status:
@@ -41,6 +42,7 @@ let app =
 		dragstart_x_legend: 0,
 		dragstart_y_legend: 0,
 		loading: false,
+		background_active: false,
 	},
 	configuration:
 	{

@@ -8,7 +8,9 @@ function init_map()
 	{
 		attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 	};
-	L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', mapconfig).addTo(app.map.map);
+	app.map.backgroundlayer = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', mapconfig);
+	app.map.backgroundlayer.addTo(app.map.map);
+	app.status.background_active = true;
 }
 
 function refresh_swoopy_arrows()
@@ -153,6 +155,14 @@ function zoom_home(event)
 {
 	if (app.map.datalayer) app.map.map.fitBounds(app.map.datalayer.getBounds());
 	else app.map.map.setView([51.5, 10], 7);
+}
+
+function map_background_switcher(event)
+{
+	if (!app.map.backgroundlayer) return;
+	if (app.status.background_active) app.map.backgroundlayer.removeFrom(app.map.map);
+	else app.map.backgroundlayer.addTo(app.map.map);
+	app.status.background_active = !app.status.background_active;
 }
 
 function get_feature_id(feature)
