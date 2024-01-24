@@ -259,8 +259,7 @@ function process_selections(reset_filters)
 {
 	show_load_indicator("Daten werden prozessiert.");
 	recalculate_data(reset_filters);
-	if (app.map.datalayer) app.map.datalayer.setStyle(map_style);
-	if (app.map.selectionlayer) app.map.selectionlayer.setStyle(map_style_selected);
+	refresh_datalayer();
 	refresh_title_years();
 	refresh_swoopy_arrows();
 	renew_filters(reset_filters);

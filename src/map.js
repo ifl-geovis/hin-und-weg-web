@@ -240,6 +240,12 @@ function select_feature(event)
 	process_selections(true);
 }
 
+function refresh_datalayer()
+{
+	if (app.map.datalayer) app.map.datalayer.setStyle(map_style);
+	if (app.map.selectionlayer) app.map.selectionlayer.setStyle(map_style_selected);
+}
+
 function map_transparency_changed(event)
 {
 	//console.log("map_transparency_changed:", event);
@@ -249,5 +255,6 @@ function map_transparency_changed(event)
 		app.selection.map_opacity = 1.0 - Number(transparency);
 		app.view.map_opacity_selected =  1.0 - (Number(transparency) / 2);
 		if (app.selection.map_opacity === 0.0) app.view.map_opacity_selected = 0.0;
+		refresh_datalayer();
 	}
 }
