@@ -149,6 +149,12 @@ function show_geojson_layer()
 	if (app.map.selectionlayer) app.map.selectionlayer.addTo(app.map.map);
 }
 
+function zoom_home(event)
+{
+	if (app.map.datalayer) app.map.map.fitBounds(app.map.datalayer.getBounds());
+	else app.map.map.setView([51.5, 10], 7);
+}
+
 function get_feature_id(feature)
 {
 	return feature.properties[app.selection.dataset.id_property];
