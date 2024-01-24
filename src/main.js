@@ -75,6 +75,7 @@ let app =
 		class_number: 'automatic',
 		colors: 'RdYlBu',
 		classborders: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+		map_opacity: 0.5,
 	},
 	view:
 	{
@@ -83,6 +84,7 @@ let app =
 		},
 		swoopy_arrows: [],
 		load_indicator_state: -1,
+		map_opacity_selected: 0.75,
 	},
 	dataset_list: [],
 	datasets: {},

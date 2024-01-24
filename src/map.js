@@ -103,7 +103,7 @@ function map_style(feature)
 		weight: 1.5,
 		opacity: 1,
 		color: 'grey',
-		fillOpacity: is_selected ? 0.8 : 0.5,
+		fillOpacity: is_selected ? app.view.map_opacity_selected : app.selection.map_opacity,
 	};
 	return style;
 }
@@ -238,4 +238,16 @@ function select_feature(event)
 	let area_selector = document.getElementById("area_selector");
 	area_selector.value = feature_id;
 	process_selections(true);
+}
+
+function map_transparency_changed(event)
+{
+	//console.log("map_transparency_changed:", event);
+	let transparency = event.target.value;
+	if (transparency && (!isNaN(transparency)) && (transparency >= 0.0) && (transparency <= 1.0))
+	{
+		app.selection.map_opacity = 1.0 - Number(transparency);
+		app.view.map_opacity_selected =  1.0 - (Number(transparency) / 2);
+		if (app.selection.map_opacity === 0.0) app.view.map_opacity_selected = 0.0;
+	}
 }
