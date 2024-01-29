@@ -219,6 +219,9 @@ function load_completed()
 	if (app.selection.dataset.name) dataset_title.innerHTML = app.selection.dataset.name;
 	if (app.selection.dataset.title) dataset_title.innerHTML = app.selection.dataset.title;
 	if (app.selection.years) refresh_title_years();
+	let label_selector = document.getElementById("label_selector");
+	label_selector.value = 'none';
+	app.selection.labels = 'none';
 	let year_selector = document.getElementById("year_selector");
 	year_selector.size = 10;
 	if (app.selection.years && (app.selection.years.length > 0) && (app.selection.years.length < 10)) year_selector.size = app.selection.years.length;
