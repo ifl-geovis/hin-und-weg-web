@@ -29,6 +29,7 @@ let app =
 		datalayer: null,
 		backgroundlayer: null,
 		selectionlayer: null,
+		labels: [],
 	},
 	status:
 	{

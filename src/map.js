@@ -132,6 +132,10 @@ function map_interactivity(feature, layer)
 		click: select_feature,
 	}
 	layer.on(interactivity_mapping);
+}
+
+function map_labels(feature, layer)
+{
 	console.log("feature", feature);
 	const label =
 	{
@@ -144,17 +148,30 @@ function map_interactivity(feature, layer)
 		icon: L.divIcon(label),
 	}
 	console.log("center", layer.getBounds().getCenter());
-	L.marker(layer.getBounds().getCenter(), label_icon).addTo(app.map.map);
+	let label_obj = L.marker(layer.getBounds().getCenter(), label_icon);
+	app.map.labels.push(label_obj);
+	label_obj.addTo(app.map.map);
+}
+
+function map_features(feature, layer)
+{
+	map_interactivity(feature, layer);
+	map_labels(feature, layer);
 }
 
 function show_geojson_layer()
 {
 	if (app.map.datalayer) app.map.datalayer.removeFrom(app.map.map);
 	if (app.map.selectionlayer) app.map.selectionlayer.removeFrom(app.map.map);
+	if (app.map.labels)
+	{
+		for (let label of app.map.labels) label.removeFrom(app.map.map);
+		app.map.labels = [];
+	}
 	if (app.data.geodata)
 	{
 		app.map.datalayer = L.geoJSON(app.data.geodata, {style: map_style});
-		app.map.selectionlayer = L.geoJSON(app.data.geodata, {style: map_style_selected, onEachFeature: map_interactivity});
+		app.map.selectionlayer = L.geoJSON(app.data.geodata, {style: map_style_selected, onEachFeature: map_features});
 	}
 	if (app.map.datalayer)
 	{
