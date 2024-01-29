@@ -65,6 +65,7 @@ let app =
 		theme: 'von',
 		data_interpretation: 'absolute',
 		swoopy_arrows: false,
+		labels: 'none',
 		area_id: null,
 		area_inside: true,
 		filter:
@@ -126,6 +127,13 @@ function theme_selected(event)
 	//console.log("theme_selected:", event.target.value);
 	app.selection.theme = event.target.value;
 	process_selections(true);
+}
+
+function labels_selected(event)
+{
+	//console.log("labels_selected:", event.target.value);
+	app.selection.labels = event.target.value;
+	process_selections(false);
 }
 
 function swoopy_arrows_changed(event)

@@ -97,6 +97,13 @@
 			<label for="category_name_value">Datenkategorie:</label><br />
 			<input name="category_name_value" id="category_name_value" type="text" value="" readonly onclick="dataset_load(event)" /><br />
 			<hr />
+			<label for="label_selector">Kartenlabels:</label><br />
+			<select name="labels" id="label_selector" class="selector" oninput="labels_selected(event)" disabled>
+				<option value="none" selected>keine Anzeige</option>
+				<option value="name">Namen anzeigen</option>
+				<option value="number">Anzahl/Rate anzeigen</option>
+			</select>
+			<br />
 			<input type="checkbox" id="swoopy_arrows_selector" class="selector" name="swoopy_arrows" value="swoopy_arrows" onchange="swoopy_arrows_changed(event)" disabled>
 			<label for="swoopy_arrows_selector"> Bewegungen visualisieren</label>
 			<hr />
