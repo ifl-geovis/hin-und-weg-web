@@ -134,20 +134,48 @@ function map_interactivity(feature, layer)
 	layer.on(interactivity_mapping);
 }
 
+function show_info_popup(event)
+{
+	const feature_id = get_feature_id(event.target.feature);
+	const feature_info = get_feature_by_id(feature_id, false);
+	const feature_name = app.data.featurename_mapping[feature_id];
+	let feature_info_popup = document.getElementById("feature_info_popup");
+	let info_text = "";
+	info_text += feature_name + " (" + feature_id + ")<br />";
+	if (feature_info)
+	{
+		info_text += feature_info.fromname;
+		if (app.selection.theme === 'von') info_text += "→";
+		else if (app.selection.theme === 'nach') info_text += "←";
+		else if (app.selection.theme === 'saldi') info_text += "←→";
+		info_text += feature_info.toname + ":<br />" + feature_info.migrations;
+	}
+	feature_info_popup.innerHTML = info_text;
+	feature_info_popup.style.display = "block";
+	feature_info_popup.style.left = event.originalEvent.clientX + "px";
+	feature_info_popup.style.top = event.originalEvent.clientY + "px";
+}
+
 function map_labels(feature, layer)
 {
-	console.log("feature", feature);
+	if (!app.selection.labels) return;
+	if (app.selection.labels === 'none') return;
+	let label_text = null;
+	const feature_info = get_feature_by_id(feature.properties[app.selection.dataset.id_property], false);
+	if (!feature_info) return;
+	if (app.selection.labels === 'name') label_text = feature.properties[app.selection.dataset.name_property];
+	if (app.selection.labels === 'number') label_text = "" + feature_info.migrations;
+	if (!label_text) return;
 	const label =
 	{
 		className: 'map_info_label',
-		html: feature.properties[app.selection.dataset.name_property],
+		html: label_text,
 		iconSize: ['auto', 'auto'],
 	}
 	const label_icon =
 	{
 		icon: L.divIcon(label),
 	}
-	console.log("center", layer.getBounds().getCenter());
 	let label_obj = L.marker(layer.getBounds().getCenter(), label_icon);
 	app.map.labels.push(label_obj);
 	label_obj.addTo(app.map.map);

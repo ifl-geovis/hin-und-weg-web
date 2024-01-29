@@ -133,7 +133,7 @@ function labels_selected(event)
 {
 	//console.log("labels_selected:", event.target.value);
 	app.selection.labels = event.target.value;
-	process_selections(false);
+	show_geojson_layer();
 }
 
 function swoopy_arrows_changed(event)
