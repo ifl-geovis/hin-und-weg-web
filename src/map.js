@@ -132,6 +132,19 @@ function map_interactivity(feature, layer)
 		click: select_feature,
 	}
 	layer.on(interactivity_mapping);
+	console.log("feature", feature);
+	const label =
+	{
+		className: 'map_info_label',
+		html: feature.properties[app.selection.dataset.name_property],
+		iconSize: ['auto', 'auto'],
+	}
+	const label_icon =
+	{
+		icon: L.divIcon(label),
+	}
+	console.log("center", layer.getBounds().getCenter());
+	L.marker(layer.getBounds().getCenter(), label_icon).addTo(app.map.map);
 }
 
 function show_geojson_layer()

@@ -73,6 +73,21 @@ div#feature_info_popup
 	z-index: 1000;
 }
 
+div.map_info_label
+{
+	display: block;
+	top: -20px;
+	left: -35px;
+	border-style: solid;
+	border-color: lightgray;
+	border-width: 1px;
+	border-radius: 10px;
+	background-color: #fff5eecc;
+	padding: 10px;
+	width: auto;
+	height: auto;
+}
+
 div#datasetloader_dialog
 {
 	display: block;
