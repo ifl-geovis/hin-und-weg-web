@@ -76,6 +76,7 @@ let app =
 		classification: 'quantile',
 		class_number: 'automatic',
 		colors: 'RdYlBu',
+		colors_negative: 'YlGnBu',
 		classborders: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
 		map_opacity: 0.5,
 	},
@@ -395,26 +396,67 @@ function process_filters(reset_filters)
 function recalculate_classification()
 {
 	app.data.geostats = null;
+	app.data.geostats_negative = null;
 	if (!app.data.processed) return;
+	if (recalculate_classification_saldi()) return;
 	const classcount = calculate_classcount(app.data.processed.length);
 	let data = [];
 	for (let row of app.data.processed) data.push(row.migrations);
 	app.data.geostats = new geostats(data);
 	app.data.geostats.setColors(chroma.scale(select_color(app.selection.colors)).colors(classcount));
-	set_classification_algorithm(classcount);
+	set_classification_algorithm(app.data.geostats, classcount);
 	for (let row of app.data.processed) row.color = get_color_for_value(row.migrations);
 }
 
-function set_classification_algorithm(classcount)
+function separate_processed()
 {
-	if (app.selection.classification === "equidistant") app.data.geostats.getClassEqInterval(classcount);
-	else if (app.selection.classification === "stddeviation") app.data.geostats.getClassStdDeviation(classcount);
-	else if (app.selection.classification === "arithmetic_progression") app.data.geostats.getClassArithmeticProgression(classcount);
-	else if (app.selection.classification === "geometric_progression") app.data.geostats.getClassGeometricProgression(classcount);
-	else if (app.selection.classification === "quantile") app.data.geostats.getClassQuantile(classcount);
-	else if (app.selection.classification === "jenks") app.data.geostats.getClassJenks(classcount);
-	else if (app.selection.classification === "own") app.data.geostats.setClassManually(generate_classification_array(classcount));
-	else app.data.geostats.getClassQuantile(classcount);
+	let positive = [];
+	let negative = [];
+	for (let row of app.data.processed)
+	{
+		if (row.migrations < 0) negative.push(row);
+		else positive.push(row);
+	}
+	return [positive, negative];
+}
+
+function recalculate_classification_saldi()
+{
+	if (!app.data.processed) return false;
+	if (app.selection.classification === "own") return false;
+	if (app.selection.theme != 'saldi') return false;
+	const posneg = separate_processed();
+	const positive = posneg[0];
+	const negative = posneg[1];
+	if ((positive.length === 0) || (negative.length === 0)) return false;
+	app.data.geostats = recalculate_saldi_geostats(positive, false);
+	app.data.geostats_negative = recalculate_saldi_geostats(negative, true);
+	for (let row of app.data.processed) row.color = get_color_for_value(row.migrations);
+	return true;
+}
+
+function recalculate_saldi_geostats(processed, negative)
+{
+	const classcount = calculate_classcount(processed.length);
+	let data = [];
+	for (let row of processed) data.push(row.migrations);
+	let geostatsobj = new geostats(data);
+	if (negative) geostatsobj.setColors(chroma.scale(select_color(app.selection.colors_negative)).colors(classcount));
+	else geostatsobj.setColors(chroma.scale(select_color(app.selection.colors)).colors(classcount));
+	set_classification_algorithm(geostatsobj, classcount);
+	return geostatsobj;
+}
+
+function set_classification_algorithm(geostats, classcount)
+{
+	if (app.selection.classification === "equidistant") geostats.getClassEqInterval(classcount);
+	else if (app.selection.classification === "stddeviation") geostats.getClassStdDeviation(classcount);
+	else if (app.selection.classification === "arithmetic_progression") geostats.getClassArithmeticProgression(classcount);
+	else if (app.selection.classification === "geometric_progression") geostats.getClassGeometricProgression(classcount);
+	else if (app.selection.classification === "quantile") geostats.getClassQuantile(classcount);
+	else if (app.selection.classification === "jenks") ageostats.getClassJenks(classcount);
+	else if (app.selection.classification === "own") geostats.setClassManually(generate_classification_array(classcount));
+	else geostats.getClassQuantile(classcount);
 }
 
 function generate_classification_array(classcount)
