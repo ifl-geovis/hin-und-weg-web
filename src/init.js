@@ -27,6 +27,8 @@ function init_selections()
 	for (let filter of filters) filter.disabled = true;
 	let swoopy_arrows_selector = document.getElementById("swoopy_arrows_selector");
 	swoopy_arrows_selector.checked = false;
+	let label_selector = document.getElementById("label_selector");
+	label_selector.value = 'none';
 	let area_inside = document.getElementById("area_inside_selector");
 	area_inside.checked = true;
 	let category = document.getElementById("category_selector");
