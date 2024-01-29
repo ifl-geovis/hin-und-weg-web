@@ -76,7 +76,7 @@ let app =
 		classification: 'quantile',
 		class_number: 'automatic',
 		colors: 'RdYlBu',
-		colors_negative: 'YlGnBu',
+		colors_negative: 'YlGn',
 		classborders: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
 		map_opacity: 0.5,
 	},
@@ -486,7 +486,8 @@ function refresh_legend()
 	const legend_content = document.getElementById("legend_content");
 	legend.style.display = "none";
 	if (!app.data.geostats) return;
-	legend_content.innerHTML = app.data.geostats.getHtmlLegend();
+	if (app.data.geostats_negative) legend_content.innerHTML = app.data.geostats_negative.getHtmlLegend() + app.data.geostats.getHtmlLegend();
+	else legend_content.innerHTML = app.data.geostats.getHtmlLegend();
 	legend.style.display = "block";
 }
 
