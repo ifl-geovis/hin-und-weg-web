@@ -28,7 +28,7 @@ function init_selections()
 	let swoopy_arrows_selector = document.getElementById("swoopy_arrows_selector");
 	swoopy_arrows_selector.checked = false;
 	let label_selector = document.getElementById("label_selector");
-	label_selector.value = 'none';
+	label_selector.value = app.selection.labels;
 	let area_inside = document.getElementById("area_inside_selector");
 	area_inside.checked = true;
 	let category = document.getElementById("category_selector");
@@ -37,6 +37,8 @@ function init_selections()
 	load_dataset.disabled = true;
 	let classification_selector = document.getElementById("classification_selector");
 	classification_selector.value = app.selection.classification;
+	let theme_selector = document.getElementById("theme_selector");
+	theme_selector.value = app.selection.theme;
 	for (let i = 1; i <= 10; i++)
 	{
 		let classborder = document.getElementById("classborder" + i + "_selector");
