@@ -115,6 +115,7 @@ function get_feature_by_id(feature_id, filtered)
 
 function select_color(id)
 {
+	if (id.endsWith("_negative")) return select_color(id.substring(0, id.length - 9));
 	if (id === 'yellow_red_black') return ['yellow', 'red', 'black'];
 	return id;
 }
