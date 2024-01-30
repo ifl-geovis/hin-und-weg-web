@@ -39,6 +39,10 @@ function init_selections()
 	classification_selector.value = app.selection.classification;
 	let theme_selector = document.getElementById("theme_selector");
 	theme_selector.value = app.selection.theme;
+	let radio_RdYlBu = document.getElementById("radio_RdYlBu");
+	radio_RdYlBu.checked = true;
+	let radio_YlGn_negative = document.getElementById("radio_YlGn_negative");
+	radio_YlGn_negative.checked = true;
 	for (let i = 1; i <= 10; i++)
 	{
 		let classborder = document.getElementById("classborder" + i + "_selector");
