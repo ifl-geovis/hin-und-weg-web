@@ -86,7 +86,7 @@ function calculate_classcount(choices)
 
 function get_color_for_value(value)
 {
-	console.log("get_color_for_value:", value);
+	//console.log("get_color_for_value:", value);
 	if (!app.data.geostats) return "white";
 	if ((app.data.geostats_negative) && (value < 0)) return app.data.geostats_negative.colors[app.data.geostats_negative.getClass(value)];
 	return app.data.geostats.colors[app.data.geostats.getClass(value)];
