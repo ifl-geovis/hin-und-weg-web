@@ -209,10 +209,11 @@ function classborder_changed(event)
 	}
 }
 
-function colors_changed(event)
+function colors_changed(event, negative)
 {
 	//console.log("colors_changed:", event.target.checked);
-	app.selection.colors = event.target.value;
+	if (negative) app.selection.colors_negative = event.target.value;
+	else app.selection.colors = event.target.value;
 	process_selections(true);
 }
 
