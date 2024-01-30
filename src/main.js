@@ -429,7 +429,8 @@ function recalculate_classification_saldi()
 	const posneg = separate_processed();
 	const positive = posneg[0];
 	const negative = posneg[1];
-	if ((positive.length === 0) || (negative.length === 0)) return false;
+	if ((negative.length === 0)) return false;
+	if ((negative.length === 1) && (negative[0] === 0)) return false;
 	app.data.geostats = recalculate_saldi_geostats(positive, false);
 	app.data.geostats_negative = recalculate_saldi_geostats(negative, true);
 	for (let row of app.data.processed) row.color = get_color_for_value(row.migrations);
@@ -441,6 +442,7 @@ function recalculate_saldi_geostats(processed, negative)
 	const classcount = calculate_classcount(processed.length);
 	let data = [];
 	for (let row of processed) data.push(row.migrations);
+	while (data.length < 2) data.push(0);
 	let geostatsobj = new geostats(data);
 	if (negative) geostatsobj.setColors(chroma.scale(select_color(app.selection.colors_negative)).colors(classcount));
 	else geostatsobj.setColors(chroma.scale(select_color(app.selection.colors)).colors(classcount));
