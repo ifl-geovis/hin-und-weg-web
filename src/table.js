@@ -12,7 +12,7 @@ function refresh_table_view()
 	let sorted = process_tablesort();
 	let numberrow = "Anzahl";
 	if (app.selection.data_interpretation === "migration_rate") numberrow = "Wanderungsrate";
-	const arrow = (app.selection.tablesort_ascending) ? "⬇" : "⬆";
+	const arrow = (app.selection.tablesort_ascending) ? "⬆" : "⬇";
 	const arrowdiv = `<div id="table_heading_arrow">${arrow}</div>`;
 	let fromarr = '';
 	let toarr = '';
