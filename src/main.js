@@ -516,7 +516,7 @@ function refresh_classification_message()
 	classification_message.style.display = "none";
 	if (app.selection.classification === "own")
 	{
-		classification_message.innerHTML = "Hinweis: Bei eigener Klassifikation werden die Werte unten berücksichtigt, aber nur bis zur Anzahl der Klassen. Auch wenn negative Werte präsent sind wird bei eigener Klassifikation nur eine Skala gesetzt, man kann hier selbst den Null-Wert beeinflussen.";
+		classification_message.innerHTML = "Hinweis: Bei eigener Klassifikation werden die Werte unten berücksichtigt, aber nur bis zur Anzahl der Klassen. Auch wenn negative Werte präsent sind wird bei eigener Klassifikation nur eine Farbskala gesetzt, man kann hier selbst den Null-Wert beeinflussen.";
 		classification_message.style.display = "block";
 	}
 }
@@ -524,11 +524,10 @@ function refresh_classification_message()
 function refresh_settings_dialog()
 {
 	const classborder_selection_section = document.getElementById("classborder_selection_section");
-	classborder_selection_section.style.display = "none";
-	if (app.selection.classification === "own")
-	{
-		classborder_selection_section.style.display = "block";
-	}
+	classborder_selection_section.style.display = (app.selection.classification === "own") ? "block" : "none";
+	const colors_negative_section = document.getElementById("colors_negative_section");
+	colors_negative_section.style.display = "none";
+	if ((app.selection.theme === "saldi") && (app.selection.classification != "own")) colors_negative_section.style.display = "block";
 }
 
 function close_view(event, viewid)
