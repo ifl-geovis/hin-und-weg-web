@@ -279,6 +279,7 @@ function process_selections(reset_filters)
 	refresh_statistics_view();
 	refresh_barchart_view();
 	refresh_legend();
+	refresh_settings_dialog();
 	app.status.loading = false;
 }
 
@@ -517,6 +518,16 @@ function refresh_classification_message()
 	{
 		classification_message.innerHTML = "Hinweis: Bei eigener Klassifikation werden die Werte unten berücksichtigt, aber nur bis zur Anzahl der Klassen. Auch wenn negative Werte präsent sind wird bei eigener Klassifikation nur eine Skala gesetzt, man kann hier selbst den Null-Wert beeinflussen.";
 		classification_message.style.display = "block";
+	}
+}
+
+function refresh_settings_dialog()
+{
+	const classborder_selection_section = document.getElementById("classborder_selection_section");
+	classborder_selection_section.style.display = "none";
+	if (app.selection.classification === "own")
+	{
+		classborder_selection_section.style.display = "block";
 	}
 }
 
