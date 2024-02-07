@@ -411,3 +411,8 @@ div#table_view_data th
 {
 	position: relative;
 }
+
+div#classification_selector_message
+{
+	display: none;
+}
