@@ -46,7 +46,7 @@
 		<div id="dataset_load_button" class="action_button" title="anderen Datensatz laden" onclick="dataset_load(event)">
 			<img src="img/document-download.svg" width="100%" height="100%" />
 		</div>
-		<div id="classification_button" class="action_button" title="Klassifikation und Farben einstellen" onclick="show_viewcomponent(event, 'classification_view')">
+		<div id="classification_button" class="action_button" title="Einstellungen" onclick="show_viewcomponent(event, 'classification_view')">
 			<img src="img/cog.svg" width="100%" height="100%" />
 		</div>
 		<div id="statistics_button" class="action_button" title="Statistiken" onclick="show_viewcomponent(event, 'statistics_view')">
@@ -181,7 +181,7 @@
 		<!-- classification view -->
 		<div id="classification_view" class="viewcomponent">
 			<h2 class="title_bar" draggable="true" ondragstart="move_start(event, 'classification_view')" ondragend="move_stop(event, 'classification_view')">
-				Klassifikationseinstellungen
+				Einstellungen
 			</h2>
 			<div id="table_view_close_button" class="close_button" onclick="close_view(event, 'classification_view')">
 				<img src="img/x-square.svg" width="100%" height="100%" />
