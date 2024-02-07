@@ -269,6 +269,7 @@ function renew_filters(reset_filters)
 function process_selections(reset_filters)
 {
 	show_load_indicator("Daten werden prozessiert.");
+	refresh_classification_message();
 	recalculate_data(reset_filters);
 	refresh_datalayer();
 	refresh_title_years();
@@ -278,7 +279,6 @@ function process_selections(reset_filters)
 	refresh_statistics_view();
 	refresh_barchart_view();
 	refresh_legend();
-	refresh_classification_message();
 	app.status.loading = false;
 }
 
@@ -467,8 +467,13 @@ function set_classification_algorithm(geostats, classcount)
 		catch (e)
 		{
 			console.log("error:", e);
+			const classification_message = document.getElementById("classification_message");
+			classification_message.innerHTML = "Es gab einen Fehler bei der Verarbeitung der Klassifikationseinstellungen. Klassifikation wurde auf eine sichere Einstellung zurückgesetzt.";
+			classification_message.style.display = "block";
 			app.selection.classification = "equidistant";
 			geostats.getClassEqInterval(classcount);
+			const classification_selector = document.getElementById("classification_selector");
+			classification_selector.value = "equidistant";
 		}
 }
 
@@ -481,7 +486,7 @@ function generate_classification_array(classcount)
 		classification.push(app.selection.classborders[i]);
 	}
 	classification.push(app.data.geostats.max());
-	console.log("generate_classification_array: " + classification);
+	//console.log("generate_classification_array: " + classification);
 	return classification;
 }
 
