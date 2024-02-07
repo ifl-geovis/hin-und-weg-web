@@ -412,7 +412,7 @@ div#table_view_data th
 	position: relative;
 }
 
-div#classification_selector_message
+div#classification_message
 {
 	display: none;
 }

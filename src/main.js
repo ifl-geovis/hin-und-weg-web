@@ -278,6 +278,7 @@ function process_selections(reset_filters)
 	refresh_statistics_view();
 	refresh_barchart_view();
 	refresh_legend();
+	refresh_classification_message();
 	app.status.loading = false;
 }
 
@@ -501,6 +502,17 @@ function refresh_legend()
 	if (app.data.geostats_negative) legend_content.innerHTML = app.data.geostats_negative.getHtmlLegend() + app.data.geostats.getHtmlLegend();
 	else legend_content.innerHTML = app.data.geostats.getHtmlLegend();
 	legend.style.display = "block";
+}
+
+function refresh_classification_message()
+{
+	const classification_message = document.getElementById("classification_message");
+	classification_message.style.display = "none";
+	if (app.selection.classification === "own")
+	{
+		classification_message.innerHTML = "Hinweis: Bei eigener Klassifikation werden die Werte unten berücksichtigt, aber nur bis zur Anzahl der Klassen. Auch wenn negative Werte präsent sind wird bei eigener Klassifikation nur eine Skala gesetzt, man kann hier selbst den Null-Wert beeinflussen.";
+		classification_message.style.display = "block";
+	}
 }
 
 function close_view(event, viewid)
