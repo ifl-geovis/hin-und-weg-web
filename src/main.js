@@ -452,14 +452,23 @@ function recalculate_saldi_geostats(processed, negative)
 
 function set_classification_algorithm(geostats, classcount)
 {
-	if (app.selection.classification === "equidistant") geostats.getClassEqInterval(classcount);
-	else if (app.selection.classification === "stddeviation") geostats.getClassStdDeviation(classcount);
-	else if (app.selection.classification === "arithmetic_progression") geostats.getClassArithmeticProgression(classcount);
-	else if (app.selection.classification === "geometric_progression") geostats.getClassGeometricProgression(classcount);
-	else if (app.selection.classification === "quantile") geostats.getClassQuantile(classcount);
-	else if (app.selection.classification === "jenks") geostats.getClassJenks(classcount);
-	else if (app.selection.classification === "own") geostats.setClassManually(generate_classification_array(classcount));
-	else geostats.getClassQuantile(classcount);
+	try
+	{
+		if (app.selection.classification === "equidistant") geostats.getClassEqInterval(classcount);
+		else if (app.selection.classification === "stddeviation") geostats.getClassStdDeviation(classcount);
+		else if (app.selection.classification === "arithmetic_progression") geostats.getClassArithmeticProgression(classcount);
+		else if (app.selection.classification === "geometric_progression") geostats.getClassGeometricProgression(classcount);
+		else if (app.selection.classification === "quantile") geostats.getClassQuantile(classcount);
+		else if (app.selection.classification === "jenks") geostats.getClassJenks(classcount);
+		else if (app.selection.classification === "own") geostats.setClassManually(generate_classification_array(classcount));
+		else geostats.getClassQuantile(classcount);
+		}
+		catch (e)
+		{
+			console.log("error:", e);
+			app.selection.classification = "equidistant";
+			geostats.getClassEqInterval(classcount);
+		}
 }
 
 function generate_classification_array(classcount)
