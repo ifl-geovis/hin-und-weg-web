@@ -200,7 +200,7 @@
 				<div id="classification_message"></div>
 				<br />
 				<label for="class_number_selector">Klassenzahl:</label><br />
-				<select name="area" id="class_number_selector" class="selector" oninput="class_number_selected(event)">
+				<select name="area" id="class_number_selector" class="selector" oninput="class_number_selected(event, true)">
 					<option value="automatic" selected>automatische Wahl</option>
 					<option value="1">1</option>
 					<option value="2">2</option>
@@ -213,6 +213,22 @@
 					<option value="9">9</option>
 					<option value="10">10</option>
 				</select>
+				<div id="class_number_negative_section">
+					<label for="class_number_selector_negative">Klassenzahl für negative Zahlen:</label><br />
+					<select name="area" id="class_number_selector_negative" class="selector" oninput="class_number_selected(event, false)">
+						<option value="automatic" selected>automatische Wahl</option>
+						<option value="1">1</option>
+						<option value="2">2</option>
+						<option value="3">3</option>
+						<option value="4">4</option>
+						<option value="5">5</option>
+						<option value="6">6</option>
+						<option value="7">7</option>
+						<option value="8">8</option>
+						<option value="9">9</option>
+						<option value="10">10</option>
+					</select>
+				</div>
 				<hr />
 				<div id="classborder_selection_section">
 					Eigene Klassifikation:<br />

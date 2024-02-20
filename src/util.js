@@ -72,9 +72,9 @@ function add_select_options_year(select, list)
 	}
 }
 
-function calculate_classcount(choices)
+function calculate_classcount(choices, positive)
 {
-	let count = parseInt(app.selection.class_number, 10);
+	let count = parseInt(((positive) ? app.selection.class_number : app.selection.class_number_negative), 10);
 	if (!isNaN(count)) return count;
 	if (!choices) return 1;
 	if (choices < 1) return 1;

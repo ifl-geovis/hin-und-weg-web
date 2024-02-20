@@ -75,6 +75,7 @@ let app =
 		},
 		classification: 'quantile',
 		class_number: 'automatic',
+		class_number_negative: 'automatic',
 		colors: 'RdYlBu',
 		colors_negative: 'YlGn',
 		classborders: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
@@ -189,10 +190,11 @@ function classification_selected(event)
 	process_selections(true);
 }
 
-function class_number_selected(event)
+function class_number_selected(event, positive)
 {
 	//console.log("class_number_selected:", event.target.value);
-	app.selection.class_number = event.target.value;
+	if (positive) app.selection.class_number = event.target.value;
+	else  app.selection.class_number_negative = event.target.value;
 	process_selections(true);
 }
 
@@ -402,7 +404,7 @@ function recalculate_classification()
 	app.data.geostats_negative = null;
 	if (!app.data.processed) return;
 	if (recalculate_classification_saldi()) return;
-	const classcount = calculate_classcount(app.data.processed.length);
+	const classcount = calculate_classcount(app.data.processed.length, true);
 	let data = [];
 	for (let row of app.data.processed) data.push(row.migrations);
 	app.data.geostats = new geostats(data);
@@ -441,7 +443,7 @@ function recalculate_classification_saldi()
 
 function recalculate_saldi_geostats(processed, negative)
 {
-	const classcount = calculate_classcount(processed.length);
+	const classcount = calculate_classcount(processed.length, !negative);
 	let data = [];
 	for (let row of processed) data.push(row.migrations);
 	while (data.length < 2) data.push(0);
@@ -528,6 +530,9 @@ function refresh_settings_dialog()
 	const colors_negative_section = document.getElementById("colors_negative_section");
 	colors_negative_section.style.display = "none";
 	if ((app.selection.theme === "saldi") && (app.selection.classification != "own")) colors_negative_section.style.display = "block";
+	const class_number_negative_section = document.getElementById("class_number_negative_section");
+	class_number_negative_section.style.display = "none";
+	if ((app.selection.theme === "saldi") && (app.selection.classification != "own")) class_number_negative_section.style.display = "block";
 }
 
 function close_view(event, viewid)
