@@ -113,11 +113,30 @@ function get_feature_by_id(feature_id, filtered)
 	return null;
 }
 
+function is_negative_color(id)
+{
+	if (id.endsWith("_negative")) return true;
+	if (id.startsWith("neg_")) return true;
+	return false;
+}
+
 function select_color(id)
 {
-	if (id.endsWith("_negative")) return select_color(id.substring(0, id.length - 9));
+	if (id.endsWith("_negative")) return reverse_colors(select_color(id.substring(0, id.length - 9)));
+	if (id.startsWith("neg_")) return reverse_colors(select_color(id.substring(4)));
 	if (id === 'yellow_red_black') return ['yellow', 'red', 'black'];
-	return id;
+	return chroma.brewer[id];
+}
+
+function reverse_colors(colors)
+{
+	if (!(colors instanceof Array)) return colors;
+	let reversed = [];
+	for (let i = colors.length - 1; i >= 0; i--)
+	{
+		reversed.push(colors[i]);
+	}
+	return reversed;
 }
 
 function keep_load_indicator()
