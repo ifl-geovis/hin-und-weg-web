@@ -55,6 +55,9 @@ let app =
 		migrations: {},
 		unfiltered: null,
 		processed: null,
+		geostats: null,
+		geostats_positive: null,
+		geostats_negative: null,
 	},
 	selection:
 	{
@@ -289,6 +292,8 @@ function recalculate_data(reset_filters)
 {
 	app.data.processed = null;
 	app.data.geostats = null;
+	app.data.geostats_positive = null;
+	app.data.geostats_negative = null;
 	if (!app.selection.area_id) return;
 	//console.log("theme in recalculate_data:", app.selection.theme);
 	if (app.selection.theme === 'von') recalculate_data_von();
@@ -401,15 +406,17 @@ function process_filters(reset_filters)
 function recalculate_classification()
 {
 	app.data.geostats = null;
+	app.data.geostats_positive = null;
 	app.data.geostats_negative = null;
 	if (!app.data.processed) return;
-	if (recalculate_classification_saldi()) return;
-	const classcount = calculate_classcount(app.data.processed.length, true);
 	let data = [];
 	for (let row of app.data.processed) data.push(row.migrations);
 	app.data.geostats = new geostats(data);
-	app.data.geostats.setColors(chroma.scale(select_color(app.selection.colors)).colors(classcount));
-	set_classification_algorithm(app.data.geostats, classcount);
+	if (recalculate_classification_saldi()) return;
+	const classcount = calculate_classcount(app.data.processed.length, true);
+	app.data.geostats_positive = new geostats(data);
+	app.data.geostats_positive.setColors(chroma.scale(select_color(app.selection.colors)).colors(classcount));
+	set_classification_algorithm(app.data.geostats_positive, classcount);
 	for (let row of app.data.processed) row.color = get_color_for_value(row.migrations);
 }
 
@@ -435,7 +442,7 @@ function recalculate_classification_saldi()
 	const negative = posneg[1];
 	if ((negative.length === 0)) return false;
 	if ((negative.length === 1) && (negative[0] === 0)) return false;
-	app.data.geostats = recalculate_saldi_geostats(positive, false);
+	app.data.geostats_positive = recalculate_saldi_geostats(positive, false);
 	app.data.geostats_negative = recalculate_saldi_geostats(negative, true);
 	for (let row of app.data.processed) row.color = get_color_for_value(row.migrations);
 	return true;
@@ -445,11 +452,11 @@ function recalculate_saldi_geostats(processed, negative)
 {
 	const classcount = calculate_classcount(processed.length, !negative);
 	let data = [];
+	data.push(0);
 	for (let row of processed) data.push(row.migrations);
 	while (data.length < 2) data.push(0);
 	let geostatsobj = new geostats(data);
-	if (negative) geostatsobj.setColors(chroma.scale(select_color(app.selection.colors_negative)).colors(classcount));
-	else geostatsobj.setColors(chroma.scale(select_color(app.selection.colors)).colors(classcount));
+	geostatsobj.setColors(chroma.scale(select_color((negative) ? app.selection.colors_negative : app.selection.colors)).colors(classcount));
 	set_classification_algorithm(geostatsobj, classcount);
 	return geostatsobj;
 }
@@ -507,8 +514,8 @@ function refresh_legend()
 	const legend_content = document.getElementById("legend_content");
 	legend.style.display = "none";
 	if (!app.data.geostats) return;
-	if (app.data.geostats_negative) legend_content.innerHTML = app.data.geostats_negative.getHtmlLegend() + app.data.geostats.getHtmlLegend();
-	else legend_content.innerHTML = app.data.geostats.getHtmlLegend();
+	if (app.data.geostats_negative) legend_content.innerHTML = app.data.geostats_negative.getHtmlLegend() + app.data.geostats_positive.getHtmlLegend();
+	else legend_content.innerHTML = app.data.geostats_positive.getHtmlLegend();
 	legend.style.display = "block";
 }
 
