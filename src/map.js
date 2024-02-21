@@ -207,6 +207,7 @@ function show_geojson_layer()
 		app.map.map.fitBounds(app.map.datalayer.getBounds());
 	}
 	if (app.map.selectionlayer) app.map.selectionlayer.addTo(app.map.map);
+	refresh_swoopy_arrows();
 }
 
 function zoom_home(event)
