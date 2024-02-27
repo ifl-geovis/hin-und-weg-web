@@ -571,6 +571,9 @@ function refresh_settings_dialog()
 	const class_number_negative_section = document.getElementById("class_number_negative_section");
 	class_number_negative_section.style.display = "none";
 	if (app.selection.theme === "saldi") class_number_negative_section.style.display = "block";
+	const classborder_negative_section = document.getElementById("classborder_negative_section");
+	classborder_negative_section.style.display = "none";
+	if (app.selection.theme === "saldi") classborder_negative_section.style.display = "block";
 }
 
 function close_view(event, viewid)
