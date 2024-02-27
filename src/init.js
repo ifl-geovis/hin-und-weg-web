@@ -62,9 +62,9 @@ function init_selections()
 	classification_selector.value = app.selection.classification;
 	let theme_selector = document.getElementById("theme_selector");
 	theme_selector.value = app.selection.theme;
-	let radio_RdYlBu = document.getElementById("radio_RdYlBu");
+	let radio_RdYlBu = document.getElementById("radio_" + app.selection.colors);
 	radio_RdYlBu.checked = true;
-	let radio_green_scale_negative = document.getElementById("radio_green_scale_negative");
+	let radio_green_scale_negative = document.getElementById("radio_" + app.selection.colors_negative);
 	radio_green_scale_negative.checked = true;
 	for (let i = 1; i <= 10; i++)
 	{
