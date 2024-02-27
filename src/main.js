@@ -264,7 +264,6 @@ function renew_filters(reset_filters)
 		filter_min.value = 0;
 		filter_min.min = min;
 		filter_min.max = max;
-		if (app.selection.theme != 'saldi') filter_min.disabled = true;
 		app.selection.filter.max = 0;
 		let filter_max = document.getElementById("filter_max");
 		filter_max.value = 0;
@@ -387,11 +386,11 @@ function process_filters(reset_filters)
 {
 	if (reset_filters) return;
 	app.data.processed = [];
-	if ((app.selection.theme === 'saldi') && app.selection.filter.min && (app.selection.filter.min != ""))
+	if (app.selection.filter.min && (app.selection.filter.min != ""))
 	{
 		for (let row of app.data.unfiltered)
 		{
-			if (row.migrations <= app.selection.filter.min) app.data.processed.push(row);
+			if (row.migrations < app.selection.filter.min) app.data.processed.push(row);
 		}
 	}
 	if (app.selection.filter.max && (app.selection.filter.max != ""))
