@@ -23,6 +23,37 @@ data:
 
 let app =
 {
+	configuration:
+	{
+		colors:
+		{
+			"RdYlBu":
+			{
+				title: "Rot - Gelb - Blau",
+				scale: "RdYlBu",
+			},
+			"Greys":
+			{
+				title: "Graustufen",
+				scale: "Greys",
+			},
+			"red_scale":
+			{
+				title: "Orange - Rot",
+				scale: ["orange", "red", "darkred"],
+			},
+			"green_scale":
+			{
+				title: "Grün",
+				scale: [chroma("green").brighten(3), chroma("green").darken(3)],
+			},
+			"blue_scale":
+			{
+				title: "Blau",
+				scale: [chroma("blue").brighten(2), chroma("blue").darken(2)],
+			},
+		}
+	},
 	map:
 	{
 		map: null,
@@ -44,9 +75,6 @@ let app =
 		dragstart_y_legend: 0,
 		loading: false,
 		background_active: false,
-	},
-	configuration:
-	{
 	},
 	data:
 	{
@@ -80,7 +108,7 @@ let app =
 		class_number: 'automatic',
 		class_number_negative: 'automatic',
 		colors: 'RdYlBu',
-		colors_negative: 'neg_YlGn',
+		colors_negative: 'green_scale_negative',
 		classborders: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
 		map_opacity: 0.5,
 	},
