@@ -265,65 +265,11 @@
 					<hr />
 				</div>
 				Farben:
-				<br />
-				<input type="radio" id="radio_RdYlBu" class="selector" name="colors" value="RdYlBu" onchange="colors_changed(event, false)" checked />
-				<div class="color_gradient" id="RdYlBu"></div>
-				<label for="radio_RdYlBu"> Rot - Gelb - Blau</label>
-				<br />
-				<input type="radio" id="radio_YlGnBu" class="selector" name="colors" value="YlGnBu" onchange="colors_changed(event, false)" />
-				<div class="color_gradient" id="YlGnBu"></div>
-				<label for="radio_YlGnBu"> Gelb - Grün - Blau</label>
-				<br />
-				<input type="radio" id="radio_yellow_red_black" class="selector" name="colors" value="yellow_red_black" onchange="colors_changed(event, false)" />
-				<div class="color_gradient" id="yellow_red_black"></div>
-				<label for="radio_yellow_red_black"> Gelb - Rot - Schwarz</label>
-				<br />
-				<input type="radio" id="radio_YlGn" class="selector" name="colors" value="YlGn" onchange="colors_changed(event, false)" />
-				<div class="color_gradient" id="YlGn"></div>
-				<label for="radio_YlGn"> Gelb - Grün</label>
-				<br />
-				<input type="radio" id="radio_Greys" class="selector" name="colors" value="Greys" onchange="colors_changed(event, false)" />
-				<div class="color_gradient" id="Greys"></div>
-				<label for="radio_Greys"> Graustufen</label>
-				<br />
-				<input type="radio" id="radio_OrRd" class="selector" name="colors" value="OrRd" onchange="colors_changed(event, false)" />
-				<div class="color_gradient" id="OrRd"></div>
-				<label for="radio_OrRd"> Orange - Rot</label>
-				<br />
-				<input type="radio" id="radio_Paired" class="selector" name="colors" value="Paired" onchange="colors_changed(event, false)" />
-				<div class="color_gradient" id="Paired"></div>
-				<label for="radio_Paired"> Farbgruppen</label>
+				<div id="colors_positive_selections"></div>
 				<div id="colors_negative_section">
 					<hr />
 					Farben für die negative Skala:
-					<br />
-					<input type="radio" id="radio_RdYlBu_negative" class="selector" name="colors_negative" value="neg_RdYlBu" onchange="colors_changed(event, true)" />
-					<div class="color_gradient" id="RdYlBu_negative"></div>
-					<label for="radio_RdYlBu_negative"> Rot - Gelb - Blau</label>
-					<br />
-					<input type="radio" id="radio_YlGnBu_negative" class="selector" name="colors_negative" value="neg_YlGnBu" onchange="colors_changed(event, true)" />
-					<div class="color_gradient" id="YlGnBu_negative"></div>
-					<label for="radio_YlGnBu_negative"> Gelb - Grün - Blau</label>
-					<br />
-					<input type="radio" id="radio_yellow_red_black_negative" class="selector" name="colors_negative" value="neg_yellow_red_black" onchange="colors_changed(event, true)" />
-					<div class="color_gradient" id="yellow_red_black_negative"></div>
-					<label for="radio_yellow_red_black_negative"> Gelb - Rot - Schwarz</label>
-					<br />
-					<input type="radio" id="radio_YlGn_negative" class="selector" name="colors_negative" value="neg_YlGn" onchange="colors_changed(event, true)" checked />
-					<div class="color_gradient" id="YlGn_negative"></div>
-					<label for="radio_YlGn_negative"> Gelb - Grün</label>
-					<br />
-					<input type="radio" id="radio_Greys_negative" class="selector" name="colors_negative" value="neg_Greys" onchange="colors_changed(event, true)" />
-					<div class="color_gradient" id="Greys_negative"></div>
-					<label for="radio_Greys_negative"> Graustufen</label>
-					<br />
-					<input type="radio" id="radio_OrRd_negative" class="selector" name="colors_negative" value="neg_OrRd" onchange="colors_changed(event, true)" />
-					<div class="color_gradient" id="OrRd_negative"></div>
-					<label for="radio_OrRd_negative"> Orange - Rot</label>
-					<br />
-					<input type="radio" id="radio_Paired_negative" class="selector" name="colors_negative" value="neg_Paired" onchange="colors_changed(event, true)" />
-					<div class="color_gradient" id="Paired_negative"></div>
-					<label for="radio_Paired_negative"> Farbgruppen</label>
+					<div id="colors_negative_selections"></div>
 				</div>
 			</div>
 		</div>

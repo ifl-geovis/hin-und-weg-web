@@ -11,6 +11,7 @@
 function init()
 {
 	console.log("initialize!");
+	init_color_settings();
 	init_values();
 	init_selections();
 	init_map();
@@ -18,6 +19,22 @@ function init()
 	init_db();
 	init_color_gradients();
 	load_url("data/data.json", null, init_datalist);
+}
+
+function init_color_settings()
+{
+	let color_settings_positive = "";
+	let color_settings_negative = "";
+	for (let colorscale in app.configuration.colors)
+	{
+		console.log('colorscale:', colorscale);
+		color_settings_positive += create_color_scale_selection(colorscale, false);
+		color_settings_negative += create_color_scale_selection(colorscale, true);
+	}
+	let colors_positive_selections = document.getElementById("colors_positive_selections");
+	colors_positive_selections.innerHTML = color_settings_positive;
+	let colors_negative_selections = document.getElementById("colors_negative_selections");
+	colors_negative_selections.innerHTML = color_settings_negative;
 }
 
 function init_values()
@@ -48,13 +65,27 @@ function init_selections()
 	theme_selector.value = app.selection.theme;
 	let radio_RdYlBu = document.getElementById("radio_RdYlBu");
 	radio_RdYlBu.checked = true;
-	let radio_YlGn_negative = document.getElementById("radio_YlGn_negative");
-	radio_YlGn_negative.checked = true;
+	let radio_green_scale_negative = document.getElementById("radio_green_scale_negative");
+	radio_green_scale_negative.checked = true;
 	for (let i = 1; i <= 10; i++)
 	{
 		let classborder = document.getElementById("classborder" + i + "_selector");
 		classborder.value = i;
 	}
+}
+
+function create_color_scale_selection(colorscale, negative)
+{
+	let id = (negative) ? colorscale + "_negative" : colorscale;
+	let name = (negative) ? "colors_negative" : "colors";
+	let color_scale = '<br />';
+	let checked = "";
+	if (negative && (id === app.selection.colors_negative)) checked = " checked";
+	if (!negative && (id === app.selection.colors)) checked = " checked";
+	color_scale += '<input type="radio" id="radio_' + id + '" class="selector" name="' + name + '" value="' + id + '" onchange="colors_changed(event, ' + negative + ')"' + checked + ' />';
+	color_scale += '<div class="color_gradient" id="' + id + '"></div>';
+	color_scale += '<label for="radio_' + id + '"> ' + app.configuration.colors[colorscale].title + '</label>';
+	return color_scale;
 }
 
 function init_view()
