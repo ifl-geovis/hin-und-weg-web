@@ -110,7 +110,7 @@ let app =
 		colors: 'RdYlBu',
 		colors_negative: 'green_scale_negative',
 		classborders: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-		classborders_negative: [-10, -29 -8, -7, -6, -5, -4, -3, -2, -1],
+		classborders_negative: [-10, -9 -8, -7, -6, -5, -4, -3, -2, -1],
 		map_opacity: 0.5,
 	},
 	view:
@@ -487,11 +487,11 @@ function recalculate_saldi_geostats(processed, negative)
 	while (data.length < 2) data.push(0);
 	let geostatsobj = new geostats(data);
 	geostatsobj.setColors(chroma.scale(select_color((negative) ? app.selection.colors_negative : app.selection.colors)).colors(classcount));
-	set_classification_algorithm(geostatsobj, classcount);
+	set_classification_algorithm(geostatsobj, classcount, negative);
 	return geostatsobj;
 }
 
-function set_classification_algorithm(geostats, classcount)
+function set_classification_algorithm(geostats, classcount, negative)
 {
 	try
 	{
@@ -501,7 +501,7 @@ function set_classification_algorithm(geostats, classcount)
 		else if (app.selection.classification === "geometric_progression") geostats.getClassGeometricProgression(classcount);
 		else if (app.selection.classification === "quantile") geostats.getClassQuantile(classcount);
 		else if (app.selection.classification === "jenks") geostats.getClassJenks(classcount);
-		else if (app.selection.classification === "own") geostats.setClassManually(generate_classification_array(classcount));
+		else if (app.selection.classification === "own") geostats.setClassManually(generate_classification_array(geostats, classcount, negative));
 		else geostats.getClassQuantile(classcount);
 	}
 	catch (e)
@@ -517,15 +517,13 @@ function set_classification_algorithm(geostats, classcount)
 	}
 }
 
-function generate_classification_array(classcount)
+function generate_classification_array(geostats, classcount, negative)
 {
 	let classification = [];
-	classification.push(app.data.geostats.min());
-	for (let i = 0; i < (classcount - 1); i++)
-	{
-		classification.push(app.selection.classborders[i]);
-	}
-	classification.push(app.data.geostats.max());
+	classification.push(geostats.min());
+	if (negative) for (let i = (10 - classcount); i < 9; i++) classification.push(app.selection.classborders_negative[i]);
+	else for (let i = 0; i < (classcount - 1); i++) classification.push(app.selection.classborders[i]);
+	classification.push(geostats.max());
 	//console.log("generate_classification_array: " + classification);
 	return classification;
 }
