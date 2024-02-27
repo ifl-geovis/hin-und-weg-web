@@ -233,34 +233,66 @@
 				<div id="classborder_selection_section">
 					Eigene Klassifikation:<br />
 					<label for="classborder1_selector" class="classborder_label">Klassengrenze 1:</label>
-					<input name="classborder1" id="classborder1_selector" class="selector" type="number" value="1" oninput="classborder_changed(event)" />
+					<input name="classborder1" id="classborder1_selector" class="selector" type="number" value="1" min="0" oninput="classborder_changed(event)" />
 					<br />
 					<label for="classborder2_selector" class="classborder_label">Klassengrenze 2:</label>
-					<input name="classborder2" id="classborder2_selector" class="selector" type="number" value="2" oninput="classborder_changed(event)" />
+					<input name="classborder2" id="classborder2_selector" class="selector" type="number" value="2" min="0" oninput="classborder_changed(event)" />
 					<br />
 					<label for="classborder3_selector" class="classborder_label">Klassengrenze 3:</label>
-					<input name="classborder3" id="classborder3_selector" class="selector" type="number" value="3" oninput="classborder_changed(event)" />
+					<input name="classborder3" id="classborder3_selector" class="selector" type="number" value="3" min="0" oninput="classborder_changed(event)" />
 					<br />
 					<label for="classborder4_selector" class="classborder_label">Klassengrenze 4:</label>
-					<input name="classborder4" id="classborder4_selector" class="selector" type="number" value="4" oninput="classborder_changed(event)" />
+					<input name="classborder4" id="classborder4_selector" class="selector" type="number" value="4" min="0" oninput="classborder_changed(event)" />
 					<br />
 					<label for="classborder5_selector" class="classborder_label">Klassengrenze 5:</label>
-					<input name="classborder5" id="classborder5_selector" class="selector" type="number" value="5" oninput="classborder_changed(event)" />
+					<input name="classborder5" id="classborder5_selector" class="selector" type="number" value="5" min="0" oninput="classborder_changed(event)" />
 					<br />
 					<label for="classborder6_selector" class="classborder_label">Klassengrenze 6:</label>
-					<input name="classborder6" id="classborder6_selector" class="selector" type="number" value="6" oninput="classborder_changed(event)" />
+					<input name="classborder6" id="classborder6_selector" class="selector" type="number" value="6" min="0" oninput="classborder_changed(event)" />
 					<br />
 					<label for="classborder7_selector" class="classborder_label">Klassengrenze 7:</label>
-					<input name="classborder7" id="classborder7_selector" class="selector" type="number" value="7" oninput="classborder_changed(event)" />
+					<input name="classborder7" id="classborder7_selector" class="selector" type="number" value="7" min="0" oninput="classborder_changed(event)" />
 					<br />
 					<label for="classborder8_selector" class="classborder_label">Klassengrenze 8:</label>
-					<input name="classborder8" id="classborder8_selector" class="selector" type="number" value="8" oninput="classborder_changed(event)" />
+					<input name="classborder8" id="classborder8_selector" class="selector" type="number" value="8" min="0" oninput="classborder_changed(event)" />
 					<br />
 					<label for="classborder9_selector" class="classborder_label">Klassengrenze 9:</label>
-					<input name="classborder9" id="classborder9_selector" class="selector" type="number" value="9" oninput="classborder_changed(event)" />
+					<input name="classborder9" id="classborder9_selector" class="selector" type="number" value="9" min="0" oninput="classborder_changed(event)" />
 					<br />
 					<label for="classborder10_selector" class="classborder_label">Klassengrenze 10:</label>
-					<input name="classborder10" id="classborder10_selector" class="selector" type="number" value="10" oninput="classborder_changed(event)" />
+					<input name="classborder10" id="classborder10_selector" class="selector" type="number" value="10" min="0" oninput="classborder_changed(event)" />
+					<br />
+					<br />
+					Eigene Klassifikation für negative Werte:<br />
+					<label for="classborder1_negative_selector" class="classborder_label">Klassengrenze 1:</label>
+					<input name="classborder1_negative" id="classborder1_negative_selector" class="selector" type="number" value="-1" max="0" oninput="classborder_changed(event)" />
+					<br />
+					<label for="classborder2_negative_selector" class="classborder_label">Klassengrenze 2:</label>
+					<input name="classborder2_negative" id="classborder2_negative_selector" class="selector" type="number" value="-2" max="0" oninput="classborder_changed(event)" />
+					<br />
+					<label for="classborder3_negative_selector" class="classborder_label">Klassengrenze 3:</label>
+					<input name="classborder3_negative" id="classborder3_negative_selector" class="selector" type="number" value="-3" max="0" oninput="classborder_changed(event)" />
+					<br />
+					<label for="classborder4_negative_selector" class="classborder_label">Klassengrenze 4:</label>
+					<input name="classborder4_negative" id="classborder4_negative_selector" class="selector" type="number" value="-4" max="0" oninput="classborder_changed(event)" />
+					<br />
+					<label for="classborder5_negative_selector" class="classborder_label">Klassengrenze 5:</label>
+					<input name="classborder5_negative" id="classborder5_negative_selector" class="selector" type="number" value="-5" max="0" oninput="classborder_changed(event)" />
+					<br />
+					<label for="classborder6_negative_selector" class="classborder_label">Klassengrenze 6:</label>
+					<input name="classborder6_negative" id="classborder6_negative_selector" class="selector" type="number" value="-6" max="0" oninput="classborder_changed(event)" />
+					<br />
+					<label for="classborder7_negative_selector" class="classborder_label">Klassengrenze 7:</label>
+					<input name="classborder7_negative" id="classborder7_negative_selector" class="selector" type="number" value="-7" max="0" oninput="classborder_changed(event)" />
+					<br />
+					<label for="classborder8_negative_selector" class="classborder_label">Klassengrenze 8:</label>
+					<input name="classborder8_negative" id="classborder8_negative_selector" class="selector" type="number" value="-8" max="0" oninput="classborder_changed(event)" />
+					<br />
+					<label for="classborder9_negative_selector" class="classborder_label">Klassengrenze 9:</label>
+					<input name="classborder9_negative" id="classborder9_negative_selector" class="selector" type="number" value="-9" max="0" oninput="classborder_changed(event)" />
+					<br />
+					<label for="classborder10_negative_selector" class="classborder_label">Klassengrenze 10:</label>
+					<input name="classborder10_negative" id="classborder10_negative_selector" class="selector" type="number" value="-10" max="0" oninput="classborder_changed(event)" />
 					<br />
 					<hr />
 				</div>

@@ -110,6 +110,7 @@ let app =
 		colors: 'RdYlBu',
 		colors_negative: 'green_scale_negative',
 		classborders: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+		classborders_negative: [-10, -29 -8, -7, -6, -5, -4, -3, -2, -1],
 		map_opacity: 0.5,
 	},
 	view:
@@ -235,6 +236,8 @@ function classborder_changed(event)
 	{
 		let selection = document.getElementById("classborder" + i + "_selector");
 		app.selection.classborders[i - 1] = selection.value;
+		let selection_negative = document.getElementById("classborder" + i + "_negative_selector");
+		app.selection.classborders_negative[10 - i] = selection_negative.value;
 	}
 	if (app.selection.classification === 'own')
 	{
