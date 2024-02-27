@@ -259,12 +259,15 @@ function renew_filters(reset_filters)
 	const max = app.data.geostats.max();
 	if (reset_filters)
 	{
+		app.selection.filter.min = 0;
 		let filter_min = document.getElementById("filter_min");
-		filter_min.value = min;
+		filter_min.value = 0;
 		filter_min.min = min;
 		filter_min.max = max;
+		if (app.selection.theme != 'saldi') filter_min.disabled = true;
+		app.selection.filter.max = 0;
 		let filter_max = document.getElementById("filter_max");
-		filter_max.value = max;
+		filter_max.value = 0;
 		filter_max.min = min;
 		filter_max.max = max;
 	}
@@ -383,24 +386,22 @@ function post_process(reset_filters)
 function process_filters(reset_filters)
 {
 	if (reset_filters) return;
-	let new_data = [];
-	if (app.selection.filter.min && (app.selection.filter.min != ""))
+	app.data.processed = [];
+	if ((app.selection.theme === 'saldi') && app.selection.filter.min && (app.selection.filter.min != ""))
 	{
-		for (let row of app.data.processed)
+		for (let row of app.data.unfiltered)
 		{
-			if (row.migrations >= app.selection.filter.min) new_data.push(row);
+			if (row.migrations <= app.selection.filter.min) app.data.processed.push(row);
 		}
-		app.data.processed = new_data;
 	}
-	new_data = [];
 	if (app.selection.filter.max && (app.selection.filter.max != ""))
 	{
-		for (let row of app.data.processed)
+		for (let row of app.data.unfiltered)
 		{
-			if (row.migrations <= app.selection.filter.max) new_data.push(row);
+			if (row.migrations >= app.selection.filter.max) app.data.processed.push(row);
 		}
-		app.data.processed = new_data;
 	}
+	if ((!app.selection.filter.min) && (!app.selection.filter.max)) app.data.processed = app.data.unfiltered;
 }
 
 function recalculate_classification()

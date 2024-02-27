@@ -11,12 +11,19 @@
 function init()
 {
 	console.log("initialize!");
+	init_values();
 	init_selections();
 	init_map();
 	init_view();
 	init_db();
 	init_color_gradients();
 	load_url("data/data.json", null, init_datalist);
+}
+
+function init_values()
+{
+	app.selection.filter.min = 0;
+	app.selection.filter.max = 0;
 }
 
 function init_selections()
