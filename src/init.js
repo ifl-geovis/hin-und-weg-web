@@ -27,7 +27,6 @@ function init_color_settings()
 	let color_settings_negative = "";
 	for (let colorscale in app.configuration.colors)
 	{
-		console.log('colorscale:', colorscale);
 		color_settings_positive += create_color_scale_selection(colorscale, false);
 		color_settings_negative += create_color_scale_selection(colorscale, true);
 	}
