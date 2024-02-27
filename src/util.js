@@ -125,6 +125,7 @@ function select_color(id)
 	if (id.endsWith("_negative")) return reverse_colors(select_color(id.substring(0, id.length - 9)));
 	if (id.startsWith("neg_")) return reverse_colors(select_color(id.substring(4)));
 	if (id === 'yellow_red_black') return ['yellow', 'red', 'black'];
+	if (app.configuration.colors[id]) return app.configuration.colors[id].scale;
 	return chroma.brewer[id];
 }
 
