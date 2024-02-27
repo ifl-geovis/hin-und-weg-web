@@ -466,7 +466,6 @@ function separate_processed()
 function recalculate_classification_saldi()
 {
 	if (!app.data.processed) return false;
-	if (app.selection.classification === "own") return false;
 	if (app.selection.theme != 'saldi') return false;
 	const posneg = separate_processed();
 	const positive = posneg[0];
@@ -504,18 +503,18 @@ function set_classification_algorithm(geostats, classcount)
 		else if (app.selection.classification === "jenks") geostats.getClassJenks(classcount);
 		else if (app.selection.classification === "own") geostats.setClassManually(generate_classification_array(classcount));
 		else geostats.getClassQuantile(classcount);
-		}
-		catch (e)
-		{
-			console.log("error:", e);
-			const classification_message = document.getElementById("classification_message");
-			classification_message.innerHTML = "Es gab einen Fehler bei der Verarbeitung der Klassifikationseinstellungen. Klassifikation wurde auf eine sichere Einstellung zurückgesetzt.";
-			classification_message.style.display = "block";
-			app.selection.classification = "equidistant";
-			geostats.getClassEqInterval(classcount);
-			const classification_selector = document.getElementById("classification_selector");
-			classification_selector.value = "equidistant";
-		}
+	}
+	catch (e)
+	{
+		console.log("error:", e);
+		const classification_message = document.getElementById("classification_message");
+		classification_message.innerHTML = "Es gab einen Fehler bei der Verarbeitung der Klassifikationseinstellungen. Klassifikation wurde auf eine sichere Einstellung zurückgesetzt.";
+		classification_message.style.display = "block";
+		app.selection.classification = "equidistant";
+		geostats.getClassEqInterval(classcount);
+		const classification_selector = document.getElementById("classification_selector");
+		classification_selector.value = "equidistant";
+	}
 }
 
 function generate_classification_array(classcount)
