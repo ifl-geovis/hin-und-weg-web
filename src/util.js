@@ -113,11 +113,12 @@ function get_feature_by_id(feature_id, filtered)
 	return null;
 }
 
-function create_color_scale_selection(colorscale, negative)
+function create_color_scale_selection(colorscale, negative, first)
 {
 	let id = (negative) ? colorscale + "_negative" : colorscale;
 	let name = (negative) ? "colors_negative" : "colors";
-	let color_scale = '<br />';
+	let color_scale = '';
+	if (!first) color_scale += '<br />';
 	let checked = "";
 	if (negative && (id === app.selection.colors_negative)) checked = " checked";
 	if (!negative && (id === app.selection.colors)) checked = " checked";

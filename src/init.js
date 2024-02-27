@@ -25,10 +25,12 @@ function init_color_settings()
 {
 	let color_settings_positive = "";
 	let color_settings_negative = "";
+	let first = true;
 	for (let colorscale in app.configuration.colors)
 	{
-		color_settings_positive += create_color_scale_selection(colorscale, false);
-		color_settings_negative += create_color_scale_selection(colorscale, true);
+		color_settings_positive += create_color_scale_selection(colorscale, false, first);
+		color_settings_negative += create_color_scale_selection(colorscale, true, first);
+		first = false;
 	}
 	let colors_positive_selections = document.getElementById("colors_positive_selections");
 	colors_positive_selections.innerHTML = color_settings_positive;
