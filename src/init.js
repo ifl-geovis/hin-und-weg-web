@@ -73,20 +73,6 @@ function init_selections()
 	}
 }
 
-function create_color_scale_selection(colorscale, negative)
-{
-	let id = (negative) ? colorscale + "_negative" : colorscale;
-	let name = (negative) ? "colors_negative" : "colors";
-	let color_scale = '<br />';
-	let checked = "";
-	if (negative && (id === app.selection.colors_negative)) checked = " checked";
-	if (!negative && (id === app.selection.colors)) checked = " checked";
-	color_scale += '<input type="radio" id="radio_' + id + '" class="selector" name="' + name + '" value="' + id + '" onchange="colors_changed(event, ' + negative + ')"' + checked + ' />';
-	color_scale += '<div class="color_gradient" id="' + id + '"></div>';
-	color_scale += '<label for="radio_' + id + '"> ' + app.configuration.colors[colorscale].title + '</label>';
-	return color_scale;
-}
-
 function init_view()
 {
 	let viewcomponents = document.getElementsByClassName("viewcomponent");
