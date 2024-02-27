@@ -556,7 +556,7 @@ function refresh_classification_message()
 	classification_message.style.display = "none";
 	if (app.selection.classification === "own")
 	{
-		classification_message.innerHTML = "Hinweis: Bei eigener Klassifikation werden die Werte unten berücksichtigt, aber nur bis zur Anzahl der Klassen. Auch wenn negative Werte präsent sind wird bei eigener Klassifikation nur eine Farbskala gesetzt, man kann hier selbst den Null-Wert beeinflussen.";
+		classification_message.innerHTML = "Hinweis: Bei eigener Klassifikation werden die Werte unten berücksichtigt, aber nur bis zur Anzahl der Klassen.";
 		classification_message.style.display = "block";
 	}
 }
@@ -567,10 +567,10 @@ function refresh_settings_dialog()
 	classborder_selection_section.style.display = (app.selection.classification === "own") ? "block" : "none";
 	const colors_negative_section = document.getElementById("colors_negative_section");
 	colors_negative_section.style.display = "none";
-	if ((app.selection.theme === "saldi") && (app.selection.classification != "own")) colors_negative_section.style.display = "block";
+	if (app.selection.theme === "saldi") colors_negative_section.style.display = "block";
 	const class_number_negative_section = document.getElementById("class_number_negative_section");
 	class_number_negative_section.style.display = "none";
-	if ((app.selection.theme === "saldi") && (app.selection.classification != "own")) class_number_negative_section.style.display = "block";
+	if (app.selection.theme === "saldi") class_number_negative_section.style.display = "block";
 }
 
 function close_view(event, viewid)
