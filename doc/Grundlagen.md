@@ -42,3 +42,43 @@ console.log("var1, var2:", var1, var2);
 Es können beliebig viele Parameter angegeben werden, und diese können auch anderes als Strings enthalten. In der Dev-Konsole werden Objekte und Arrays interaktiv dargestellt, man kann sie per Mausklick ausklappen um sie im Detail zu inspizieren.
 
 Im Elemente-Tab der Dev-Konsole kann man den DOM inspizieren. Klickt man oben links auf das Pfeilsymbol, kann man in der Anwendung über Objekte hovern um mehr Informationen zu bekommen oder sie anklicken um im Elemente-Tab mehr Informationen zu bekommen. So kann man beispielsweise aktive CSS-Styles inspizieren oder sehen mit wie vielen Pixeln das aktuell gerendert wird.
+
+## Code
+
+Im Code wird versucht sprechende Namen in englischer Sprache zu verwenden. Englisch wird gewählt, weil das Konsistenz mit den Schlüsselwörtern und den Funktionen aus Bibliotheken hat. Die Namen werden alle in Kleinbuchstaben ausgeführt. Wird eine Funktion mit mehreren Wörter bezeichnet, dann wird ein Unterstrich zu Separation verwendet.
+
+```
+function year_selected(event)
+{
+	...
+}
+```
+
+Diese Konvention gelten auch für IDs und Klassennamen im HTML/CSS.
+
+```
+		<!-- legend view -->
+		<div id="legend_view">
+			...
+		</div>
+```
+
+## visueller Aufbau
+
+Alle visuellen Elemente sind in der `index.html`, meist als `div`-Tags. Sie sind auch dann dort definiert, wenn sie initial nicht sichtbar sind. Dann werden sie in der `main.css` mit dem Attribut `display: none;` versehen, damit sie nicht dargestellt werden. Sobald sie sichtbar werden sollen, wird per Javascript das display-Attribut geändert:
+
+```
+let dataset_dialog = document.getElementById("datasetloader_dialog");
+dataset_dialog.style.display = "block";
+```
+In diesem Beispiel wird der Datensatz-Lade-Dialog erst einmal im DOM über seine ID (`datasetloader_dialog`) gefunden. Dann wird das Display auf `block` gesetzt, damit der Dialog sichtbar wird. Wenn man das Element wieder unsichtbar machen will, setzt man display einfach erneut auf `none`.
+
+Die Anwendung benutzt eine komplette Füllung mit der Karte und alle weiteren Elemente sind schwebend darüber angebracht. Damit die Karte komplett das Fenster ausfüllt, müssen die standardmäßigen Ränder auf den `html`- und `body`-Tag entfernt werden. Dies geschieht in der CSS-Definition in `main.css`. zudem wird die Höhe auf 100% gesetzt, ansonsten wird es automatisch auf 0 Pixel kollabiert.
+```
+html, body
+{
+	height: 100%;
+	margin: 0px;
+	font-family: sans-serif;
+}
+```
