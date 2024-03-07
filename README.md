@@ -17,3 +17,9 @@ Folgende Drittpartei-Bibliotheken (Open Source) sind eingebunden. Lizenz und Gru
 | [papaparse](https://www.papaparse.com) | CSV-Parser | [Dokumentation](https://www.papaparse.com/docs), [Quellcode](https://github.com/mholt/PapaParse) | [MIT](https://github.com/mholt/PapaParse/blob/master/LICENSE) |
 | [turf.js](https://turfjs.org) | geographische Berechnungen (Schwerpunkt eines Polygons) | [Quellcode](https://github.com/Turfjs/turf/) | [MIT](https://github.com/Turfjs/turf/blob/master/LICENSE) |
 | [alasql](https://alasql.org) | interne DB | [Dokumentation](https://github.com/AlaSQL/alasql/wiki), [Quellcode](https://github.com/AlaSQL/alasql) | [MIT](https://github.com/AlaSQL/alasql/blob/develop/LICENSE) |
+
+## Icons
+
+Die Anwendung benutzt Vektoricons aus der [Scarlab Duotone Line Vectors Kollektion](https://www.svgrepo.com/collection/scarlab-duotone-line-vectors).
+
+[Quelle](https://github.com/la-moore/scarlab-icons), Lizenz: MIT
