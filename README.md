@@ -10,7 +10,7 @@ Folgende Drittpartei-Bibliotheken (Open Source) sind eingebunden. Lizenz und Gru
 
 | Bibliothek | Grund | Links | Lizenz |
 |:---|:---|:---|:---|
-| [Leaflet](https://leafletjs.com) | Kartendarstellung | [Dokumentation](https://leafletjs.com/reference.html) | [Tutorials](https://leafletjs.com/examples.html) | [Quellcode](https://github.com/Leaflet/Leaflet) | [2-clause BSD](https://github.com/Leaflet/Leaflet/blob/main/LICENSE) |
+| [Leaflet](https://leafletjs.com) | Kartendarstellung | [Dokumentation](https://leafletjs.com/reference.html), [Tutorials](https://leafletjs.com/examples.html), [Quellcode](https://github.com/Leaflet/Leaflet) | [2-clause BSD](https://github.com/Leaflet/Leaflet/blob/main/LICENSE) |
 | Leaflet swoopy | Pfeile in der Karte |
 | chroma.js |
 | geostats |
