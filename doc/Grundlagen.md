@@ -30,7 +30,7 @@ Die anwendungsspezifischen Javascripte sind in mehreren Javascript-Dateien:
 
 Alle diese Javascripte und zusätzlich die von den Bibliotheken bereitgestellten Javascripte werden ebenfalls im Header der `index.html` geladen.
 
-Es gibt die Unterverzeichnisse `lib`, `img` und `data`. Unter `lib` sind die verwendeten Bibliotheken abgelegt. In `img` sind alle benutzten Bilder und Icons. `data` enthält die Daten, die per Javascript-fetch geladen werden.
+Es gibt die Unterverzeichnisse `lib`, `img` und `data`. Unter `lib` sind die verwendeten Bibliotheken abgelegt. In `img` sind alle benutzten Bilder und Icons. `data` enthält die Daten, die per Javascript-fetch geladen werden. Wie diese Daten aufbereitet werden, kann man im Kapitel [Datenaufbereitung](Daten.md) im Detail einsehen.
 
 ## Empfehlungen zur Entwicklung
 

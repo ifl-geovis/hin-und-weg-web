@@ -6,7 +6,7 @@ Die Daten werden im Unterverzeichnis `data` abgelegt, welches in Folge dann auch
 
 ## `data/data.json`
 
-Die `data.json` enthält ein einfaches JSON-Array mit den Verzeichnisnamen. Dies ist notwendig, da im Webserver nicht immer ein Verzeichnis bereitgestellt wird (oft ist das abgeschaltet) und die Anwendung daher nicht erfahren kann welche verzeichnisse existieren. Eine beispielhafte `data.json` kann so aussehen:
+Die `data.json` enthält ein einfaches JSON-Array mit den Verzeichnisnamen. Dies ist notwendig, da im Webserver nicht immer ein Verzeichnis bereitgestellt wird (oft ist das abgeschaltet) und die Anwendung daher nicht erfahren kann welche Verzeichnisse existieren. Eine beispielhafte `data.json` kann so aussehen:
 
 ```
 [
