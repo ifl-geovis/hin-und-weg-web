@@ -2,7 +2,7 @@
 
 ## Dokumentation
 
-Eine Programmiererdokumentation findet sich [hier](doc/Daten.md).
+Eine Programmiererdokumentation findet sich [hier](doc/README.md).
 
 ## Bibliotheken
 
