@@ -115,7 +115,7 @@ function init_datalist()
 
 function init_datasetinfo()
 {
-	console.log("init_datasetinfo:", this);
+	//console.log("init_datasetinfo:", this);
 	//console.log("status:", this.status);
 	//console.log("content:", this.responseText);
 	if (this.status !== 200)
@@ -124,12 +124,12 @@ function init_datasetinfo()
 	}
 	else
 	{
-		console.log("appinfo:", this.appinfo);
+		//console.log("appinfo:", this.appinfo);
 		let dataset = JSON.parse(this.responseText);
 		extract_migration_years(dataset);
 		app.datasets[this.appinfo.dir] = dataset;
 	}
-	console.log("loads:", app.status.dataset_loads);
+	//console.log("loads:", app.status.dataset_loads);
 	app.status.dataset_loads--;
 	if (app.status.dataset_loads === 0)
 	{

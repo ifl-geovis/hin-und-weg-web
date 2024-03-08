@@ -18,7 +18,7 @@ function load_url(url, info, listener)
 
 function extract_migration_years(dataset)
 {
-	console.log("extract_migration_years: ", dataset);
+	//console.log("extract_migration_years: ", dataset);
 	for (let category of dataset.categories)
 	{
 		let years = [];
