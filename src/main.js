@@ -290,9 +290,7 @@ function process_selections(reset_filters)
 	refresh_title_years();
 	refresh_swoopy_arrows();
 	renew_filters(reset_filters);
-	refresh_table_view();
-	refresh_statistics_view();
-	refresh_barchart_view();
+	refresh_view(app.status.viewcomponent);
 	refresh_legend();
 	refresh_settings_dialog();
 	app.status.loading = false;
