@@ -104,7 +104,11 @@ function start()
 }
 ```
 
-Wenn diese Funktion aufgerufen wird, dann ist die Initialisierung abgeschlossen. Bei abgeschlossener Initialisierung ist erstmals der Datenladedialog geöffnet, mit der Auswahl für den Nutzer welcher Datensatz zu laden ist. Weitere Funktionalitäten werden dann durch Events ausgelöst, die der Nutzer mit seinen Aktionen initiiert.
+Wenn diese Funktion aufgerufen wird, dann ist die Initialisierung abgeschlossen. Bei abgeschlossener Initialisierung ist erstmals der Datenladedialog geöffnet, mit der Auswahl für den Nutzer welcher Datensatz zu laden ist. Weitere Funktionalitäten werden dann durch Events ausgelöst, die der Nutzer mit seinen Aktionen initiiert. Beispielsweise enthält der Dialog des Datensatzladers im HTML einen Button:
+```
+<button name="load_dataset" id="load_dataset_button" onclick="load_dataset(event)" disabled>Daten einladen</button>
+```
+Dort ist als `onclick`-Event die Funktion `load_dataset()` angegeben, diese wird also ausgeführt sobald der Anwender den Button klickt. dabei können Parameter übergeben werden, der Parameter event ist in dem Kontext immer mit dem auslösenden Event (in dem Fall also der Klick) gefüllt und kann weitere Informationen enthalten (wie die Mausposition). So werden also nach der Initialisierung weitere Aktionen ausgelöst, der Nutzer macht eine Interaktion und dies löst den Aufruf von Funktionen aus, die in den Javascript-Dateien definiert wurden.
 
 ## visueller Aufbau
 
