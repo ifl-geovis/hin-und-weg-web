@@ -24,6 +24,68 @@ Im Datensatz-Verzeichnis liegt eine `info.json`, eine GeoJSON-Datei und mehrere 
 
 ## `info.json`
 
+In jedem der Unterverzeichnisse liegt eine `info.json`-Datei, die die weiteren Informationen zu dem Datensatz beschreibt. Hier ein Beispiel:
+
+```
+{
+	"name": "bundesweite Daten",
+	"title": "Migrationen zwischen den Bundesländern",
+	"geodata": "DE_Bundeslaender.geojson",
+	"id_property": "NUTS_CODE",
+	"name_property": "NUTS_NAME",
+	"categories":
+	[
+		{
+			"id": "all",
+			"name": "Gesamtdaten",
+			"population": "Bevölkerung_Bundesländer/Bevölkerung_Bundesländer_insgesamt_2000-2020.csv",
+			"migrations":
+			{
+				"2000": "Binnenwanderungen_ingesamt_2000-2020/BWinsg2000.csv",
+				"2001": "Binnenwanderungen_ingesamt_2000-2020/BWinsg2001.csv"
+			}
+		},
+		{
+			"id": "female",
+			"name": "weiblich",
+			"population": "Bevölkerung_Bundesländer/Bevölkerung_Bundesländer_weiblich_2000-2020.csv",
+			"migrations":
+			{
+				"2000": "Binnenwanderungen_w_2000-2020/BWw2000.csv",
+				"2001": "Binnenwanderungen_w_2000-2020/BWw2001.csv"
+			}
+		},
+		{
+			"id": "male",
+			"name": "männlich",
+			"population": "Bevölkerung_Bundesländer/Bevölkerung_Bundesländer_männlich_2000-2020.csv",
+			"migrations":
+			{
+				"2000": "Binnenwanderungen_m_2000-2020/BWm2000.csv",
+				"2001": "Binnenwanderungen_m_2000-2020/BWm2001.csv",
+			}
+		}
+	]
+}
+```
+
+Wie man sieht ist die `info.json` ein Objekt. Es enthält als Basis einige Attribute, die grundlegende Dinge beschreiben:
+
+ * `name`: der Name der in der Auswahlliste angezeigt wird (als ID wird der Name des Verzeichnisses benutzt)
+ * `title`: der Titel wird in der Titelzeile der Anwendung angezeigt, wenn man den Datensatz ausgewählt hat
+ * `geodata`: gibt den Dateinamen der geojson-Datei mit den Geodaten an
+ * `id_property` und `name_property`: gibt die Properties in der geojson an, mit der ID und Name der jeweiligen Geometrie bestimmt werden, die ID muss mit der Angabe in der CSV übereinstimmen
+
+Dann gibt es ein Array mit den Kategories (`categories`). Dies ist ein Array von Objekten, jedes repräsentiert eine Datenkategorie. Auch hier gibt es einige Attribute.
+
+ * `id`: ID der Kategorie (muss eindeutig sein)
+ * `name`: der in der Auswahl angezeigte Name
+ * `population`: Dateiname einer CSV-Datei mit den Populationsdaten, kann weggelassen werden, nur wenn vorhanden werden Wanderungsraten damit berechnet
+
+Und jede Kategorie enthält ein Objekt mit den Migrationsdaten (`migrations`). Dieses Objekt enthält als Schlüssel das Jahr (obwohl man prinzipiell da auch andere Strings eintragen könnte wie Q1 2024). Als jeweiliger Wert ist der Dateiname der korrespondierenden CSV-Datei mit den Migrationsdaten angegeben.
+
+Alle Dateinamen (`geodata`, `population`, `migrations`) sind relativ zu dem Verzeichnis in dem die `info.json` liegt. Die Reihenfolge in `categories` und `migrations` bleibt auch die relevante Reihenfolge die in den Selektionen angezeigt wird.
+
 ## GeoJSON-Datei
 
 Die GeoJSON-Datei kann einen beliebigen Namen haben, erneut sollten aber Leer- und Sonderzeichen vermieden werden.
