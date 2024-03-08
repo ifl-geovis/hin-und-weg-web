@@ -89,3 +89,47 @@ function refresh_view(viewid)
 ```
 
 Nun sollten wir in der Dev-Konsole unsere obige Ausgabe sehen, sobald wir das Fenster mit Klick auf den Button öffnen, und so lange es offen ist immer wenn wir eine neue Selektion vornehmen.
+
+## Fallback für unzureichende Selektion
+
+Als nächstes fügen wir Code hinzu, um eine Ausgabe zu machen für den Fall, dass die Selektion noch nicht zu hinreichenden Daten führt (beispielsweise wenn noch keine Fläche gewählt wurde).
+
+```
+function refresh_diagram_view()
+{
+	console.log("refresh_diagram_view");
+	let diagram_view_data = document.getElementById("diagram_view_data");
+	if (!app.data.processed)
+	{
+		diagram_view_data.innerHTML = "Für die gewählte Selektion sind keine Daten verfügbar!";
+		return;
+	}
+}
+```
+
+Wir holen uns hier das Element das wir ändern wollen mit der zuvor vergebenen ID `document.getElementById("diagram_view_data")` und speichern es in einer Variable. Dann fragen wir ab, ob wir Daten vorliegen haben, und wenn nicht schreiben wir in das Element einen entsprechenden Text hinein. Für den Fall mit keinen Daten verlassen wir die Funktion mit `return;` vorzeitig, weil es nun nichts mehr zu tun gibt.
+
+## Fallback für unzureichende Selektion
+
+Nun brauchen wir auch Code für den Fall das wir Daten haben:
+
+```
+function refresh_diagram_view()
+{
+	...
+	let dataview = '';
+	for (let row of app.data.processed)
+	{
+		dataview += row.id + ': ' + row.migrations + '<br />';
+	}
+	diagram_view_data.innerHTML = dataview;
+}
+```
+
+Wir erzeugen hier eine Variable `dataview`, die wir in einer Schleife mit Inhalt füllen. `dataview` kann und soll ruhig HTML enthalten, dies wird vom Browser gerendert.
+
+Die Schleife ist eine for-of-Schleife. Damit wird über dem Inhalt eines Arrays iteriert, row enthält in jedem Durchlauf ein weiteres Element des Arrays, welches in unserem Fall die prozessierten Daten `app.data.processed` sind.
+
+Nach Abschluss schreiben wir dataview in das Element hinein mit `innerHTML`. Damit wird der DOM aktualisiert und der Browser rendert die Änderungen.
+
+Dieses Beispiel ist natürlich extrem einfach, es gibt nur zwei Felder in den Daten aus. Normalerweise will man wohl kompliziertere Dinge tun. Dies kann man entsprechend in Funktionen auslagern, die man ruft um das HTML zu erzeugen. Als Beispiel kann man sich `table.js` anschauen. Die Funktion `refresh_table_view()` erstellt die Tabellenansicht und benutzt dazu `app.data.processed` als Datengrundlage. Die Funktion `refresh_statistics_view()` in der gleichen Datei erstellt die Statistik und nutzt dazu `app.data.geostats` als Datengrundlage. Beide benutzen zusätzliche Funktionen um ihre Arbeit zu erledigen.
