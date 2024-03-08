@@ -1,26 +1,3 @@
-/*
-app is the general data holder for the application
-
-for controlling the application:
-	* status: diverse status information
-
-for the map:
-	* map: holds the leaflet map
-	* maplayer: holds the geojson-layer (once loaded)
-
-info-data (datasets and categories for controlling the application):
-	* dataset_list: list of the datasets defined in data/data.json as ids (should be filled by init process)
-	* datasets: the full content of the different data/${dataset}/info.json, each keyed with the id of the dataset (should be filled by init process)
-	* dataset_mapping: map of dataset-ids to their names for dropdown list (should be filled by init process)
-	* category_mapping: map of category-ids to their names for dropdown list (will be filled once dataset is selected)
-	* selection.dataset_id, selection.category_id: ids of currently selected dataset and category
-	* selection.dataset, selection.category: full content of currently selected dataset and category
-
-data:
-	* geodata: contains the geojson loaded dynamically specified in the selected dataset
-
-*/
-
 let app =
 {
 	configuration:
