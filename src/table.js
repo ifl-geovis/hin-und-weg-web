@@ -1,6 +1,5 @@
 function refresh_table_view()
 {
-	if (app.status.viewcomponent != "table_view") return;
 	//console.log("refresh_table_view");
 	//console.log("app.data.processed:", app.data.processed);
 	let table_view_data = document.getElementById("table_view_data");
@@ -126,7 +125,6 @@ function tablesort_compare(element1, element2)
 
 function refresh_statistics_view()
 {
-	if (app.status.viewcomponent != "statistics_view") return;
 	//console.log("refresh_statistics_view");
 	//console.log("app.data.processed:", app.data.processed);
 	//console.log("app.data.geostats:", app.data.geostats);
