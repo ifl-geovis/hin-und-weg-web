@@ -110,6 +110,21 @@ Wenn diese Funktion aufgerufen wird, dann ist die Initialisierung abgeschlossen.
 ```
 Dort ist als `onclick`-Event die Funktion `load_dataset()` angegeben, diese wird also ausgeführt sobald der Anwender den Button klickt. dabei können Parameter übergeben werden, der Parameter event ist in dem Kontext immer mit dem auslösenden Event (in dem Fall also der Klick) gefüllt und kann weitere Informationen enthalten (wie die Mausposition). So werden also nach der Initialisierung weitere Aktionen ausgelöst, der Nutzer macht eine Interaktion und dies löst den Aufruf von Funktionen aus, die in den Javascript-Dateien definiert wurden.
 
+### Selektionen
+
+In der hin&weg Anwendung ist eine zentrale Nutzerinteraktion die Auswahl von Selektionen über den Daten (Flächen, Jahre usw.). Diese Selektionen sind auf der linken Seite der Anwendung platziert und bei Veränderung werden Funktionen aufgerufen, die erst einmal den neuen Wert in dem app-Objekt setzen (siehe [Applikations-Objekt](appdata.md)). Aber diese Selektionen führen auch dazu, dass die prozessierten Werte neu berechnet werden müssen. Deshalb hier beispielhaft die Funktion, die bei Änderungen am Thema (Von, Nach, Saldi) aufgerufen wird:
+```
+function theme_selected(event)
+{
+	//console.log("theme_selected:", event.target.value);
+	app.selection.theme = event.target.value;
+	process_selections(true);
+}
+```
+Wie man sieht wird hier erst einmal der neue Wert gesetzt. Dann wird die Funktion `process_selections` aufgerufen. Diese führt alle diese Berechnungen durch. Der Boolean-Parameter bestimmt, ob die Filter zurückgesetzt werden. Dies passiert deshalb, weil die Selektionen für den Filter relevante Änderungen durchführen können, sie können beispielsweise den maximalen oder minimalen Wert ändern. Dann werden die Filter neu gesetzt und auf Standardwerte zurückgesetzt. Wenn der Nutzer dagegen den Filter selbst geändert hat, dann beeinflusst dies durchaus die Berechnungen, aber dann möchte man den Filter eben nicht sofort auf Standardwerte zurücksetzen, deshalb wird für den Fall `false` als Parameter gesetzt.
+
+Wenn man neue Selektionen einführt, dann sollte man sicherstellen, dass man `process_selections()` aufruft. Wenn man zusätzliche Berechnungen abhängig von den Selektionen macht, dann sollte man sie in eine Funktion platzieren, die man wiederum von `process_selections()` aus aufruft.
+
 ## visueller Aufbau
 
 Alle visuellen Elemente sind in der `index.html`, meist als `div`-Tags. Sie sind auch dann dort definiert, wenn sie initial nicht sichtbar sind. Dann werden sie in der `main.css` mit dem Attribut `display: none;` versehen, damit sie nicht dargestellt werden. Sobald sie sichtbar werden sollen, wird per Javascript das display-Attribut geändert:
