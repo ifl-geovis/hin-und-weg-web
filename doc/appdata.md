@@ -2,7 +2,7 @@
 
 Das Applikations-Objekt ist ein zentrales Objekt um die Daten für die Anwendung zu halten. hier ist immer der aktuelle Stand der Anwendung ablesbar. Beispielsweise kann man durch Abfrage von `app.selection.area_id` immer die ID der aktuell ausgewählten Fläche in Erfahrung bringen. Es war zentral die Daten in dem Applikations-Objekt immer aktuell zum Zustand der Anwendung zu halten, um das Objekt als konsistente Referenz zu haben.
 
-Die initialen Werte des Objekt werden am Anfang der `main,js` definiert. Diese Werte können danach durch den weiteren Programmablauf geändert werden.
+Die initialen Werte des Objekt werden am Anfang der `main.js` definiert. Diese Werte können danach durch den weiteren Programmablauf geändert werden.
 
 Da die Applikation umfangreich ist, ist das Objekt in Unterbereiche unterteilt, die jeweils wieder ein Objekt sind. Diese Bereiche sind:
 
@@ -58,5 +58,26 @@ Mit chroma,js kann man auch Funktionen nutzen, was ich für die einfarbigen Skal
 Hier wird mit `chroma("green")` die Farbe grün erzeugt und dann mit `.brighten(3)` 3 Stufen heller gemacht oder mit `.darken(3)` entsprechend dunkler.
 
 ## app.data
+
+Hier werden die Daten der Anwendung verwaltet. Einige wichtige Werte sind:
+
+ * `app.data.geodata`: Der komplette Inhalt der geladenen GeoJSON-Datei, also die Geometrien und ihre Attribute.
+ * `app.data.migrations`: Die Migrations-CSV des Datensatzes. das Objekt enthält alle, mit jeweils dem in der `info.json` definierten Schlüssel hier ebenfalls als Schlüssel zu den entsprechenden Daten. Die CSV-Daten sind hier als der von Papaparse erzeugten Output abgelegt, enthalten also neben den eigentlichen Daten (`data`) auch einige Metadaten vomm Parsingsprozess.
+ * `app.data.population`: Die Populations-Daten (wenn vorhanden). Hier auch die von Papaparse erzeugten Objekte.
+ * `app.data.category_mapping`, `app.data.centroid_mapping`, `app.data.dataset_mapping`: Mehrere Mapping-Objekte für die Erzeugung von Auswahllisten und ähnliche Selektionen. Enthalten jeweils das Mapping von einem Schlüssel auf zugehörige Daten.
+ * `app.data.geostats`, `app.data.geostats_positive`, `app.data.geostats_negative`: Die geostats-Objekte. Dabei enthält `app.data.geostats` die originalen Daten und kann zur korrekten Erzeugung der Statistiken genutzt werden, kann aber je nach Algorithmus scheitern bei den Klassen. Die `_negative`- und `_positive`-Varianten enthalten nur die negativen und positiven Werte und sind zudem mit zusätzlichen Nullen gepadded, damit instabile Algorithmen wie Jenks nicht so leicht scheitern (was bei wenigen Werten passieren) und die erzeugten Legenden bis zur Null reichen. Allerdings sind sie damit unbrauchbar zur Berechnung der Statistiken. Also die Variante ohne Zusatz ist zur Berechnung der Statistiken, die anderen zur Klassifizierung und zur Legendenerzeugung.
+ * `app.data.processed` und `app.data.unfiltered`: Die Objekte der prozessierten Daten. Werden bei jedem Aufruf von `process_selections()` neu berechnet (also nach jeder vom Nutzer getroffenen Auswahl).
+
+### app.data.processed/unfiltered
+
+Interessant zur Nutzung dürften hier in erster Linie `app.data.processed` und `app.data.unfiltered` sein. Beide enthalten die komplett prezessierten Werte der aktuellen Auswahl. Der Unterschied ist, dass bei `processed` die Filter angewendet werden, um Werte wegzulassen. `unfiltered` dagegen enthält die Werte für alle Flächen. Beides sind Arrays von Objekten. Die Objekte stehen jeweils für eine Fläche.
+
+Die Objekte enthalten folgende Werte:
+
+ * `fromid`, `toid`: die ID der Flächen für jeweils Quelle und Ziel der Migration
+ * `fromname`, `toname`: die zu den Flächen gehörenden Namen
+ * `id`: dies entspricht der nicht selektierten Fläche (bei Thema 'Von' identisch mit `toid` und bei 'Nach' mit `fromid`)
+ * `migrations`: enthält den zugehörigen kumulierten Migrationswert für die Jahre (bei Wanderungsrate ist es die durchschnittliche Wanderungsrate)
+ * `color`: die nach der Klassifikation zugehörige Farbe zu der Fläche
 
 ## app.selection
