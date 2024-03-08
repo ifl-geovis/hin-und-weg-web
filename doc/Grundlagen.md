@@ -16,7 +16,7 @@ Da kein Buildprozess nötig ist, genügt es bei Änderungen einen Reload im Brow
 
 Es existiert grundlegend eine `index.html`. Diese wird in grundlegenden Webserver-Einstellungen auch dann geladen, wenn nur der Basispfad angegeben wird. In der index.html werden CSS und Javascript geladen.
 
-Es gibt zwei weitere HTML-Dateien, `datenschutz.html` und `impressum.html`. Diese sind in der Anwendugn verlinkt (unten links beim Logo). Diese HTML-Seiten sind derzeit außer einem HTML-Gerüst leer und können vom IfL nach Bedarf gefüllt werden.
+Es gibt zwei weitere HTML-Dateien, `datenschutz.html` und `impressum.html`. Diese sind in der Anwendung verlinkt (unten links beim Logo). Diese HTML-Seiten sind derzeit außer einem HTML-Gerüst leer und können vom IfL nach Bedarf gefüllt werden.
 
 Die `main.css` enthält die von der Anwendung benutzten Stildefinitionen. Sie wird in der `index.html` im Header geladen. Zudem liefern geostats und leaflet eigene Stildateien, die dort ebenfalls geladen werden.
 
@@ -63,6 +63,49 @@ Diese Konvention gelten auch für IDs und Klassennamen im HTML/CSS.
 		</div>
 ```
 
+Um den Status der Anwendung zu halten wird ein Objekt namens `app` erzeugt. Dieses enthält als Attribute alle Daten, Stati und Selektionen. Der detaillierte Aufbau des app-Objekts wird im Kapitel [Applikations-Objekt](appdata.md) im Detail erklärt.
+
+### Initialisierung
+
+Die Anwendung hat eine Initialisierungsphase nach dem Laden der Seite. Ausgelöst wird dies durch folgenden Code im HTML:
+
+```
+	<!-- scripting load -->
+	<!-- after the map-div, because otherwise it may go wrong -->
+	<script type="text/javascript" defer>
+		init();
+	</script>
+```
+Dies ist am Ende der HTML-Seite platziert, weil die Reihenfolge auch die Ausführungsreihenfolge beeinflusst, aber der `script`-Block ist zudem mit `defer` gekennzeichnet, was bedeutet, dass der Inhalt erst ausgeführt ist nachdem die Seite geladen und geparst wurde (siehe [defer](https://www.w3schools.com/tags/att_script_defer.asp)). Die dort aufgerufene Funktion `init()` ist in der Datei `init.js` und sieht derzeit so aus:
+
+```
+function init()
+{
+	console.log("initialize!");
+	init_color_settings();
+	init_values();
+	init_selections();
+	init_map();
+	init_view();
+	init_db();
+	init_color_gradients();
+	load_url("data/data.json", null, init_datalist);
+}
+```
+
+Also de facto werden einfach weitere init-Funktionen aufgerufen, die dafür sorgen dass die Anwendung in ihren initialen Zustand versetzt wird. Falls es nötig ist weitere Initialisierungen durchzuführen, so sollte man hier weitere Funktionen unterbringen. Außerdem wird der Start hier durch das Log auf der Konsole mit `initialize!` angeführt, so dass man sehen kann wann der Intialisierungsprozess startet. Das Ende wird hier nicht genauso markiert, da einige der Initialisierungsprozesse Daten laden (es wird während der Initialisierung `data/data.json` und alle `info.json` in den entsprechenden Unterverzeichnissen geladen). Diese Ladeprozesse erfolgen nebenläufig.
+
+Der Abschluss der Initialisierung wird durch den Aufruf der Funktion `start` markiert, die nur ebenfalls eine Konsolen-Ausgabe hat:
+
+```
+function start()
+{
+	console.log("start!");
+}
+```
+
+Wenn diese Funktion aufgerufen wird, dann ist die Initialisierung abgeschlossen. Bei abgeschlossener Initialisierung ist erstmals der Datenladedialog geöffnet, mit der Auswahl für den Nutzer welcher Datensatz zu laden ist. Weitere Funktionalitäten werden dann durch Events ausgelöst, die der Nutzer mit seinen Aktionen initiiert.
+
 ## visueller Aufbau
 
 Alle visuellen Elemente sind in der `index.html`, meist als `div`-Tags. Sie sind auch dann dort definiert, wenn sie initial nicht sichtbar sind. Dann werden sie in der `main.css` mit dem Attribut `display: none;` versehen, damit sie nicht dargestellt werden. Sobald sie sichtbar werden sollen, wird per Javascript das display-Attribut geändert:
@@ -82,3 +125,19 @@ html, body
 	font-family: sans-serif;
 }
 ```
+
+Außerdem bedeutet das, das weitere Elemente aus dem normalen Dokumentenflow genommen werden, sonst erhält die Seite Scrollbalken. Sie werden stattdessen 'schwebend' auf der Karte dargestellt.
+
+```
+div#legend_view
+{
+	position: fixed;
+	right: 50px;
+	bottom: 30px;
+	min-width: 100px;
+	min-height: 40px;
+	z-index: 1000;
+}
+```
+
+Das wird mit `position: fixed;` erreicht. Damit werden Elemente aus dem normalen Flow entfernt und stattdessen ausgehend von dem Fenster platziert. Mit den Attributen `right` und `bottom` wird angegeben, wie weit das Element vom rechten und unteren Rand entfernt ist. Man kann auch `left` und `top` verwenden für entsprechend den linken und oberen Rand. Das Attribut `z-index` wird benutzt um zu bestimmen, welche Elemente 'über' anderen Elementen angezeigt werden (also welches Element welches andere verdeckt). Leaflet benutzt z-Indices kleiner bis 1000 für seine Elemente, also erreicht man mit z-Index 1000 oder größer, dass diese Elemente über der Karte platziert werden.
