@@ -1,13 +1,3 @@
-/*
-	Controls the whole init-process of the application.
-
-	# init() ← called directly from webpage in defer-script-block
-	# init_datalist() ← callback after loading data/data.json with load_url from init()
-	# init_datasetinfo() ← callback after loading data/${dataset}/info.json with load_url from init_datalist()
-	# init_datasetloader() ← direct call from init_datasetinfo(), when *all* info.json are loaded
-	# start() ← called after all other initialization is done
-*/
-
 function init()
 {
 	console.log("initialize!");

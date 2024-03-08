@@ -104,6 +104,17 @@ function start()
 }
 ```
 
+Der Ablauf der Initialisierung kann grob so beschrieben werden:
+
+ * `init()`: Diese Funktion wird direkt von der HTML-Seite aufgerufen und startet die Initialisierung. Es werden eine Reihe direkter Initialisierungen durchgeführt, aber unter anderem wird auch das Laden von `data/data.json` angestoßen mit der Funktion `load_url()`.
+ * `load_url()`: Dies ist eine Hilfsfunktion (definiert in `utils.js`), die dazu benutzt wird Daten von einer URL zu laden. Sie nimmt als ersten Parameter die zu ladende URL. Der zweite Parameter ist ein Objekt mit dem Kontext definiert werden kann. Dies ist speziell hilfreich, wenn das Laden mehrerer URLs parallel angestoßen wird, damit die aufgerufene Funktion erkennen kann, was gerade fertig geworden ist. Der dritte Parameter gibt die Funktion an, die mit den geladenen Daten aufgerufen werden soll, sobald das Laden abgeschlossen wurde.
+ * `init_datalist()`: Diese Callback-Funktion wird aufgerufen, sobald `data/data.json` geladen wurde. Hier wird initiiert, dass für all die in `data/data.json` definierten Verzeichnisse die entsprechende `info.json` geladen wird.
+ * `init_datasetinfo()`: Diese Funktion wird als Callback aufgerufen, wenn eine `info.json` fertig geladen ist (also so oft wie `info.json`-Dateien existieren).
+ * `init_datasetloader()`: Diese Funktion wird erst aufgerufen, wenn *alle* `info.json`-Dateien geladen wurden. Hier wird der Datensatz-Ladedialog initialisiert mit den Auswahllisten die wir nun mit den Daten aus den `info.json` füllen können.
+ * `start()`: Diese Funktion wird aufgerufen, sobald die Initialisierungen abgeschlossen wurden.
+
+Man bedenke, dass bei Abschluss der Initialisierungen noch kein Datensatz direkt geladen wurde. Das passiert erst nachdem der Nutzer einen ausgewählt hat.
+
 Wenn diese Funktion aufgerufen wird, dann ist die Initialisierung abgeschlossen. Bei abgeschlossener Initialisierung ist erstmals der Datenladedialog geöffnet, mit der Auswahl für den Nutzer welcher Datensatz zu laden ist. Weitere Funktionalitäten werden dann durch Events ausgelöst, die der Nutzer mit seinen Aktionen initiiert. Beispielsweise enthält der Dialog des Datensatzladers im HTML einen Button:
 ```
 <button name="load_dataset" id="load_dataset_button" onclick="load_dataset(event)" disabled>Daten einladen</button>
