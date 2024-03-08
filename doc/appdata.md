@@ -81,3 +81,28 @@ Die Objekte enthalten folgende Werte:
  * `color`: die nach der Klassifikation zugehörige Farbe zu der Fläche
 
 ## app.selection
+
+In `app.selection` ist immer der aktuelle Stand der Selektionen durch den Nutzer geführt. Folgende Werte sind enthalten:
+
+ * `app.selection.dataset_id`: ID des aktuell gewählten Datensatzes
+ * `app.selection.dataset`: die `info.json` des aktuell gewählten Datensatzes
+ * `app.selection.category_id`: ID der aktuellen Datenkategorie
+ * `app.selection.category`: die aktuell gewählte Datenkategorie
+ * `app.selection.map_opacity`: Transparenz der Flächen
+ * `app.selection.labels`: Auswahl für die Kartenlabels
+ * `app.selection.swoopy_arrows`: Visualisierung der Bewegungen mit Pfeilen
+ * `app.selection.theme`: aktuell gewähltes Thema
+ * `app.selection.data_interpretation`: absolut oder Wanderungsrate
+ * `app.selection.area_id`: ID der aktuellen Fläche
+ * `app.selection.area_inside`: Boolean-Wert für die Frage, ob Umzüge innerhalb der Fläche berücksichtigt werden
+ * `app.selection.years`: selektierte Jahre
+ * `app.selection.filter`: Filter
+ * `app.selection.classification`: Klassifikation
+ * `app.selection.class_number`: Klassenzahl
+ * `app.selection.class_number_negative`: Klassenzahl für negative Werte
+ * `app.selection.classborders`: selbstgewählte Klassengrenzen
+ * `app.selection.classborders_negative`: selbstgewählte Klassengrenzen für negative Werte
+ * `app.selection.colors`: Farbschema
+ * `app.selection.colors_negative`: Farbschema für negative Werte
+
+Jede Änderung hier sollte gefolgt werden von einem Aufruf von `process_selections()`, um die für diese Selektionen getätigten Einstellungen in den prozessierten Werten zu reflektieren.
