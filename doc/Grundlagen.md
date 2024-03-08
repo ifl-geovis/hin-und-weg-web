@@ -22,11 +22,11 @@ Die `main.css` enthält die von der Anwendung benutzten Stildefinitionen. Sie wi
 
 Die anwendungsspezifischen Javascripte sind in mehreren Javascript-Dateien:
 
- * `main.js` (grundlegender Code)
- * `init.js` (Initialisierung der Anwendung)
- * `map.js` (kartenspezifischer Code)
- * `table.js` (Code für Statistik und Tabellendarstellung)
- * `util.js` (einige Helferfunktionen)
+ * `main.js`: grundlegender Code
+ * `init.js`: Initialisierung der Anwendung
+ * `map.js`: kartenspezifischer Code
+ * `table.js`: Code für Statistik und Tabellendarstellung
+ * `util.js`: einige Helferfunktionen
 
 Alle diese Javascripte und zusätzlich die von den Bibliotheken bereitgestellten Javascripte werden ebenfalls im Header der `index.html` geladen.
 
