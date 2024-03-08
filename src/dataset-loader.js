@@ -98,7 +98,7 @@ function select_category(id, categories)
 
 function load_geodata()
 {
-	console.log("load_geodata:", this);
+	//console.log("load_geodata:", this);
 	//console.log("status:", this.status);
 	//console.log("content:", this.responseText);
 	if (this.status === 200)
