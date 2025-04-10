@@ -1,5 +1,6 @@
 let app =
 {
+	/*Initialisierung*/
 	configuration:
 	{
 		colors:
