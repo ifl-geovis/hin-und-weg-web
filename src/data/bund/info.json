@@ -1,6 +1,6 @@
 {
 	"name": "bundesweite Daten",
-	"title": "Migrationen zwischen den Bundeslaendern",
+	"title": "Migrationen zwischen den Bundesländern",
 	"geodata": "DE_Bundeslaender.geojson",
 	"id_property": "NUTS_CODE",
 	"name_property": "NUTS_NAME",
