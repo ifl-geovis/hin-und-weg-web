@@ -28,63 +28,61 @@ function remove_swoopy_arrows()
 	app.view.swoopy_arrows = [];
 }
 
-function add_swoopy_arrows()
-{
-	const arrow_weight_head = 1;
-	const arrow_weight_body = 3.5;
-	if (!app.selection.swoopy_arrows) return;
-	if (!app.data.geodata) return;
-	if (!app.data.geostats) return;
-	if (!app.data.centroid_mapping) return;
-	if (!app.data.processed) return;
-	let min = app.data.geostats.min();
-	let max = app.data.geostats.max();
-	for (let dataset of app.data.processed)
-	{
-		let weight_head = (((dataset.migrations - min) / (max - min)) * arrow_weight_head) + 1;
-		let weight_body = (((dataset.migrations - min) / (max - min)) * arrow_weight_body) + 1;
-		let color = "#3333dd";
-		let hide_arrow_head = true;
-		if (app.selection.theme === "von")
-		{
-			color = "#dd3333";
-			hide_arrow_head = false;
-		}
-		let from = app.data.centroid_mapping[dataset.fromid];
-		let to = app.data.centroid_mapping[dataset.toid];
-		if ((app.selection.theme === "saldi") && (dataset.migrations < 0))
-		{
-			let tmp = from;
-			from = to;
-			to = tmp;
-			color = "#dd3333";
-			hide_arrow_head = false;
-			weight_head = (((dataset.migrations) / (min)) * arrow_weight_head) + 1;
-			weight_body = (((dataset.migrations) / (min)) * arrow_weight_body) + 1;
-		}
-		if ((app.selection.theme === "saldi") && (dataset.migrations >= 0))
-		{
-			weight_head = (((dataset.migrations) / (max)) * arrow_weight_head) + 1;
-			weight_body = (((dataset.migrations) / (max)) * arrow_weight_body) + 1;
-		}
-		const swoopy_head = L.swoopyArrow(from, to,
-		{
-			color: color,
-			weight: weight_head,
-			arrowFilled: false,
-			hideArrowHead: hide_arrow_head,
-		});
-		const swoopy_body = L.swoopyArrow(from, to,
-		{
-			color: color,
-			weight: weight_body,
-			arrowFilled: false,
-			hideArrowHead: true,
-		});
-		app.view.swoopy_arrows.push(swoopy_head);
-		app.view.swoopy_arrows.push(swoopy_body);
-	}
+
+function add_swoopy_arrows() {
+    const arrow_weight_head = 1;
+    const arrow_weight_body = 3.5;
+    if (!app.selection.swoopy_arrows) return;
+    if (!app.data.geodata) return;
+    if (!app.data.geostats) return;
+    if (!app.data.centroid_mapping) return;
+    if (!app.data.processed) return;
+    let min = app.data.geostats.min();
+    let max = app.data.geostats.max();
+    for (let dataset of app.data.processed) {
+        // Skip arrows for zero values and missing data
+        if (dataset.migrations === 0 || dataset.migrations === null || dataset.migrations === undefined) continue;
+
+        let weight_head = (((dataset.migrations - min) / (max - min)) * arrow_weight_head) + 1;
+        let weight_body = (((dataset.migrations - min) / (max - min)) * arrow_weight_body) + 1;
+        let color = "#3333dd";
+        let hide_arrow_head = true;
+        if (app.selection.theme === "von") {
+            color = "#dd3333";
+            hide_arrow_head = false;
+        }
+        let from = app.data.centroid_mapping[dataset.fromid];
+        let to = app.data.centroid_mapping[dataset.toid];
+        if ((app.selection.theme === "saldi") && (dataset.migrations < 0)) {
+            let tmp = from;
+            from = to;
+            to = tmp;
+            color = "#dd3333";
+            hide_arrow_head = false;
+            weight_head = (((dataset.migrations) / (min)) * arrow_weight_head) + 1;
+            weight_body = (((dataset.migrations) / (min)) * arrow_weight_body) + 1;
+        }
+        if ((app.selection.theme === "saldi") && (dataset.migrations >= 0)) {
+            weight_head = (((dataset.migrations) / (max)) * arrow_weight_head) + 1;
+            weight_body = (((dataset.migrations) / (max)) * arrow_weight_body) + 1;
+        }
+        const swoopy_head = L.swoopyArrow(from, to, {
+            color: color,
+            weight: weight_head,
+            arrowFilled: true,
+            hideArrowHead: hide_arrow_head,
+        });
+        const swoopy_body = L.swoopyArrow(from, to, {
+            color: color,
+            weight: weight_body,
+            arrowFilled: false,
+            hideArrowHead: true,
+        });
+        app.view.swoopy_arrows.push(swoopy_head);
+        app.view.swoopy_arrows.push(swoopy_body);
+    }
 }
+
 
 function show_swoopy_arrows()
 {
@@ -92,21 +90,21 @@ function show_swoopy_arrows()
 	for (let arrow of app.view.swoopy_arrows) arrow.addTo(app.map.map);
 }
 
-function map_style(feature)
-{
-	let feature_id = get_feature_id(feature);
-	let is_selected = is_selected_feature(feature_id);
-	let color = get_color_for_feature_id(feature_id);
-	let style =
-	{
-		fillColor: color,
-		weight: 1.5,
-		opacity: 1,
-		color: 'grey',
-		fillOpacity: is_selected ? app.view.map_opacity_selected : app.selection.map_opacity,
-	};
-	return style;
+function map_style(feature) {
+    let feature_id = get_feature_id(feature);
+    let is_selected = is_selected_feature(feature_id);
+    let color = get_color_for_feature_id(feature_id);
+    let style = {
+        fillColor: color,
+        weight: 1.5,
+        opacity: 1,
+        color: 'grey',
+        fillOpacity: is_selected ? app.view.map_opacity_selected : app.selection.map_opacity,
+    };
+    return style;
 }
+
+
 
 function map_style_selected(feature)
 {
@@ -148,7 +146,9 @@ function show_info_popup(event)
 		if (app.selection.theme === 'von') info_text += "→";
 		else if (app.selection.theme === 'nach') info_text += "←";
 		else if (app.selection.theme === 'saldi') info_text += "←→";
-		info_text += feature_info.toname + ":<br />" + feature_info.migrations;
+		// CHANGE THIS LINE to properly check for null/undefined values
+		info_text += feature_info.toname + ":<br />" + 
+		            (feature_info.migrations === null || feature_info.migrations === undefined ? "NA" : feature_info.migrations);
 	}
 	feature_info_popup.innerHTML = info_text;
 	feature_info_popup.style.display = "block";
@@ -187,27 +187,23 @@ function map_features(feature, layer)
 	map_labels(feature, layer);
 }
 
-function show_geojson_layer()
-{
-	if (app.map.datalayer) app.map.datalayer.removeFrom(app.map.map);
-	if (app.map.selectionlayer) app.map.selectionlayer.removeFrom(app.map.map);
-	if (app.map.labels)
-	{
-		for (let label of app.map.labels) label.removeFrom(app.map.map);
-		app.map.labels = [];
-	}
-	if (app.data.geodata)
-	{
-		app.map.datalayer = L.geoJSON(app.data.geodata, {style: map_style});
-		app.map.selectionlayer = L.geoJSON(app.data.geodata, {style: map_style_selected, onEachFeature: map_features});
-	}
-	if (app.map.datalayer)
-	{
-		app.map.datalayer.addTo(app.map.map);
-		app.map.map.fitBounds(app.map.datalayer.getBounds());
-	}
-	if (app.map.selectionlayer) app.map.selectionlayer.addTo(app.map.map);
-	refresh_swoopy_arrows();
+function show_geojson_layer() {
+    if (app.map.datalayer) app.map.datalayer.removeFrom(app.map.map);
+    if (app.map.selectionlayer) app.map.selectionlayer.removeFrom(app.map.map);
+    if (app.map.labels) {
+        for (let label of app.map.labels) label.removeFrom(app.map.map);
+        app.map.labels = [];
+    }
+    if (app.data.geodata) {
+        app.map.datalayer = L.geoJSON(app.data.geodata, {style: map_style});
+        app.map.selectionlayer = L.geoJSON(app.data.geodata, {style: map_style_selected, onEachFeature: map_features});
+    }
+    if (app.map.datalayer) {
+        app.map.datalayer.addTo(app.map.map);
+        app.map.map.fitBounds(app.map.datalayer.getBounds());
+    }
+    if (app.map.selectionlayer) app.map.selectionlayer.addTo(app.map.map);
+    refresh_swoopy_arrows();
 }
 
 function zoom_home(event)
