@@ -1,3 +1,6 @@
+// File: charts.js
+// Function to modify: refresh_barchart_view()
+
 function refresh_barchart_view()
 {
 	console.log("refresh_barchart_view");
@@ -24,10 +27,7 @@ function refresh_barchart_view()
         return bVal - aVal;
     });
 
-	// Limit to top 20 entries if there are many
-	if (sortedData.length > 20) {
-		sortedData = sortedData.slice(0, 20);
-	}
+	// Removed the limitation to top 20 entries
 	
 	// Calculate max value for scaling - properly handle null/undefined values
 	const maxValue = Math.max(...sortedData.filter(item => 
@@ -36,7 +36,7 @@ function refresh_barchart_view()
     
     console.log("Max value for scaling:", maxValue);
 	
-    // Generate bar chart HTML with responsive design
+    // Generate bar chart HTML with responsive design and scrollbar
     dataview = `
     <div class="barchart-container">
         <h3>${app.selection.theme === 'von' ? 'Wanderungen von' : 
@@ -94,10 +94,13 @@ function refresh_barchart_view()
             min-height: 100px;
             min-width: 300px;
             max-width: 100%; /* Allow full width */
+            max-height: 500px; /* Add max-height for scrollbar */
         }
 		.barchart-wrapper { 
             margin-top: 20px; 
             width: 100%;
+            overflow-y: auto; /* Add vertical scrollbar when needed */
+            max-height: 450px; /* Set height to allow scrolling */
         }
 		.barchart-row { 
             display: flex; 
@@ -138,7 +141,7 @@ function refresh_barchart_view()
             padding: 0 5px; 
             font-size: 12px; 
             line-height: 24px; 
-            color: white;
+            color: black; /* Changed from white to black */
             white-space: nowrap;
         }
 		.barchart-bar.right .barchart-value { left: 5px; }
