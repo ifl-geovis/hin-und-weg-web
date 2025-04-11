@@ -28,11 +28,11 @@ function init_color_settings()
 	colors_negative_selections.innerHTML = color_settings_negative;
 }
 
+
 function init_values() {
     app.selection.filter.min = 0;
     app.selection.filter.max = 0;
 }
-
 
 function init_selections() {
     let selectors = document.getElementsByClassName("selector");
@@ -71,6 +71,24 @@ function init_selections() {
     update_filter_visibility(); // Call this function to set initial filter visibility
 }
 
+// This function updates the visibility and state of the filter slider.
+function update_filter_visibility() {
+    // Get the filter slider and the display element from the DOM.
+    let filterSlider = document.getElementById("filter_slider");
+    let filterValueDisplay = document.getElementById("filter_value_display");
+
+    // Enable the slider (if it exists) and set its value based on the app state.
+    if (filterSlider) {
+        filterSlider.disabled = false; // Enable user interaction with the slider.
+        // Set the slider value to the current filter maximum; default to 0 if not defined.
+        filterSlider.value = app.selection.filter.max || 0;
+    }
+    
+    // Update the text display with the current filter value.
+    if (filterValueDisplay) {
+        filterValueDisplay.textContent = app.selection.filter.max || "0";
+    }
+}
 
 function init_view()
 {

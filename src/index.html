@@ -147,15 +147,13 @@
 			</div>
 			<div id="filter">
 				<hr />
-				<span>Filtern:</span><br />
-				<div id="min_filter_container">
-					<label for="filter_min">untere Grenze:</label><br />
-					<input name="filter_min" id="filter_min" class="filter" type="number" value="0" oninput="filter_changed(event)" disabled /><br />
+				<span>Pfeile filtern:</span><br />
+				<label for="filter_slider">Nur Werte über:</label>
+				<div class="slider-container">
+					<input type="range" min="0" max="100" value="0" class="filter" id="filter_slider" oninput="filter_changed(event)" disabled>
+					<div class="slider-value"><span id="filter_value_display">0</span></div>
 				</div>
-				<label for="filter_max">obere Grenze:</label><br />
-				<input name="filter_max" id="filter_max" class="filter" type="number" value="0" oninput="filter_changed(event)" disabled /><br />
-			</div>			
-		</div>
+			</div>
 
 		<!-- legend view -->
 		<div id="legend_view">

@@ -141,21 +141,37 @@ function theme_selected(event) {
     process_selections(true);
 }
 
-function update_filter_visibility() {
-    const minFilterContainer = document.getElementById("min_filter_container");
-    const filterMin = document.getElementById("filter_min");
+
+
+function process_filters(reset_filters) {
+    // First check if data exists to prevent null reference errors
+    if (!app.data.geostats || !app.data.unfiltered) return;
     
-    if (app.selection.theme === 'saldi') {
-        minFilterContainer.style.display = 'block';
-        filterMin.disabled = false;
-    } else {
-        minFilterContainer.style.display = 'none';
-        filterMin.disabled = true;
-        app.selection.filter.min = 0;
-        filterMin.value = 0;
+    // If reset_filters is true, we just want to reset
+    if (reset_filters) {
+        app.data.processed = app.data.unfiltered;
+        return;
+    }
+    
+    app.data.processed = [];
+    
+    // Apply the filter - only keep values above the threshold
+    for (let row of app.data.unfiltered) {
+        // Include the item if:
+        // 1. migrations is null/undefined (to preserve NA values)
+        // 2. filter is zero (default - show all)
+        // 3. migrations value is greater than or equal to filter
+        const migrations = row.migrations; 
+        
+        if (migrations === null || 
+            migrations === undefined || 
+            app.selection.filter.max === 0 ||
+            Math.abs(migrations) >= app.selection.filter.max) {
+            
+            app.data.processed.push(row);
+        }
     }
 }
-
 
 function labels_selected(event)
 {
@@ -198,13 +214,57 @@ function year_selected(event) {
     process_selections(false); // Reapply filters
 }
 
-function filter_changed(event)
-{
-	let filter_min = document.getElementById("filter_min");
-	let filter_max = document.getElementById("filter_max");
-	app.selection.filter.min = filter_min.value;
-	app.selection.filter.max = filter_max.value;
-	process_selections(false);
+
+function filter_changed(event) {
+    const filterSlider = document.getElementById("filter_slider");
+    const filterValueDisplay = document.getElementById("filter_value_display");
+    
+    // Update the displayed value
+    filterValueDisplay.textContent = filterSlider.value;
+    
+    // Update app state
+    app.selection.filter.min = 0;  // Always keep min at 0
+    app.selection.filter.max = parseInt(filterSlider.value);
+    
+    process_selections(false);
+}
+
+function min_slider_changed(event) {
+    const minSlider = document.getElementById("filter_min_slider");
+    const maxSlider = document.getElementById("filter_max_slider");
+    const minDisplay = document.getElementById("slider_min_value");
+    
+    // Ensure min slider doesn't go above max slider
+    if (parseInt(minSlider.value) > parseInt(maxSlider.value)) {
+        minSlider.value = maxSlider.value;
+    }
+    
+    // Update the displayed value
+    minDisplay.textContent = minSlider.value;
+    
+    // Update app state
+    app.selection.filter.min = parseInt(minSlider.value);
+    
+    process_selections(false);
+}
+
+function max_slider_changed(event) {
+    const minSlider = document.getElementById("filter_min_slider");
+    const maxSlider = document.getElementById("filter_max_slider");
+    const maxDisplay = document.getElementById("slider_max_value");
+    
+    // Ensure max slider doesn't go below min slider
+    if (parseInt(maxSlider.value) < parseInt(minSlider.value)) {
+        maxSlider.value = minSlider.value;
+    }
+    
+    // Update the displayed value
+    maxDisplay.textContent = maxSlider.value;
+    
+    // Update app state
+    app.selection.filter.max = parseInt(maxSlider.value);
+    
+    process_selections(false);
 }
 
 function classification_selected(event)
@@ -283,29 +343,38 @@ function renew_year_selection() {
 }
 
 
-
-function renew_filters(reset_filters)
-{
-	if (!app.data.processed) return;
-	if (!app.data.geostats) return;
-	let filters = document.getElementsByClassName("filter");
-	for (let filter of filters) filter.disabled = false;
-	const min = app.data.geostats.min();
-	const max = app.data.geostats.max();
-	if (reset_filters)
-	{
-		app.selection.filter.min = 0;
-		let filter_min = document.getElementById("filter_min");
-		filter_min.value = 0;
-		filter_min.min = min;
-		filter_min.max = max;
-		app.selection.filter.max = 0;
-		let filter_max = document.getElementById("filter_max");
-		filter_max.value = 0;
-		filter_max.min = min;
-		filter_max.max = max;
-	}
-	app.status.filter_changed = false;
+function renew_filters(reset_filters) {
+    if (!app.data.processed) return;
+    if (!app.data.geostats) return;
+    
+    const filterSlider = document.getElementById("filter_slider");
+    const filterValueDisplay = document.getElementById("filter_value_display");
+    
+    // Handle potential null reference
+    if (!filterSlider || !filterValueDisplay) return;
+    
+    filterSlider.disabled = false;
+    
+    const min = Math.floor(app.data.geostats.min());
+    const max = Math.ceil(app.data.geostats.max());
+    
+    // Update slider range
+    filterSlider.min = 0;
+    filterSlider.max = max;
+    
+    if (reset_filters) {
+        // Reset to minimum values (0)
+        app.selection.filter.min = 0;
+        app.selection.filter.max = 0;
+        filterSlider.value = 0;
+        filterValueDisplay.textContent = "0";
+    } else {
+        // Make sure current value is in range
+        if (app.selection.filter.max > max) app.selection.filter.max = max;
+        filterSlider.value = app.selection.filter.max;
+        filterValueDisplay.textContent = app.selection.filter.max;
+    }
+    app.status.filter_changed = false;
 }
 
 function process_selections(reset_filters) {
@@ -420,42 +489,7 @@ function post_process(reset_filters)
 	app.data.unfiltered = app.data.processed;
 	process_filters(reset_filters);
 }
-function process_filters(reset_filters) {
- // Add this check to prevent accessing properties of null
- if (!app.data.geostats) return;
-// Delete next line when problem occurs
-    if (reset_filters) return;
-    app.data.processed = [];
-    let minValue = app.data.geostats.min();
-    let maxValue = app.data.geostats.max();
-    
-    // Adjust filters if they exceed new dataset bounds
-    if (app.selection.filter.min < minValue) {
-        app.selection.filter.min = minValue;
-        document.getElementById("filter_min").value = minValue;
-    }
-    if (app.selection.filter.max > maxValue) {
-        app.selection.filter.max = maxValue;
-        document.getElementById("filter_max").value = maxValue;
-    }
-    
-    // Apply the filters
-    for (let row of app.data.unfiltered) {
-        let applyMinFilter = true;
-        let applyMaxFilter = true;
 
-        if (app.selection.theme === 'saldi') {
-            applyMinFilter = (row.migrations <= app.selection.filter.min || row.migrations > 0 || app.selection.filter.min == 0);
-            applyMaxFilter = (row.migrations >= app.selection.filter.max || row.migrations < 0 || app.selection.filter.max == 0);
-        } else {
-            applyMaxFilter = (row.migrations >= app.selection.filter.max || app.selection.filter.max == 0);
-        }
-
-        if (applyMinFilter && applyMaxFilter) {
-            app.data.processed.push(row);
-        }
-    }
-}
 
 
 
