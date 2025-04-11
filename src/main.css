@@ -33,7 +33,7 @@ div#header
 	padding-right: 5px;
 	padding-bottom: 0px;
 	margin: 0px;
-	background-color: #fff5eecc;
+	background-color: #edededbd;
 	z-index: 1000;
 }
 
@@ -68,7 +68,7 @@ div#feature_info_popup
 	border-color: lightgray;
 	border-width: 1px;
 	border-radius: 10px;
-	background-color: #fff5eecc;
+	background-color: #edededbd;
 	padding: 10px;
 	z-index: 1000;
 }
@@ -82,7 +82,7 @@ div.map_info_label
 	border-color: lightgray;
 	border-width: 1px;
 	border-radius: 10px;
-	background-color: #fff5eecc;
+	background-color: #edededbd;
 	padding: 10px;
 	width: auto;
 	height: auto;
@@ -136,7 +136,7 @@ div#selection_box
 	border-width: 1px;
 	border-top-right-radius: 10px;
 	border-bottom-right-radius: 10px;
-	background-color: #fff5eecc;
+	background-color: #edededbd;
 	z-index: 1000;
 }
 
@@ -160,7 +160,7 @@ div#statistics_view th
 div#table_view tr.odd,
 div#statistics_view tr.odd
 {
-	background-color: #ffffff33;
+	background-color: #edededbd;
 }
 
 div#table_view tr.even,
@@ -197,7 +197,7 @@ div.action_button
 	border-bottom-left-radius: 5px;
 	padding: 0px;
 	margin: 0px;
-	background-color: #fff5eecc;
+	background-color: #edededbd;
 	z-index: 1000;
 }
 
@@ -234,7 +234,7 @@ div#legend_view
 	bottom: 30px;
 	min-width: 100px;
 	min-height: 40px;
-	background-color: seashell;
+	background-color: #edededbd;
 	border-style: solid;
 	border-width: 3px;
 	padding: 0px;
@@ -251,7 +251,7 @@ div.viewcomponent
 	margin-top: 0px;
 	min-width: 300px;
 	min-height: 40px;
-	background-color: seashell;
+	background-color: rgb(234, 234, 234);
 	border-style: solid;
 	border-width: 3px;
 	padding: 0px;
@@ -262,6 +262,8 @@ div#legend_content
 {
 	margin-left: 0px;
 }
+
+
 
 div.view_content
 {
@@ -327,7 +329,7 @@ div#credits
 	border-top-right-radius: 5px;
 	padding: 5px;
 	margin: 0px;
-	background-color: #fff5eecc;
+	background-color: #edededbd;
 	z-index: 1000;
 }
 
@@ -335,6 +337,21 @@ div#credits img
 {
 	float: left;
 	padding-right: 5px;
+}
+
+
+div#credits_text {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+div#credits_text span {
+    margin-bottom: 5px;
+}
+
+div#credits_text a {
+    margin-right: 10px;
 }
 
 div.color_gradient
@@ -359,7 +376,7 @@ div#load_indicator
 	left: 100px;
 	margin-top: 15%;
 	margin-left: 30%;
-	background-color: seashell;
+	background-color: #edededbd;
 	border-style: solid;
 	border-width: 3px;
 	padding: 5px;
@@ -415,4 +432,65 @@ div#table_view_data th
 div#classification_message
 {
 	display: none;
+}
+@media (max-width: 600px) {
+    div#credits {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    div#credits img {
+        margin-bottom: 5px;
+    }
+
+    div#credits_text {
+        align-items: flex-start;
+    }
+
+    div#credits_text a {
+        margin-bottom: 5px;
+    }
+}
+div#credits {
+    display: flex;
+    align-items: flex-start;
+    position: fixed;
+    left: -1px;
+    bottom: -1px;
+    border-style: solid;
+    border-color: lightgray;
+    border-width: 1px;
+    border-top-right-radius: 5px;
+    padding: 5px;
+    margin: 0px;
+    background-color: #edededbd;
+    z-index: 1000;
+}
+
+div#credits img {
+    float: left;
+    padding-right: 5px;
+}
+
+div#credits_text {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+div#text_with_links {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+div#link_container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    margin-left: 20px;
+}
+
+div#link_container a {
+    margin-bottom: 5px;
 }
