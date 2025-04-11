@@ -16,6 +16,13 @@ function load_url(url, info, listener)
 	xhr.send();
 }
 
+
+function hide_load_indicator() {
+    let load_indicator = document.getElementById("load_indicator");
+    load_indicator.style.display = "none";
+    app.status.loading = false;
+}
+
 function extract_migration_years(dataset)
 {
 	//console.log("extract_migration_years: ", dataset);
@@ -59,18 +66,16 @@ function remove_select_options(select)
 	}
 }
 
-function add_select_options_year(select, list)
-{
-	for (let year of list)
-	{
-		let option = document.createElement("option");
-		option.value = "" + year;
-		option.text = "Jahr: " + year;
-		option.selected = true;
-		option.classList.add("year_option");
-		select.add(option);
-	}
+function add_select_options_year(select, list) {
+    for (let year of list) {
+        let option = document.createElement("option");
+        option.value = "" + year;
+        option.text = "Jahr: " + year;
+        option.classList.add("year_option");
+        select.add(option);
+    }
 }
+
 
 function calculate_classcount(choices, positive)
 {
@@ -84,23 +89,33 @@ function calculate_classcount(choices, positive)
 	return classcount;
 }
 
-function get_color_for_value(value)
-{
-	//console.log("get_color_for_value:", value);
-	if (!app.data.geostats) return "white";
-	if ((app.data.geostats_negative) && (value < 0)) return app.data.geostats_negative.colors[app.data.geostats_negative.getClass(value)];
-	return app.data.geostats_positive.colors[app.data.geostats_positive.getClass(value)];
+function get_color_for_value(value) {
+    // Check for missing data
+    if (value === null || value === undefined) {
+        return "grey"; // Grey for areas without data
+    }
+    
+    // Check for zero value
+    if (value === 0) {
+        return "white"; // White for areas with zero value
+    }
+    
+    // Default behavior for other values
+    if (!app.data.geostats) return "white";
+    if ((app.data.geostats_negative) && (value < 0)) return app.data.geostats_negative.colors[app.data.geostats_negative.getClass(value)];
+    return app.data.geostats_positive.colors[app.data.geostats_positive.getClass(value)];
 }
 
-function get_color_for_feature_id(feature_id)
-{
-	if (!app.data.processed) return "white";
-	for (let row of app.data.unfiltered)
-	{
-		if (row.id === feature_id) return row.color;
-	}
-	return "white";
+
+
+function get_color_for_feature_id(feature_id) {
+    if (!app.data.processed) return "white";
+    for (let row of app.data.unfiltered) {
+        if (row.id === feature_id) return row.color;
+    }
+    return "white";
 }
+
 
 function get_feature_by_id(feature_id, filtered)
 {
@@ -154,37 +169,38 @@ function reverse_colors(colors)
 	}
 	return reversed;
 }
-
-function keep_load_indicator()
-{
-	let load_indicator = document.getElementById("load_indicator");
-	if (!app.status.loading)
-	{
-		load_indicator.style.display = "none";
-		return;
-	}
-	load_indicator.style.display = "block";
-	let indicators = document.getElementsByClassName("load_inidicator_block");
-	for (let i = 0; i < indicators.length; i++) highlight_load_indicator(i, indicators[i]);
-	app.view.load_indicator_state++;
-	if (app.view.load_indicator_state > 15) app.view.load_indicator_state = 0;
-	setTimeout(keep_load_indicator, 150);
+function hide_load_indicator() {
+    let load_indicator = document.getElementById("load_indicator");
+    load_indicator.style.display = "none";
+    app.status.loading = false;
 }
 
-function highlight_load_indicator(index, indicator)
-{
-	if (index === app.view.load_indicator_state) indicator.style.backgroundColor = "#000000cc";
-	else if ((index + 1) === app.view.load_indicator_state) indicator.style.backgroundColor = "#00000099";
-	else if ((index + 2) === app.view.load_indicator_state) indicator.style.backgroundColor = "#00000066";
-	else if ((index + 3) === app.view.load_indicator_state) indicator.style.backgroundColor = "#00000033";
-	else indicator.style.backgroundColor = "#00000000";
+function show_load_indicator(message) {
+    let load_indicator_message = document.getElementById("load_indicator_message");
+    load_indicator_message.innerHTML = message;
+    app.status.loading = true;
+    app.view.load_indicator_state = -1;
+    setTimeout(keep_load_indicator, 500);
 }
 
-function show_load_indicator(message)
-{
-	let load_indicator_message = document.getElementById("load_indicator_message");
-	load_indicator_message.innerHTML = message;
-	app.status.loading = true;
-	app.view.load_indicator_state = -1;
-	setTimeout(keep_load_indicator, 500);
+function keep_load_indicator() {
+    let load_indicator = document.getElementById("load_indicator");
+    if (!app.status.loading) {
+        load_indicator.style.display = "none";
+        return;
+    }
+    load_indicator.style.display = "block";
+    let indicators = document.getElementsByClassName("load_inidicator_block");
+    for (let i = 0; i < indicators.length; i++) highlight_load_indicator(i, indicators[i]);
+    app.view.load_indicator_state++;
+    if (app.view.load_indicator_state > 15) app.view.load_indicator_state = 0;
+    setTimeout(keep_load_indicator, 150);
+}
+
+function highlight_load_indicator(index, indicator) {
+    if (index === app.view.load_indicator_state) indicator.style.backgroundColor = "#000000cc";
+    else if ((index + 1) === app.view.load_indicator_state) indicator.style.backgroundColor = "#00000099";
+    else if ((index + 2) === app.view.load_indicator_state) indicator.style.backgroundColor = "#00000066";
+    else if ((index + 3) === app.view.load_indicator_state) indicator.style.backgroundColor = "#00000033";
+    else indicator.style.backgroundColor = "#00000000";
 }
