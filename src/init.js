@@ -28,42 +28,49 @@ function init_color_settings()
 	colors_negative_selections.innerHTML = color_settings_negative;
 }
 
-function init_values()
-{
-	app.selection.filter.min = 0;
-	app.selection.filter.max = 0;
+function init_values() {
+    app.selection.filter.min = 0;
+    app.selection.filter.max = 0;
 }
 
-function init_selections()
-{
-	let selectors = document.getElementsByClassName("selector");
-	for (let selector of selectors) selector.disabled = true;
-	let filters = document.getElementsByClassName("filter");
-	for (let filter of filters) filter.disabled = true;
-	let swoopy_arrows_selector = document.getElementById("swoopy_arrows_selector");
-	swoopy_arrows_selector.checked = false;
-	let label_selector = document.getElementById("label_selector");
-	label_selector.value = app.selection.labels;
-	let area_inside = document.getElementById("area_inside_selector");
-	area_inside.checked = true;
-	let category = document.getElementById("category_selector");
-	category.disabled = true;
-	let load_dataset = document.getElementById("load_dataset_button");
-	load_dataset.disabled = true;
-	let classification_selector = document.getElementById("classification_selector");
-	classification_selector.value = app.selection.classification;
-	let theme_selector = document.getElementById("theme_selector");
-	theme_selector.value = app.selection.theme;
-	let radio_RdYlBu = document.getElementById("radio_" + app.selection.colors);
-	radio_RdYlBu.checked = true;
-	let radio_green_scale_negative = document.getElementById("radio_" + app.selection.colors_negative);
-	radio_green_scale_negative.checked = true;
-	for (let i = 1; i <= 10; i++)
-	{
-		let classborder = document.getElementById("classborder" + i + "_selector");
-		classborder.value = i;
-	}
+
+function init_selections() {
+    let selectors = document.getElementsByClassName("selector");
+    for (let selector of selectors) selector.disabled = true;
+    let filters = document.getElementsByClassName("filter");
+    for (let filter of filters) filter.disabled = true;
+    let swoopy_arrows_selector = document.getElementById("swoopy_arrows_selector");
+    swoopy_arrows_selector.checked = false;
+    let label_selector = document.getElementById("label_selector");
+    label_selector.value = app.selection.labels;
+    let area_inside = document.getElementById("area_inside_selector");
+    area_inside.checked = true;
+    let category = document.getElementById("category_selector");
+    category.disabled = true;
+    let load_dataset = document.getElementById("load_dataset_button");
+    load_dataset.disabled = true;
+    let classification_selector = document.getElementById("classification_selector");
+    classification_selector.value = app.selection.classification;
+    let theme_selector = document.getElementById("theme_selector");
+    theme_selector.value = app.selection.theme;
+    let radio_red_scale = document.getElementById("radio_" + app.selection.colors);
+    radio_red_scale.checked = true;
+    let radio_blue_scale_negative = document.getElementById("radio_" + app.selection.colors_negative);
+    radio_blue_scale_negative.checked = true;
+    for (let i = 1; i <= 10; i++) {
+        let classborder = document.getElementById("classborder" + i + "_selector");
+        classborder.value = i;
+    }
+
+    // Ensure the newest year is selected
+    if (app.selection.category && app.selection.category.years) {
+        let newestYear = Math.max(...app.selection.category.years);
+        app.selection.years = [newestYear.toString()];
+    }
+	
+    update_filter_visibility(); // Call this function to set initial filter visibility
 }
+
 
 function init_view()
 {
@@ -84,10 +91,11 @@ function init_view()
 	};
 }
 
-function init_db()
-{
-	alasql("CREATE TABLE migrations (fromid TEXT, toid TEXT, fromname TEXT, toname TEXT, year TEXT, migrations INT, population_from INT, population_to INT, migration_rate_from FLOAT, migration_rate_to FLOAT)");
-	alasql("CREATE TABLE population (areaid TEXT, year TEXT, population INT)");
+function init_db() {
+    // Changed migrations column from INT to FLOAT so that null values (i.e. missing data)
+    // are preserved instead of being automatically converted to 0.
+    alasql("CREATE TABLE migrations (fromid TEXT, toid TEXT, fromname TEXT, toname TEXT, year TEXT, migrations FLOAT, population_from INT, population_to INT, migration_rate_from FLOAT, migration_rate_to FLOAT)");
+    alasql("CREATE TABLE population (areaid TEXT, year TEXT, population INT)");
 }
 
 function init_datalist()
