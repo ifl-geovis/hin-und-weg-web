@@ -21,18 +21,20 @@ function refresh_barchart_view()
 	// Calculate max value for scaling
 	const maxValue = Math.max(...sortedData.map(item => Math.abs(item.migrations)));
 	
-	// Generate bar chart HTML
-	dataview = `
-	<div class="barchart-container">
-		<h3>Migration ${app.selection.theme === 'von' ? 'from' : app.selection.theme === 'nach' ? 'to' : 'balance for'} 
-		     ${app.data.featurename_mapping[app.selection.area_id] || ''}</h3>
-		<div class="barchart-wrapper">`;
+// Generate bar chart HTML
+dataview = `
+<div class="barchart-container">
+    <h3>${app.selection.theme === 'von' ? 'Wanderungen von' : 
+          app.selection.theme === 'nach' ? 'Wanderungen nach' : 
+          'Wanderungssaldi für'}
+         ${app.data.featurename_mapping[app.selection.area_id] || ''}</h3>
+    <div class="barchart-wrapper">`;
 	
 	// Add bars
 	sortedData.forEach(item => {
 		const labelText = app.selection.theme === 'von' ? item.toname : 
 						 app.selection.theme === 'nach' ? item.fromname :
-						 (item.migrations >= 0) ? item.toname : item.fromname;
+						 (item.migrations >= 0) ? item.fromname : item.fromname;
 		
 		// Check if migrations value is null or undefined
 		if (item.migrations === null || item.migrations === undefined) {
