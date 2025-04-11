@@ -30,17 +30,27 @@
 				<img src="img/huw-logo_32.png" title="hin&amp;weg logo" />
 			<h1>
 				hin&amp;weg web
-				<span id="versionsub">Version 1.0.0</span>
+				<span id="versionsub"></span>
 				</h1>
 				<h3><span id="dataset_title"></span><span id="dataset_title_years"></span></h3>
 		</div>
 
-		<!-- credits -->
-		<div id="credits">
-			<img src="img/ifl_logo.svg" height="30px" />
-			<a href="datenschutz.html">Datenschutz</a><br />
-			<a href="impressum.html">Impressum</a>
+	<!-- credits -->
+	<div id="credits">
+		<img src="img/ifl_logo.svg" height="40px" />
+		<img src="img/Signet_gruen_transparent.png" height="40px" />
+		<div id="credits_text">
+			<div id="text_with_links">
+				<span>Diese Maßnahme wird mitfinanziert <br> mit Steuermitteln auf Grundlage <br>des vom Sächsischen Landtag <br> beschlossenen Haushaltes.</span>
+				<div id="link_container">
+					<a href="datenschutz.html">Datenschutz</a>
+					<a href="impressum.html">Impressum</a>
+				</div>
+			</div>
 		</div>
+	</div>
+	
+	
 
 		<!-- action buttons on the right -->
 		<div id="dataset_load_button" class="action_button" title="anderen Datensatz laden" onclick="dataset_load(event)">
@@ -137,12 +147,14 @@
 			</div>
 			<div id="filter">
 				<hr />
-				<span>Filter:</span><br />
-				<label for="filter_min">untere Grenze:</label><br />
-				<input name="filter_min" id="filter_min" class="filter" type="number" value="0" oninput="filter_changed(event)" disabled /><br />
+				<span>Pfeile filtern:</span><br />
+				<div id="min_filter_container">
+					<label for="filter_min">untere Grenze:</label><br />
+					<input name="filter_min" id="filter_min" class="filter" type="number" value="0" oninput="filter_changed(event)" disabled /><br />
+				</div>
 				<label for="filter_max">obere Grenze:</label><br />
 				<input name="filter_max" id="filter_max" class="filter" type="number" value="0" oninput="filter_changed(event)" disabled /><br />
-			</div>
+			</div>			
 		</div>
 
 		<!-- legend view -->
