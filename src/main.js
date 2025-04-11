@@ -1,34 +1,34 @@
 let app =
 {
-	/*Initialisierung*/
 	configuration:
 	{
 		colors:
 		{
-			"RdYlBu":
+			"red_scale":
 			{
-				title: "Rot - Gelb - Blau",
-				scale: "RdYlBu",
+				title: "Rot",
+				scale: [chroma("#E45A47").brighten(2), chroma("#E45A47").darken(2)],
+						},	
+			"blue_scale":
+			{
+				title: "Blau",
+				scale: [chroma("#356184").brighten(2), chroma("#356184").darken(2)],
 			},
 			"Greys":
 			{
 				title: "Graustufen",
 				scale: "Greys",
 			},
-			"red_scale":
-			{
-				title: "Orange - Rot",
-				scale: ["orange", "red", "darkred"],
-			},
 			"green_scale":
 			{
 				title: "Grün",
 				scale: [chroma("green").brighten(3), chroma("green").darken(3)],
 			},
-			"blue_scale":
+		
+			"RdYlBu":
 			{
-				title: "Blau",
-				scale: [chroma("blue").brighten(2), chroma("blue").darken(2)],
+				title: "Rot - Gelb - Blau",
+				scale: "RdYlBu",
 			},
 		}
 	},
@@ -82,14 +82,14 @@ let app =
 			min: 0,
 			max: 0,
 		},
-		classification: 'quantile',
+		classification: 'equidistant',
 		class_number: 'automatic',
 		class_number_negative: 'automatic',
-		colors: 'RdYlBu',
-		colors_negative: 'green_scale_negative',
+		colors: 'red_scale',
+		colors_negative: 'blue_scale_negative',
 		classborders: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
 		classborders_negative: [-10, -9 -8, -7, -6, -5, -4, -3, -2, -1],
-		map_opacity: 0.5,
+		map_opacity: 0.8,
 	},
 	view:
 	{
@@ -134,12 +134,28 @@ function refresh_view(viewid)
 	if (viewid === "barchart_view") refresh_barchart_view();
 }
 
-function theme_selected(event)
-{
-	//console.log("theme_selected:", event.target.value);
-	app.selection.theme = event.target.value;
-	process_selections(true);
+function theme_selected(event) {
+    //console.log("theme_selected:", event.target.value);
+    app.selection.theme = event.target.value;
+    update_filter_visibility(); // Call the new function to update filter visibility
+    process_selections(true);
 }
+
+function update_filter_visibility() {
+    const minFilterContainer = document.getElementById("min_filter_container");
+    const filterMin = document.getElementById("filter_min");
+    
+    if (app.selection.theme === 'saldi') {
+        minFilterContainer.style.display = 'block';
+        filterMin.disabled = false;
+    } else {
+        minFilterContainer.style.display = 'none';
+        filterMin.disabled = true;
+        app.selection.filter.min = 0;
+        filterMin.value = 0;
+    }
+}
+
 
 function labels_selected(event)
 {
@@ -162,13 +178,12 @@ function data_interpretation_changed(event)
 	process_selections(false);
 }
 
-function area_selected(event)
-{
-	//console.log("area_selected:", event.target.value);
-	app.selection.area_id = event.target.value;
-	process_selections(true);
-}
 
+function area_selected(event) {
+    console.log("area_selected:", event.target.value);
+    app.selection.area_id = event.target.value;
+    process_selections(false); // Reapply filters
+}
 function area_inside_changed(event)
 {
 	//console.log("area_inside_changed:", event.target.checked);
@@ -176,12 +191,11 @@ function area_inside_changed(event)
 	process_selections(true);
 }
 
-function year_selected(event)
-{
-	//console.log("year_selected:", event.target.selectedOptions);
-	app.selection.years = [];
-	for (let option of event.target.selectedOptions) app.selection.years.push(option.value);
-	process_selections(true);
+function year_selected(event) {
+    console.log("year_selected:", event.target.selectedOptions);
+    app.selection.years = [];
+    for (let option of event.target.selectedOptions) app.selection.years.push(option.value);
+    process_selections(false); // Reapply filters
 }
 
 function filter_changed(event)
@@ -243,20 +257,32 @@ function renew_area_selection()
 		if (featurename_list.length > 0) selection.disabled = false;
 	}
 }
-
-function renew_year_selection()
-{
-	let section = document.getElementById("years_selection");
-	section.style.display = "none";
-	let selection = document.getElementById("year_selector");
-	remove_select_options(selection);
-	if (app.selection.category.years)
-	{
-		add_select_options_year(selection, app.selection.category.years);
-		if (app.selection.category.years.length > 0) section.style.display = "block";
-	}
-	app.selection.years = app.selection.category.years;
+function renew_year_selection() {
+    let section = document.getElementById("years_selection");
+    section.style.display = "none";
+    let selection = document.getElementById("year_selector");
+    remove_select_options(selection);
+    if (app.selection.category.years) {
+        add_select_options_year(selection, app.selection.category.years);
+        if (app.selection.category.years.length > 0) {
+            section.style.display = "block";
+            // Select the newest year by default
+            let newestYear = Math.max(...app.selection.category.years);
+            app.selection.years = [newestYear.toString()];
+            for (let option of selection.options) {
+                if (option.value == newestYear) {
+                    option.selected = true;
+                    break;
+                }
+            }
+            // Set the size of the year selector to show up to 8 years
+            selection.size = Math.min(app.selection.category.years.length, 8);
+        }
+    }
+    // REMOVE this line: process_selections(false);
 }
+
+
 
 function renew_filters(reset_filters)
 {
@@ -282,19 +308,18 @@ function renew_filters(reset_filters)
 	app.status.filter_changed = false;
 }
 
-function process_selections(reset_filters)
-{
-	show_load_indicator("Daten werden prozessiert.");
-	refresh_classification_message();
-	recalculate_data(reset_filters);
-	refresh_datalayer();
-	refresh_title_years();
-	refresh_swoopy_arrows();
-	renew_filters(reset_filters);
-	refresh_view(app.status.viewcomponent);
-	refresh_legend();
-	refresh_settings_dialog();
-	app.status.loading = false;
+function process_selections(reset_filters) {
+    show_load_indicator("Daten werden prozessiert.");
+    refresh_classification_message();
+    recalculate_data(reset_filters);
+    refresh_datalayer();
+    refresh_title_years();
+    refresh_swoopy_arrows();
+    renew_filters(reset_filters);
+    refresh_view(app.status.viewcomponent);
+    refresh_legend();
+    refresh_settings_dialog();
+    app.status.loading = false;
 }
 
 function recalculate_data(reset_filters)
@@ -338,8 +363,15 @@ function list_selection_for_sql(additionals)
 
 function get_migration_select(direction)
 {
-	if (app.selection.data_interpretation === 'migration_rate') return 'ROUND(AVG(migration_rate_' + direction + '), 3) AS migrations';
-	return 'SUM(migrations) AS migrations';
+    if (app.selection.data_interpretation === 'migration_rate') {
+        // For migration_rate mode, we want to average the migration_rate values.
+        return 'ROUND(AVG(migration_rate_' + direction + '), 3) AS migrations';
+    }
+    // For summing migrations, return NULL if there are no non-null entries instead of 0.
+    return 'CASE WHEN COUNT(migrations) = 0 THEN NULL ELSE SUM(migrations) END AS migrations';
+    // Explanation: This CASE expression checks that if no non-null migration values exist 
+    // (i.e. COUNT(migrations) is 0) it returns NULL; otherwise it returns the SUM. This preserves 
+    // missing (null) values so that they can later be detected and displayed as "NA" in grey.
 }
 
 function recalculate_data_von()
@@ -388,43 +420,71 @@ function post_process(reset_filters)
 	app.data.unfiltered = app.data.processed;
 	process_filters(reset_filters);
 }
+function process_filters(reset_filters) {
+ // Add this check to prevent accessing properties of null
+ if (!app.data.geostats) return;
+// Delete next line when problem occurs
+    if (reset_filters) return;
+    app.data.processed = [];
+    let minValue = app.data.geostats.min();
+    let maxValue = app.data.geostats.max();
+    
+    // Adjust filters if they exceed new dataset bounds
+    if (app.selection.filter.min < minValue) {
+        app.selection.filter.min = minValue;
+        document.getElementById("filter_min").value = minValue;
+    }
+    if (app.selection.filter.max > maxValue) {
+        app.selection.filter.max = maxValue;
+        document.getElementById("filter_max").value = maxValue;
+    }
+    
+    // Apply the filters
+    for (let row of app.data.unfiltered) {
+        let applyMinFilter = true;
+        let applyMaxFilter = true;
 
-function process_filters(reset_filters)
-{
-	if (reset_filters) return;
-	app.data.processed = [];
-	if (app.selection.filter.min && (app.selection.filter.min != ""))
-	{
-		for (let row of app.data.unfiltered)
-		{
-			if (row.migrations < app.selection.filter.min) app.data.processed.push(row);
-		}
-	}
-	if (app.selection.filter.max && (app.selection.filter.max != ""))
-	{
-		for (let row of app.data.unfiltered)
-		{
-			if (row.migrations >= app.selection.filter.max) app.data.processed.push(row);
-		}
-	}
-	if ((!app.selection.filter.min) && (!app.selection.filter.max)) app.data.processed = app.data.unfiltered;
+        if (app.selection.theme === 'saldi') {
+            applyMinFilter = (row.migrations <= app.selection.filter.min || row.migrations > 0 || app.selection.filter.min == 0);
+            applyMaxFilter = (row.migrations >= app.selection.filter.max || row.migrations < 0 || app.selection.filter.max == 0);
+        } else {
+            applyMaxFilter = (row.migrations >= app.selection.filter.max || app.selection.filter.max == 0);
+        }
+
+        if (applyMinFilter && applyMaxFilter) {
+            app.data.processed.push(row);
+        }
+    }
 }
 
-function recalculate_classification()
-{
-	app.data.geostats = null;
-	app.data.geostats_positive = null;
-	app.data.geostats_negative = null;
-	if (!app.data.processed) return;
-	let data = [];
-	for (let row of app.data.processed) data.push(row.migrations);
-	app.data.geostats = new geostats(data);
-	if (recalculate_classification_saldi()) return;
-	const classcount = calculate_classcount(app.data.processed.length, true);
-	app.data.geostats_positive = new geostats(data);
-	app.data.geostats_positive.setColors(chroma.scale(select_color(app.selection.colors)).colors(classcount));
-	set_classification_algorithm(app.data.geostats_positive, classcount);
-	for (let row of app.data.processed) row.color = get_color_for_value(row.migrations);
+
+
+
+function recalculate_classification() {
+    app.data.geostats = null;
+    app.data.geostats_positive = null;
+    app.data.geostats_negative = null;
+    if (!app.data.processed) return;
+    
+    // Filter out zero values and missing data
+    let data = [];
+    for (let row of app.data.processed) {
+        if (row.migrations !== 0 && row.migrations !== null && row.migrations !== undefined) {
+            data.push(row.migrations);
+        }
+    }
+    
+ // ADD THIS CHECK: Don't proceed if data array is empty
+ if (data.length === 0) return;
+    
+ app.data.geostats = new geostats(data);
+
+    if (recalculate_classification_saldi()) return;
+    const classcount = calculate_classcount(data.length, true);
+    app.data.geostats_positive = new geostats(data);
+    app.data.geostats_positive.setColors(chroma.scale(select_color(app.selection.colors)).colors(classcount));
+    set_classification_algorithm(app.data.geostats_positive, classcount);
+    for (let row of app.data.processed) row.color = get_color_for_value(row.migrations);
 }
 
 function separate_processed()
@@ -454,17 +514,20 @@ function recalculate_classification_saldi()
 	return true;
 }
 
-function recalculate_saldi_geostats(processed, negative)
-{
-	const classcount = calculate_classcount(processed.length, !negative);
-	let data = [];
-	data.push(0);
-	for (let row of processed) data.push(row.migrations);
-	while (data.length < 2) data.push(0);
-	let geostatsobj = new geostats(data);
-	geostatsobj.setColors(chroma.scale(select_color((negative) ? app.selection.colors_negative : app.selection.colors)).colors(classcount));
-	set_classification_algorithm(geostatsobj, classcount, negative);
-	return geostatsobj;
+
+function recalculate_saldi_geostats(processed, negative) {
+    // Filter out zero values
+    let filteredProcessed = processed.filter(row => Math.abs(row.migrations) > 0);
+    
+    const classcount = calculate_classcount(filteredProcessed.length, !negative);
+    let data = [];
+    data.push(0);
+    for (let row of filteredProcessed) data.push(row.migrations);
+    while (data.length < 2) data.push(0);
+    let geostatsobj = new geostats(data);
+    geostatsobj.setColors(chroma.scale(select_color((negative) ? app.selection.colors_negative : app.selection.colors)).colors(classcount));
+    set_classification_algorithm(geostatsobj, classcount, negative);
+    return geostatsobj;
 }
 
 function set_classification_algorithm(geostats, classcount, negative)
@@ -511,17 +574,51 @@ function refresh_title_years()
 	if (app.selection.years && (app.selection.years.length > 0)) years = " (" + app.selection.years.join(", ") + ")";
 	dataset_title_years.innerHTML = years;
 }
+function refresh_legend() {
+    const legend = document.getElementById("legend_view");
+    const legend_content = document.getElementById("legend_content");
+    legend.style.display = "none";
+    legend_content.innerHTML = ''; // Clear existing content
+    if (!app.data.geostats) return;
 
-function refresh_legend()
-{
-	const legend = document.getElementById("legend_view");
-	const legend_content = document.getElementById("legend_content");
-	legend.style.display = "none";
-	if (!app.data.geostats) return;
-	if (app.data.geostats_negative) legend_content.innerHTML = app.data.geostats_negative.getHtmlLegend() + app.data.geostats_positive.getHtmlLegend();
-	else legend_content.innerHTML = app.data.geostats_positive.getHtmlLegend();
-	legend.style.display = "block";
+    // Start the legend HTML with a single container
+    let legendHtml = '<div class="geostats-legend">';
+
+    // Add legend entry for 0-values
+    legendHtml += '<div>' +
+                  '<div class="geostats-legend-block" style="background-color: white;"></div>' +
+                  '0-Werte' +
+                  '</div>';
+
+    // Add legend entry for missing/NA values
+    legendHtml += '<div>' +
+                  '<div class="geostats-legend-block" style="background-color: grey;"></div>' +
+                  'Fehlende/NA-Werte' +
+                  '</div>';
+
+    // Add the existing legend content without the outer geostats-legend div
+    if (app.data.geostats_negative) {
+        let negLegend = app.data.geostats_negative.getHtmlLegend();
+        // Remove the outer div to prevent nesting
+        negLegend = negLegend.replace(/^<div class="geostats-legend">/, '').replace(/<\/div>\s*$/, '');
+        legendHtml += negLegend;
+    }
+
+    let posLegend = app.data.geostats_positive.getHtmlLegend();
+    // Remove the outer div to prevent nesting
+    posLegend = posLegend.replace(/^<div class="geostats-legend">/, '').replace(/<\/div>\s*$/, '');
+    legendHtml += posLegend;
+
+    // Close the main legend container
+    legendHtml += '</div>';
+
+    legend_content.innerHTML = legendHtml;
+    legend.style.display = "block";
 }
+
+
+
+
 
 function refresh_classification_message()
 {
