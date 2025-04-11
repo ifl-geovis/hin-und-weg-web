@@ -1,0 +1,18 @@
+{
+	"name": "Pendler",
+	"title": "Pendelbewegungen innerhalb Sachsens",
+	"geodata": "GemeindenSachsenr.geojson",
+	"id_property": "ARS",
+	"name_property": "GEN",
+	"categories":
+	[
+		{
+			"id": "all",
+			"name": "Gesamtdaten",
+			"migrations":
+			{
+				"2022": "Pendler_2022.csv"
+			}
+		}
+	]
+}
