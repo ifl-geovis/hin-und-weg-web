@@ -71,9 +71,9 @@ let app =
 		dataset: null,
 		category_id: null,
 		category: null,
-		theme: 'von',
+		theme: 'saldi',
 		data_interpretation: 'absolute',
-		swoopy_arrows: false,
+		swoopy_arrows: true,
 		labels: 'none',
 		area_id: null,
 		area_inside: true,
@@ -248,16 +248,24 @@ function colors_changed(event, negative)
 
 function renew_area_selection()
 {
-	let selection = document.getElementById("area_selector");
-	remove_select_options(selection);
-	selection.disabled = true;
-	if (app.data.featurename_mapping)
-	{
-		let featurename_list = Object.keys(app.data.featurename_mapping);
-		add_select_options(selection, featurename_list, app.data.featurename_mapping);
-		if (featurename_list.length > 0) selection.disabled = false;
-	}
+    let selection = document.getElementById("area_selector");
+    remove_select_options(selection);
+    selection.disabled = true;
+    if (app.data.featurename_mapping)
+    {
+        let featurename_list = Object.keys(app.data.featurename_mapping);
+        add_select_options(selection, featurename_list, app.data.featurename_mapping);
+        if (featurename_list.length > 0) selection.disabled = false;
+
+        // CHANGED: Preselect Berlin (DE3) if available and nothing selected yet
+        const defaultArea = 'DE3';
+        if (!app.selection.area_id && app.data.featurename_mapping[defaultArea]) {
+            selection.value = defaultArea;
+            app.selection.area_id = defaultArea;
+        }
+    }
 }
+
 function renew_year_selection() {
     let section = document.getElementById("years_selection");
     section.style.display = "none";

@@ -223,6 +223,13 @@ function load_completed() {
     let selectors = document.getElementsByClassName("selector");
     for (let selector of selectors) selector.disabled = false;
     let dataset_title = document.getElementById("dataset_title");
+    // CHANGED: reflect defaults in UI after enabling controls
+const theme_selector = document.getElementById("theme_selector");
+if (theme_selector) theme_selector.value = app.selection.theme; // 'saldi'
+
+const swoopy_arrows_selector = document.getElementById("swoopy_arrows_selector");
+if (swoopy_arrows_selector) swoopy_arrows_selector.checked = app.selection.swoopy_arrows; // true
+
     if (app.selection.dataset.name) dataset_title.innerHTML = app.selection.dataset.name;
     if (app.selection.dataset.title) dataset_title.innerHTML = app.selection.dataset.title;
     if (app.selection.years) refresh_title_years();
@@ -255,6 +262,15 @@ function load_completed() {
         // Set the size of the year selector to show up to 8 years
         year_selector.size = Math.min(app.selection.category.years.length, 8);
     }
+
+    // CHANGED: Preselect Berlin (DE3) if available and not set yet, before first processing
+    const defaultArea = 'DE3';
+    const area_selector = document.getElementById("area_selector");
+    if (!app.selection.area_id && app.data.featurename_mapping && app.data.featurename_mapping[defaultArea]) {
+        app.selection.area_id = defaultArea;
+        if (area_selector) area_selector.value = defaultArea;
+    }
+
     process_selections(false); // Reapply filters after loading is completed
 
     // Hide the loading indicator
