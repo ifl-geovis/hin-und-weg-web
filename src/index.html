@@ -142,10 +142,21 @@
 			<label for="area_inside_selector"> Umzüge innerhalb</label>
 			<div id="years_selection">
 				<hr />
-				<label for="year_selector">Jahre:</label><br />
+				<div class="years_header">
+				  <label for="year_selector">Jahre:</label>
+				  <!-- NEW: Play/Pause button -->
+				  <button id="year_play_toggle"
+						  class="selector"
+						  type="button"
+						  title="Jahre automatisch abspielen / pausieren"
+						  aria-pressed="false"
+						  onclick="toggle_year_playback()"
+						  disabled>▶</button>
+				</div>
 				<select name="years" id="year_selector" class="selector" size="10" oninput="year_selected(event)" multiple disabled>
 				</select>
-			</div>
+			  </div>
+			  
 			<div id="filter">
 				<hr />
 				<span>Filtern:</span><br />

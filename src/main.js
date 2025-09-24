@@ -100,7 +100,16 @@ let app =
 		swoopy_arrows: [],
 		load_indicator_state: -1,
 		map_opacity_selected: 0.75,
+		
 		legend_collapsed: false, // remember legend collapsed/expanded state
+		 // NEW: year playback state
+		 year_player: {
+			timer: null,
+			isPlaying: false,
+			index: 0,
+			order: [],
+			delay: 1000
+		}
 	},
 	dataset_list: [],
 	datasets: {},
@@ -137,11 +146,13 @@ function refresh_view(viewid)
 }
 
 function theme_selected(event) {
-    //console.log("theme_selected:", event.target.value);
     app.selection.theme = event.target.value;
-    update_filter_visibility(); // Call the new function to update filter visibility
+    // Stop playback when theme changes
+    stop_year_playback(false);
+    update_filter_visibility();
     process_selections(true);
 }
+
 
 function update_filter_visibility() {
     const minFilterContainer = document.getElementById("min_filter_container");
@@ -184,7 +195,9 @@ function data_interpretation_changed(event)
 function area_selected(event) {
     console.log("area_selected:", event.target.value);
     app.selection.area_id = event.target.value;
-    process_selections(false); // Reapply filters
+    // Stop playback when area changes
+    stop_year_playback(false);
+    process_selections(false);
 }
 function area_inside_changed(event)
 {
@@ -195,10 +208,15 @@ function area_inside_changed(event)
 
 function year_selected(event) {
     console.log("year_selected:", event.target.selectedOptions);
+
+    // If user changes the year manually, stop playback
+    stop_year_playback(false);
+
     app.selection.years = [];
     for (let option of event.target.selectedOptions) app.selection.years.push(option.value);
     process_selections(false); // Reapply filters
 }
+
 
 function filter_changed(event)
 {
@@ -272,24 +290,51 @@ function renew_year_selection() {
     section.style.display = "none";
     let selection = document.getElementById("year_selector");
     remove_select_options(selection);
-    if (app.selection.category.years) {
+
+    const playBtn = document.getElementById("year_play_toggle");
+
+    if (app.selection.category && app.selection.category.years) {
         add_select_options_year(selection, app.selection.category.years);
         if (app.selection.category.years.length > 0) {
             section.style.display = "block";
+
+            // Sort years ascending for playback order
+            const yearsAsc = [...app.selection.category.years].map(y => Number(y)).sort((a, b) => a - b);
+            app.view.year_player.order = yearsAsc;
+
             // Select the newest year by default
-            let newestYear = Math.max(...app.selection.category.years);
+            let newestYear = Math.max(...yearsAsc);
             app.selection.years = [newestYear.toString()];
             for (let option of selection.options) {
-                if (option.value == newestYear) {
+                if (Number(option.value) === newestYear) {
                     option.selected = true;
                     break;
                 }
             }
             // Set the size of the year selector to show up to 8 years
             selection.size = Math.min(app.selection.category.years.length, 8);
+
+            // Set player index to current selection
+            const cur = Number(app.selection.years?.[0] || newestYear);
+            const idx = yearsAsc.indexOf(cur);
+            app.view.year_player.index = (idx >= 0 ? idx : 0);
+
+            // Enable play button (it will be globally enabled later as well)
+            if (playBtn) {
+                playBtn.disabled = false;
+                playBtn.setAttribute('aria-pressed', 'false');
+                playBtn.textContent = '▶';
+            }
+        } else {
+            // No years
+            app.view.year_player.order = [];
+            if (playBtn) playBtn.disabled = true;
         }
+    } else {
+        app.view.year_player.order = [];
+        if (playBtn) playBtn.disabled = true;
     }
-    // REMOVE this line: process_selections(false);
+    // Don't call process_selections() here
 }
 
 
@@ -723,3 +768,76 @@ function toggle_mobile_menu() {
 	 const toggle = document.getElementById("mobile_menu_toggle"); 
 	 if (toggle) toggle.setAttribute("aria-expanded", isOpen ? "true" : "false"); 
 	}
+
+	function toggle_year_playback() {
+		if (app.view.year_player.isPlaying) {
+			stop_year_playback(true);
+		} else {
+			start_year_playback();
+		}
+	}
+	
+	function start_year_playback() {
+		const btn = document.getElementById("year_play_toggle");
+		const years = app.view.year_player.order || [];
+		if (!years || years.length === 0) return;
+	
+		// Align index to current selected year if possible
+		const current = Number(app.selection.years?.[0] || years[years.length - 1]);
+		const idx = years.indexOf(current);
+		app.view.year_player.index = (idx >= 0 ? idx : 0);
+	
+		// Safety: clear any old timer
+		if (app.view.year_player.timer) clearInterval(app.view.year_player.timer);
+	
+		app.view.year_player.isPlaying = true;
+		if (btn) {
+			btn.textContent = '⏸';
+			btn.setAttribute('aria-pressed', 'true');
+		}
+	
+		// Immediately show current index (so it aligns), then step every delay
+		set_current_year(years[app.view.year_player.index]);
+		app.view.year_player.timer = setInterval(year_play_step, app.view.year_player.delay);
+	}
+	
+	function stop_year_playback(updateButtonUI = true) {
+		if (app.view.year_player.timer) {
+			clearInterval(app.view.year_player.timer);
+			app.view.year_player.timer = null;
+		}
+		app.view.year_player.isPlaying = false;
+		if (updateButtonUI) {
+			const btn = document.getElementById("year_play_toggle");
+			if (btn) {
+				btn.textContent = '▶';
+				btn.setAttribute('aria-pressed', 'false');
+			}
+		}
+	}
+	
+	function year_play_step() {
+		const years = app.view.year_player.order || [];
+		if (!years || years.length === 0) {
+			stop_year_playback(true);
+			return;
+		}
+		// Advance index and wrap to oldest after newest
+		app.view.year_player.index = (app.view.year_player.index + 1) % years.length;
+		set_current_year(years[app.view.year_player.index]);
+	}
+	
+	function set_current_year(yearNumber) {
+		// Ensure selection has only this year
+		app.selection.years = [String(yearNumber)];
+	
+		// Sync UI listbox
+		const sel = document.getElementById('year_selector');
+		if (sel && sel.options && sel.options.length > 0) {
+			for (const opt of sel.options) opt.selected = (Number(opt.value) === Number(yearNumber));
+		}
+	
+		// Re-render with current filter state
+		process_selections(false);
+	}
+	

@@ -644,4 +644,18 @@ div.gradient_color { height: 0.8em; }
 	  visibility: hidden !important;
 	}
   }
-   
+
+  /* Years header row with play/pause */
+.years_header {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	margin-bottom: 6px;
+  }
+  #year_play_toggle {
+	min-height: 32px;
+	min-width: 44px; /* touch target */
+	padding: 4px 10px;
+	cursor: pointer;
+  }
+  
