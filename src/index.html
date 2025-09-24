@@ -3,6 +3,7 @@
 	<head>
 		<title>hin&amp;weg web</title>
 		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 		<link rel="icon" type="image/x-icon" href="img/huw-logo_32.ico">
 		<link rel="stylesheet" href="lib/leaflet.css">
 		<link rel="stylesheet" href="lib/geostats.css">
@@ -157,14 +158,26 @@
 			</div>			
 		</div>
 
+		<button id="mobile_menu_toggle" type="button" aria-expanded="false" aria-controls="selection_box" title="Menü öffnen/schließen" onclick="toggle_mobile_menu()">Menü</button> 
+		
 		<!-- legend view -->
-		<div id="legend_view">
-			<h2 class="title_bar" draggable="true" ondragstart="move_start_legend(event, 'legend_view')" ondragend="move_stop_legend(event, 'legend_view')">
-				Legende
-			</h2>
-			<div id="legend_content" class="view_content">
-			</div>
-		</div>
+<div id="legend_view">
+	<h2 class="title_bar"
+		draggable="true"
+		ondragstart="move_start_legend(event, 'legend_view')"
+		ondragend="move_stop_legend(event, 'legend_view')">
+	  Legende
+	  <button id="legend_toggle"
+			  class="legend_toggle"
+			  type="button"
+			  aria-expanded="true"
+			  aria-controls="legend_content"
+			  title="Legende ein-/ausklappen"
+			  onclick="toggle_legend(event)">▾</button>
+	</h2>
+	<div id="legend_content" class="view_content"></div>
+  </div>
+  
 
 		<!-- dataset loader dialog -->
 		<div id="datasetloader_dialog" class="viewcomponent">

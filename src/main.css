@@ -7,7 +7,11 @@ html, body
 
 body
 {
-	font-size: 80%;
+	font-size: 100%; /* 16px base for readability */ line-height: 1.4; 
+}
+
+input, select, button, textarea { 
+	font-size: 1rem; /* iOS won’t auto-zoom when >= 16px/ line-height: 1.2; } button, input[type="button"], input[type="submit"], input[type="checkbox"], input[type="radio"], select { min-height: 44px; / comfortable tap target */ 
 }
 
 div#leafletmap
@@ -493,3 +497,151 @@ div#link_container {
 div#link_container a {
     margin-bottom: 5px;
 }
+
+@media (max-width: 768px) { /* Compact header */ 
+	div#header { top: 8px; left: 8px; max-width: calc(100% - 16px); padding: 4px 6px; } 
+	h1 { font-size: 1.1rem; } 
+	h3 { font-size: 0.95rem; } 
+	span#versionsub { font-size: 0.6rem; }
+	/* Turn selection panel into a bottom sheet that is closed by default */
+div#selection_box {
+    top: auto;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    max-height: 55vh;
+    overflow-y: auto;
+    border-top-right-radius: 12px;
+    border-top-left-radius: 12px;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    transform: translateY(100%);
+    transition: transform 0.3s ease;
+    padding-bottom: env(safe-area-inset-bottom, 8px);
+}
+div#selection_box.open {
+    transform: translateY(0);
+}
+/* Mobile toggle button (FAB-style) */
+#mobile_menu_toggle {
+    position: fixed;
+    right: 12px;
+    bottom: 12px;
+    z-index: 1100;
+    background: #356184;
+    color: #fff;
+    border: none;
+    border-radius: 24px;
+    padding: 10px 14px;
+    font-size: 1rem;
+    min-height: 44px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+}
+/* Hide the right-side action buttons to save space on phones */
+div.action_button {
+    display: none;
+}
+/* Compact credits panel */
+div#credits {
+    font-size: 0.8rem;
+    padding: 4px;
+    opacity: 0.95;
+}
+div#credits img {
+    height: 24px;
+}
+div#text_with_links { 
+    gap: 8px; 
+    font-size: 0.85rem;
+}
+/* Legend and popups: smaller and kept off corners */
+div#legend_view {
+    right: 8px;
+    bottom: 70px; /* leave room for the mobile toggle button */
+    max-width: 65%;
+}
+div#feature_info_popup {
+    font-size: 0.9rem;
+    padding: 8px;
+}
+/* Dialogs and views become near-full-width */
+div.viewcomponent {
+    left: 8px;
+    right: 8px;
+    top: auto;
+    bottom: 8px;
+    width: auto;
+    max-width: calc(100% - 16px);
+    max-height: 70vh;
+    overflow: auto;
+    margin-left: 0;
+}
+h2.title_bar {
+    height: auto;
+    font-size: 1rem;
+    padding: 6px 0;
+}
+/* Make selectors readable and scannable */
+select.selector, input.selector, input.filter, select.filter, button.selector, fieldset#data_interpretation {
+    font-size: 1rem;
+    min-height: 44px;
+}
+#year_selector {
+    max-height: 35vh;
+    overflow-y: auto;
+}
+/* Load indicator centered and sized */
+div#load_indicator {
+    top: auto;
+    left: 50%;
+    bottom: 30%;
+    transform: translateX(-50%);
+    margin: 0;
+    width: 90%;
+}
+/* Color gradients compact */
+div.color_gradient { width: 80px; height: 0.8em; }
+div.gradient_color { height: 0.8em; }
+}
+/* Collapsible legend */
+#legend_view .legend_toggle {
+	position: absolute;
+	right: 6px;
+	top: 2px;
+	background: transparent;
+	border: none;
+	font-size: 1rem;
+	line-height: 1;
+	cursor: pointer;
+	padding: 6px;
+  }
+  
+  #legend_view.collapsed #legend_content {
+	display: none;
+  }
+  
+  #legend_view.collapsed {
+	min-height: 0;
+  }
+  
+  #legend_view.collapsed .legend_toggle {
+	transform: rotate(-90deg);
+  }
+  
+  /* Mobile touch target */
+  @media (max-width: 768px) {
+	#legend_view .legend_toggle {
+	  font-size: 1.1rem;
+	  padding: 8px;
+	}
+  }
+ /* Hide credits/logos only on small screens */
+@media (max-width: 768px) {
+	#credits,
+	#credits * {
+	  display: none !important;
+	  visibility: hidden !important;
+	}
+  }
+   

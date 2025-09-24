@@ -100,6 +100,7 @@ let app =
 		swoopy_arrows: [],
 		load_indicator_state: -1,
 		map_opacity_selected: 0.75,
+		legend_collapsed: false, // remember legend collapsed/expanded state
 	},
 	dataset_list: [],
 	datasets: {},
@@ -587,47 +588,52 @@ function refresh_title_years()
 	dataset_title_years.innerHTML = years;
 }
 function refresh_legend() {
-    const legend = document.getElementById("legend_view");
-    const legend_content = document.getElementById("legend_content");
-    legend.style.display = "none";
-    legend_content.innerHTML = ''; // Clear existing content
-    if (!app.data.geostats) return;
-
-    // Start the legend HTML with a single container
-    let legendHtml = '<div class="geostats-legend">';
-
-    // Add legend entry for 0-values
-    legendHtml += '<div>' +
-                  '<div class="geostats-legend-block" style="background-color: white;"></div>' +
-                  '0-Werte' +
-                  '</div>';
-
-    // Add legend entry for missing/NA values
-    legendHtml += '<div>' +
-                  '<div class="geostats-legend-block" style="background-color: grey;"></div>' +
-                  'Fehlende/NA-Werte' +
-                  '</div>';
-
-    // Add the existing legend content without the outer geostats-legend div
-    if (app.data.geostats_negative) {
-        let negLegend = app.data.geostats_negative.getHtmlLegend();
-        // Remove the outer div to prevent nesting
-        negLegend = negLegend.replace(/^<div class="geostats-legend">/, '').replace(/<\/div>\s*$/, '');
-        legendHtml += negLegend;
-    }
-
-    let posLegend = app.data.geostats_positive.getHtmlLegend();
-    // Remove the outer div to prevent nesting
-    posLegend = posLegend.replace(/^<div class="geostats-legend">/, '').replace(/<\/div>\s*$/, '');
-    legendHtml += posLegend;
-
-    // Close the main legend container
-    legendHtml += '</div>';
-
-    legend_content.innerHTML = legendHtml;
-    legend.style.display = "block";
-}
-
+	const legend = document.getElementById("legend_view");
+	const legend_content = document.getElementById("legend_content");
+	legend.style.display = "none";
+	legend_content.innerHTML = ''; // Clear existing content
+	if (!app.data.geostats) return;
+  
+	// Start the legend HTML with a single container
+	let legendHtml = '<div class="geostats-legend">';
+  
+	// Add legend entry for 0-values
+	legendHtml += '<div>' +
+				  '<div class="geostats-legend-block" style="background-color: white;"></div>' +
+				  '0-Werte' +
+				  '</div>';
+  
+	// Add legend entry for missing/NA values
+	legendHtml += '<div>' +
+				  '<div class="geostats-legend-block" style="background-color: grey;"></div>' +
+				  'Fehlende/NA-Werte' +
+				  '</div>';
+  
+	// Negative legend (if present) without outer container
+	if (app.data.geostats_negative) {
+	  let negLegend = app.data.geostats_negative.getHtmlLegend();
+	  negLegend = negLegend.replace(/^<div class="geostats-legend">/, '').replace(/<\/div>\s*$/, '');
+	  legendHtml += negLegend;
+	}
+  
+	// Positive legend without outer container
+	let posLegend = app.data.geostats_positive.getHtmlLegend();
+	posLegend = posLegend.replace(/^<div class="geostats-legend">/, '').replace(/<\/div>\s*$/, '');
+	legendHtml += posLegend;
+  
+	// Close the main legend container
+	legendHtml += '</div>';
+  
+	legend_content.innerHTML = legendHtml;
+	legend.style.display = "block";
+  
+	// Apply collapsed/expanded state and sync ARIA
+	if (app.view.legend_collapsed) legend.classList.add('collapsed');
+	else legend.classList.remove('collapsed');
+	const toggle = document.getElementById('legend_toggle');
+	if (toggle) toggle.setAttribute('aria-expanded', (!app.view.legend_collapsed).toString());
+  }
+  
 
 
 
@@ -697,3 +703,23 @@ function move_stop_legend(event, viewid)
 	view.style.right = app.view.positions[viewid].x + "px";
 	view.style.bottom = app.view.positions[viewid].y + "px";
 }
+
+function toggle_legend(event) {
+	// Prevent click from interfering with dragging
+	if (event && typeof event.stopPropagation === 'function') event.stopPropagation();
+	const legend = document.getElementById('legend_view');
+	if (!legend) return;
+	const collapsed = legend.classList.toggle('collapsed');
+	const btn = document.getElementById('legend_toggle');
+	if (btn) btn.setAttribute('aria-expanded', (!collapsed).toString());
+	app.view.legend_collapsed = collapsed;
+  }
+  
+
+function toggle_mobile_menu() { 
+	const box = document.getElementById("selection_box");
+	 if (!box) return; 
+	 const isOpen = box.classList.toggle("open"); 
+	 const toggle = document.getElementById("mobile_menu_toggle"); 
+	 if (toggle) toggle.setAttribute("aria-expanded", isOpen ? "true" : "false"); 
+	}
