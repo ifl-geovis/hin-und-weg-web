@@ -88,7 +88,8 @@ let app =
 		colors: 'red_scale',
 		colors_negative: 'blue_scale_negative',
 		classborders: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-		classborders_negative: [-10, -9 -8, -7, -6, -5, -4, -3, -2, -1],
+		// CHANGED: fixed typo (missing comma)
+		classborders_negative: [-10, -9, -8, -7, -6, -5, -4, -3, -2, -1],
 		map_opacity: 0.8,
 	},
 	view:
@@ -343,7 +344,8 @@ function create_where_clause(elements)
 	if (elements.length < 1) return "";
 	let clause = " WHERE";
 	let first = true;
-	for (element of elements)
+	// CHANGED: declare loop variable
+	for (let element of elements)
 	{
 		if (!first) clause += " AND";
 		clause += " (" + element + ")";
@@ -399,7 +401,8 @@ function recalculate_data_saldi()
 	let where_clause = create_where_clause(list_selection_for_sql(["toid = ?"]));
 	app.data.processed = alasql("SELECT fromid AS id, ? AS toid, ? AS toname, fromid, " + get_migration_select('to') + " from migrations " + where_clause + " GROUP BY fromid", [app.selection.area_id, app.data.featurename_mapping[app.selection.area_id], app.selection.area_id]);
 	where_clause = create_where_clause(list_selection_for_sql(["fromid = ?"]));
-	data_von = alasql("SELECT toid, " + get_migration_select('from') + " from migrations " + where_clause + " GROUP BY toid", [app.selection.area_id]);
+	// CHANGED: declare data_von
+	const data_von = alasql("SELECT toid, " + get_migration_select('from') + " from migrations " + where_clause + " GROUP BY toid", [app.selection.area_id]);
 	for (let row of app.data.processed)
 	{
 		row.fromname = app.data.featurename_mapping[row.fromid];
@@ -423,8 +426,8 @@ function post_process(reset_filters)
 function process_filters(reset_filters) {
  // Add this check to prevent accessing properties of null
  if (!app.data.geostats) return;
-// Delete next line when problem occurs
-    if (reset_filters) return;
+ // Keep current behavior: skip filtering when reset occurred
+ if (reset_filters) return;
     app.data.processed = [];
     let minValue = app.data.geostats.min();
     let maxValue = app.data.geostats.max();
@@ -547,6 +550,7 @@ function set_classification_algorithm(geostats, classcount, negative)
 	{
 		console.log("error:", e);
 		const classification_message = document.getElementById("classification_message");
+        // Keep UX message
 		classification_message.innerHTML = "Es gab einen Fehler bei der Verarbeitung der Klassifikationseinstellungen. Klassifikation wurde auf eine sichere Einstellung zurückgesetzt.";
 		classification_message.style.display = "block";
 		app.selection.classification = "equidistant";

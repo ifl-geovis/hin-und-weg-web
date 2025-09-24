@@ -1,4 +1,3 @@
-
 function update_element_visibility() {
     let category_selector = document.getElementById("category_selector");
     if (app.selection.dataset_id) {
@@ -156,8 +155,10 @@ function create_centroid_mapping()
 }
 
 
+// CHANGED: safe regex for year and declared 'value'
 function load_migration_csv(results, file) {
-    let year = /^.*year=([01-9]+)$/.exec(file)[1];
+    const match = /^.*year=([0-9]+)$/.exec(file); // CHANGED
+    const year = match ? match[1] : null;         // CHANGED
     if (year) {
         app.data.migrations[year] = results;
         let headers = results.data[2];
@@ -167,23 +168,21 @@ function load_migration_csv(results, file) {
                 let toid = headers[col];
                 let from = app.data.featurename_mapping[fromid];
                 let to = app.data.featurename_mapping[toid];
-                // CHANGE THIS PART:
-// Handle missing values: trim any whitespace and treat '' or '.' as missing
-let rawValue = results.data[row][col];
-let valueStr = (rawValue !== null && rawValue !== undefined) ? rawValue.toString().trim() : "";
-if (valueStr === 'x' || valueStr === '' || valueStr === '.') {
-    value = null;  // Set missing values to null
-} else {
-    value = parseInt(valueStr, 10);
-    if (isNaN(value)) {
-        value = null;
-    }
-}
+                // Handle missing values: trim any whitespace and treat '' or '.' or 'x' as missing
+                const rawValue = results.data[row][col];
+                const valueStr = (rawValue !== null && rawValue !== undefined) ? rawValue.toString().trim() : "";
+                let value; // CHANGED
+                if (valueStr === 'x' || valueStr === '' || valueStr === '.') {
+                    value = null;  // Set missing values to null
+                } else {
+                    const parsed = parseInt(valueStr, 10);
+                    value = Number.isNaN(parsed) ? null : parsed;
+                }
                 alasql("INSERT INTO migrations (fromid, toid, fromname, toname, year, migrations) VALUES (?, ?, ?, ?, ?, ?)", [fromid, toid, from, to, year, value]);
             }
         }
     }
-    // REMOVE this line: renew_year_selection();
+    // No renew_year_selection() here; done in load_completed
     
     app.status.migrations_loads--;
     if (app.status.migrations_loads === 0) load_completed();
@@ -199,8 +198,7 @@ function load_population_csv(results, file) {
         for (let col = 1; col < results.data[row].length; col++) {
             let areaid = results.data[row][0];
             let year = headers[col];
-            // CHANGE THIS PART:
-            // Handle missing values: blank cells or cells containing "."
+            // Handle missing values: blank cells or cells containing ".", "x" or undefined
             let value = results.data[row][col];
             if (value === 'x' || value === '' || value === '.' || value === undefined) {
                 value = null;  // Set explicitly to null for missing values
@@ -219,7 +217,7 @@ function load_population_csv(results, file) {
 
 
 function load_completed() {
-    // ADD THIS LINE: Make sure year selection is updated before processing
+    // Make sure year selection is updated before processing
     renew_year_selection();
     
     let selectors = document.getElementsByClassName("selector");

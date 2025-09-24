@@ -172,7 +172,25 @@ function init_color_gradients()
 	}
 }
 
-function start()
-{
-	console.log("start!");
+function start() { console.log("start!"); // CHANGED: auto-select dataset 'bund' and category 'all' and auto-load 
+	const datasetId = 'bund'; 
+	const categoryId = 'all';
+	if (app.datasets && app.datasets[datasetId]) {
+		// Set dataset selection
+		app.selection.dataset_id = datasetId;
+		app.selection.dataset = app.datasets[datasetId];
+	    // Build category mapping and set category
+		app.data.category_mapping = create_category_mapping(app.selection.dataset.categories);
+		app.selection.category_id = categoryId;
+		app.selection.category = select_category(categoryId, app.selection.dataset.categories);
+	    // Hide dataset loader dialog if it exists (extra safety)
+		const dialog = document.getElementById("datasetloader_dialog");
+		if (dialog) dialog.style.display = "none";
+	    // Reflect selection in the header inputs
+		update_element_visibility();
+    // Trigger the actual data load (also sets modal_dialog = false)
+    load_dataset(null);
+} else {
+    console.warn("Dataset 'bund' not found. The selection window will remain available.");
+}
 }

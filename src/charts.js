@@ -1,6 +1,12 @@
 // File: charts.js
 // Function to modify: refresh_barchart_view()
 
+charts.js
+javascript
+
+// File: charts.js
+// Function to modify: refresh_barchart_view()
+
 function refresh_barchart_view()
 {
 	console.log("refresh_barchart_view");
@@ -30,9 +36,15 @@ function refresh_barchart_view()
 	// Removed the limitation to top 20 entries
 	
 	// Calculate max value for scaling - properly handle null/undefined values
-	const maxValue = Math.max(...sortedData.filter(item => 
-        item.migrations !== null && item.migrations !== undefined
-    ).map(item => Math.abs(item.migrations)));
+	// CHANGED: guard against -Infinity/0 and non-finite values
+	let maxValue = Math.max(
+        ...sortedData
+            .filter(item => item.migrations !== null && item.migrations !== undefined)
+            .map(item => Math.abs(Number(item.migrations)))
+    );
+    if (!Number.isFinite(maxValue) || maxValue <= 0) {
+        maxValue = 1;
+    }
     
     console.log("Max value for scaling:", maxValue);
 	
@@ -64,19 +76,21 @@ function refresh_barchart_view()
 					</div>
 				</div>`;
 		} else {
-			// Calculate bar width as percentage of max value
-			// Ensure it's at least 5% for visibility of small values
-			const barWidth = Math.max(5, Math.abs(item.migrations) / maxValue * 100);
-			const barColor = item.color || (item.migrations >= 0 ? '#356184' : '#E45A47');
-			const barDirection = item.migrations >= 0 ? 'right' : 'left';
-			
+			// CHANGED: robust width and localized/NA value
+            const val = Number(item.migrations);
+            const abs = Math.abs(val);
+            const barWidth = (abs === 0) ? 0 : Math.max(5, (abs / maxValue) * 100);
+			const barColor = item.color || (val >= 0 ? '#356184' : '#E45A47');
+			const barDirection = val >= 0 ? 'right' : 'left';
+            const labelValue = format_value(val);
+
 			dataview += `
 				<div class="barchart-row">
 					<div class="barchart-label">${labelText}</div>
 					<div class="barchart-bar-container">
 						<div class="barchart-bar ${barDirection}" 
 							 style="width: ${barWidth}%; background-color: ${barColor};">
-							<span class="barchart-value">${item.migrations}</span>
+							<span class="barchart-value">${labelValue}</span>
 						</div>
 					</div>
 				</div>`;

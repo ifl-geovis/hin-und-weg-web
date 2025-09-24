@@ -88,10 +88,9 @@ div.map_info_label
 	height: auto;
 }
 
-div#datasetloader_dialog
-{
-	display: block;
-	min-width: 500px;
+div#datasetloader_dialog { /* CHANGED: hide by default to skip selection window on startup */ 
+	display: none; 
+	min-width: 500px; 
 }
 
 div#datasetloader_content

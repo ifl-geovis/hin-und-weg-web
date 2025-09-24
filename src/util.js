@@ -2,68 +2,61 @@
 
 /*
 function for loading a url
-	param url: url to load (can be relative)
-	param info: info object added to the request so that the callback can access it
-	param listener: callback function
+    param url: url to load (can be relative)
+    param info: info object added to the request so that the callback can access it
+    param listener: callback function
 */
 function load_url(url, info, listener)
 {
-	console.log("load_url: ", url);
-	let xhr = new XMLHttpRequest();
-	xhr.appinfo = info;
-	xhr.addEventListener("load", listener);
-	xhr.open("GET", url);
-	xhr.send();
-}
-
-
-function hide_load_indicator() {
-    let load_indicator = document.getElementById("load_indicator");
-    load_indicator.style.display = "none";
-    app.status.loading = false;
+    console.log("load_url: ", url);
+    let xhr = new XMLHttpRequest();
+    xhr.appinfo = info;
+    xhr.addEventListener("load", listener);
+    xhr.open("GET", url);
+    xhr.send();
 }
 
 function extract_migration_years(dataset)
 {
-	//console.log("extract_migration_years: ", dataset);
-	for (let category of dataset.categories)
-	{
-		let years = [];
-		for (let year in category.migrations)
-		{
-			years.push(year);
-		}
-		category.years = years;
-	}
+    //console.log("extract_migration_years: ", dataset);
+    for (let category of dataset.categories)
+    {
+        let years = [];
+        for (let year in category.migrations)
+        {
+            years.push(year);
+        }
+        category.years = years;
+    }
 }
 
 function remove_item_from_list(list, item)
 {
-	let index = list.indexOf(item);
-	if (index !== -1)
-	{
-		list.splice(index, 1);
-	}
+    let index = list.indexOf(item);
+    if (index !== -1)
+    {
+        list.splice(index, 1);
+    }
 }
 
 function add_select_options(select, list, mapping)
 {
-	for (let id of list)
-	{
-		let option = document.createElement("option");
-		option.value = id;
-		option.text = mapping[id];
-		select.add(option);
-	}
+    for (let id of list)
+    {
+        let option = document.createElement("option");
+        option.value = id;
+        option.text = mapping[id];
+        select.add(option);
+    }
 }
 
 function remove_select_options(select)
 {
-	while (select.lastElementChild && select.lastElementChild.value)
-	{
-		//console.log(select.lastElementChild.value);
-		select.lastElementChild.remove();
-	}
+    while (select.lastElementChild && select.lastElementChild.value)
+    {
+        //console.log(select.lastElementChild.value);
+        select.lastElementChild.remove();
+    }
 }
 
 function add_select_options_year(select, list) {
@@ -76,17 +69,16 @@ function add_select_options_year(select, list) {
     }
 }
 
-
 function calculate_classcount(choices, positive)
 {
-	let count = parseInt(((positive) ? app.selection.class_number : app.selection.class_number_negative), 10);
-	if (!isNaN(count)) return count;
-	if (!choices) return 1;
-	if (choices < 1) return 1;
-	const classcount = Math.round(Math.sqrt(choices));
-	if (classcount < 1) return 1;
-	if (classcount > 9) return 9;
-	return classcount;
+    let count = parseInt(((positive) ? app.selection.class_number : app.selection.class_number_negative), 10);
+    if (!isNaN(count)) return count;
+    if (!choices) return 1;
+    if (choices < 1) return 1;
+    const classcount = Math.round(Math.sqrt(choices));
+    if (classcount < 1) return 1;
+    if (classcount > 9) return 9;
+    return classcount;
 }
 
 function get_color_for_value(value) {
@@ -106,8 +98,6 @@ function get_color_for_value(value) {
     return app.data.geostats_positive.colors[app.data.geostats_positive.getClass(value)];
 }
 
-
-
 function get_color_for_feature_id(feature_id) {
     if (!app.data.processed) return "white";
     for (let row of app.data.unfiltered) {
@@ -116,59 +106,71 @@ function get_color_for_feature_id(feature_id) {
     return "white";
 }
 
-
 function get_feature_by_id(feature_id, filtered)
 {
-	const data = (filtered) ? app.data.processed : app.data.unfiltered;
-	if (!data) return null;
-	for (let row of data)
-	{
-		if (row.id === feature_id) return row;
-	}
-	return null;
+    const data = (filtered) ? app.data.processed : app.data.unfiltered;
+    if (!data) return null;
+    for (let row of data)
+    {
+        if (row.id === feature_id) return row;
+    }
+    return null;
 }
 
 function create_color_scale_selection(colorscale, negative, first)
 {
-	let id = (negative) ? colorscale + "_negative" : colorscale;
-	let name = (negative) ? "colors_negative" : "colors";
-	let color_scale = '';
-	if (!first) color_scale += '<br />';
-	let checked = "";
-	if (negative && (id === app.selection.colors_negative)) checked = " checked";
-	if (!negative && (id === app.selection.colors)) checked = " checked";
-	color_scale += '<input type="radio" id="radio_' + id + '" class="selector" name="' + name + '" value="' + id + '" onchange="colors_changed(event, ' + negative + ')"' + checked + ' />';
-	color_scale += '<div class="color_gradient" id="' + id + '"></div>';
-	color_scale += '<label for="radio_' + id + '"> ' + app.configuration.colors[colorscale].title + '</label>';
-	return color_scale;
+    let id = (negative) ? colorscale + "_negative" : colorscale;
+    let name = (negative) ? "colors_negative" : "colors";
+    let color_scale = '';
+    if (!first) color_scale += '<br />';
+    let checked = "";
+    if (negative && (id === app.selection.colors_negative)) checked = " checked";
+    if (!negative && (id === app.selection.colors)) checked = " checked";
+    color_scale += '<input type="radio" id="radio_' + id + '" class="selector" name="' + name + '" value="' + id + '" onchange="colors_changed(event, ' + negative + ')"' + checked + ' />';
+    color_scale += '<div class="color_gradient" id="' + id + '"></div>';
+    color_scale += '<label for="radio_' + id + '"> ' + app.configuration.colors[colorscale].title + '</label>';
+    return color_scale;
 }
 
 function is_negative_color(id)
 {
-	if (id.endsWith("_negative")) return true;
-	if (id.startsWith("neg_")) return true;
-	return false;
+    if (id.endsWith("_negative")) return true;
+    if (id.startsWith("neg_")) return true;
+    return false;
 }
 
 function select_color(id)
 {
-	if (id.endsWith("_negative")) return reverse_colors(select_color(id.substring(0, id.length - 9)));
-	if (id.startsWith("neg_")) return reverse_colors(select_color(id.substring(4)));
-	if (id === 'yellow_red_black') return ['yellow', 'red', 'black'];
-	if (app.configuration.colors[id]) return app.configuration.colors[id].scale;
-	return chroma.brewer[id];
+    if (id.endsWith("_negative")) return reverse_colors(select_color(id.substring(0, id.length - 9)));
+    if (id.startsWith("neg_")) return reverse_colors(select_color(id.substring(4)));
+    if (id === 'yellow_red_black') return ['yellow', 'red', 'black'];
+    if (app.configuration.colors[id]) return app.configuration.colors[id].scale;
+    return chroma.brewer[id];
 }
 
 function reverse_colors(colors)
 {
-	if (!(colors instanceof Array)) return colors;
-	let reversed = [];
-	for (let i = colors.length - 1; i >= 0; i--)
-	{
-		reversed.push(colors[i]);
-	}
-	return reversed;
+    if (!(colors instanceof Array)) return colors;
+    let reversed = [];
+    for (let i = colors.length - 1; i >= 0; i--)
+    {
+        reversed.push(colors[i]);
+    }
+    return reversed;
 }
+
+// CHANGED: Added a unified value formatter for labels/charts with NA handling
+function format_value(value, decimals = 0) {
+    if (value === null || value === undefined) return "NA";
+    if (typeof value !== 'number') {
+        const num = Number(value);
+        if (!Number.isFinite(num)) return "NA";
+        value = num;
+    }
+    const opts = { minimumFractionDigits: decimals, maximumFractionDigits: decimals };
+    return new Intl.NumberFormat('de-DE', opts).format(value);
+}
+
 function hide_load_indicator() {
     let load_indicator = document.getElementById("load_indicator");
     load_indicator.style.display = "none";
