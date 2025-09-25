@@ -1,17 +1,76 @@
 // map functions
+// CHANGED: responsive padding for fitBounds so the map fills the screen with a small buffer
+function get_map_fit_padding() {
+	// Use 5% of viewport size as padding with a minimum of 16px
+	if (!app.map.map) return L.point(20, 20);
+	const size = app.map.map.getSize();
+	const padX = Math.max(16, Math.round(size.x * 0.05));
+	const padY = Math.max(16, Math.round(size.y * 0.05));
+	return L.point(padX, padY);
+}
+// Responsive padding so the map fills the screen with a small buffer and avoids fixed UI
+function get_map_fit_padding_options() {
+	const map = app.map.map;
+	if (!map) return {};
+
+	const size = map.getSize();
+	// Base padding: ~4% of viewport with a minimum of 16px
+	const vpPadX = Math.max(16, Math.round(size.x * 0.04));
+	const vpPadY = Math.max(16, Math.round(size.y * 0.04));
+
+	// Account for fixed header (top) and credits (bottom) if visible
+	const headerEl = document.getElementById('header');
+	const topUI = headerEl ? (headerEl.getBoundingClientRect().height + 8) : 0;
+
+	const creditsEl = document.getElementById('credits');
+	const creditsVisible = creditsEl && getComputedStyle(creditsEl).visibility !== 'hidden' && getComputedStyle(creditsEl).display !== 'none';
+	const bottomUI = creditsVisible ? (creditsEl.getBoundingClientRect().height + 8) : 0;
+
+	// Right-side action buttons column (≈40px + borders/gap)
+	const rightUI = 52;
+	// Left side: no persistent UI except credits bottom-left already covered
+	const leftUI = 16;
+
+	const paddingTopLeft = L.point(Math.max(vpPadX, leftUI), Math.max(vpPadY, topUI));
+	const paddingBottomRight = L.point(Math.max(vpPadX, rightUI), Math.max(vpPadY, bottomUI));
+	return { paddingTopLeft, paddingBottomRight };
+}
+
+// Centralized fit-to-data with proper padding and size invalidation
+function fit_map_to_data() {
+	const map = app.map.map;
+	if (!map || !app.map.datalayer) return;
+
+	// Ensure Leaflet knows the current container size
+	map.invalidateSize(true);
+
+	const bounds = app.map.datalayer.getBounds();
+	if (bounds && bounds.isValid && bounds.isValid()) {
+		const opts = get_map_fit_padding_options();
+		map.fitBounds(bounds, opts);
+	}
+}
 
 function init_map()
 {
 	app.map.map = L.map("leafletmap");
+	// Initial placeholder view; will be replaced by fit_map_to_data() once data loads
 	app.map.map.setView([51.5, 10], 7);
-	let mapconfig =
+
+	const mapconfig =
 	{
 		attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 	};
 	app.map.backgroundlayer = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', mapconfig);
 	app.map.backgroundlayer.addTo(app.map.map);
 	app.status.background_active = true;
+
+	// Refit when the window resizes
+	window.addEventListener('resize', () => {
+		if (app.map.datalayer) fit_map_to_data();
+	});
 }
+
 
 function refresh_swoopy_arrows()
 {
@@ -90,6 +149,27 @@ function show_swoopy_arrows()
 	for (let arrow of app.view.swoopy_arrows) arrow.addTo(app.map.map);
 }
 
+// Rebuild map labels to reflect current values/formatting (e.g., when year or mode changes)
+function refresh_map_labels() {
+	if (!app.map.selectionlayer) return;
+
+	// Remove existing labels
+	if (app.map.labels && app.map.labels.length) {
+		for (const label of app.map.labels) label.removeFrom(app.map.map);
+		app.map.labels = [];
+	}
+
+	// If labels are off, nothing to (re)create
+	if (!app.selection.labels || app.selection.labels === 'none') return;
+
+	// Recreate labels for each feature in the selection layer
+	app.map.selectionlayer.eachLayer(function (layer) {
+		if (layer && layer.feature) {
+			map_labels(layer.feature, layer);
+		}
+	});
+}
+
 function map_style(feature) {
     let feature_id = get_feature_id(feature);
     let is_selected = is_selected_feature(feature_id);
@@ -147,8 +227,10 @@ function show_info_popup(event) {
 	  else if (app.selection.theme === 'nach') info_text += "←";
 	  else if (app.selection.theme === 'saldi') info_text += "←→";
   
-	  const decimals = (app.selection.data_interpretation === 'migration_rate') ? 3 : 0;
-	  info_text += feature_info.toname + ":<br />" + format_value(feature_info.migrations, decimals);
+	   // Only show decimals for Rate (max 2), otherwise integer for Umzüge
+	   const decimals = (app.selection.data_interpretation === 'migration_rate') ? 2 : 0;
+	   info_text += feature_info.toname + ":<br />" + format_value(feature_info.migrations, decimals);
+	 
 	}
   
 	feature_info_popup.innerHTML = info_text;
@@ -166,11 +248,12 @@ function map_labels(feature, layer)
 	const feature_info = get_feature_by_id(feature.properties[app.selection.dataset.id_property], false);
 	if (!feature_info) return;
 	if (app.selection.labels === 'name') label_text = feature.properties[app.selection.dataset.name_property];
-	// CHANGED: NA-aware formatting for numbers
+	// Only show decimals for Rate (max 2), integer for Umzüge
 	if (app.selection.labels === 'number') {
-		const decimals = (app.selection.data_interpretation === 'migration_rate') ? 3 : 0;
+		const decimals = (app.selection.data_interpretation === 'migration_rate') ? 2 : 0;
 		label_text = format_value(feature_info.migrations, decimals);
-	  }	if (!label_text) return;
+	}
+	if (!label_text) return;
 	const label =
 	{
 		className: 'map_info_label',
@@ -203,19 +286,24 @@ function show_geojson_layer() {
         app.map.datalayer = L.geoJSON(app.data.geodata, {style: map_style});
         app.map.selectionlayer = L.geoJSON(app.data.geodata, {style: map_style_selected, onEachFeature: map_features});
     }
-    if (app.map.datalayer) {
-        app.map.datalayer.addTo(app.map.map);
-        app.map.map.fitBounds(app.map.datalayer.getBounds());
-    }
+	if (app.map.datalayer) {
+		app.map.datalayer.addTo(app.map.map);
+		// Fill the screen with a small buffer and respect fixed UI
+		fit_map_to_data();
+	}
     if (app.map.selectionlayer) app.map.selectionlayer.addTo(app.map.map);
     refresh_swoopy_arrows();
 }
 
 function zoom_home(event)
 {
-	if (app.map.datalayer) app.map.map.fitBounds(app.map.datalayer.getBounds());
-	else app.map.map.setView([51.5, 10], 7);
+	if (app.map.datalayer) {
+		fit_map_to_data();
+	} else {
+		app.map.map.setView([51.5, 10], 7);
+	}
 }
+
 
 function map_background_switcher(event)
 {

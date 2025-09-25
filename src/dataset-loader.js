@@ -226,6 +226,9 @@ function load_completed() {
     // CHANGED: reflect defaults in UI after enabling controls
 const theme_selector = document.getElementById("theme_selector");
 if (theme_selector) theme_selector.value = app.selection.theme; // 'saldi'
+// NEW: reflect stable-classification toggle in UI
+const overallToggle = document.getElementById("classification_overall_selector");
+if (overallToggle) overallToggle.checked = !!app.selection.classification_overall;
 
 const swoopy_arrows_selector = document.getElementById("swoopy_arrows_selector");
 if (swoopy_arrows_selector) swoopy_arrows_selector.checked = app.selection.swoopy_arrows; // true

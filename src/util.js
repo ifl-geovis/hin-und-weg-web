@@ -68,16 +68,19 @@ function add_select_options_year(select, list) {
         select.add(option);
     }
 }
+function calculate_classcount(choices, positive) {
+    // 1) If user selected a fixed class number, honor it but cap to 5
+    let selected = parseInt((positive ? app.selection.class_number : app.selection.class_number_negative), 10);
+    if (!Number.isNaN(selected)) {
+        selected = Math.max(1, Math.min(5, selected));
+        return selected;
+    }
 
-function calculate_classcount(choices, positive)
-{
-    let count = parseInt(((positive) ? app.selection.class_number : app.selection.class_number_negative), 10);
-    if (!isNaN(count)) return count;
-    if (!choices) return 1;
-    if (choices < 1) return 1;
-    const classcount = Math.round(Math.sqrt(choices));
-    if (classcount < 1) return 1;
-    if (classcount > 9) return 9;
+    // 2) Automatic: derive from data size, then cap to 5
+    if (!choices || choices < 1) return 1;
+    let classcount = Math.round(Math.sqrt(choices));
+    if (classcount < 1) classcount = 1;
+    if (classcount > 5) classcount = 5; // NEW: cap to 5
     return classcount;
 }
 
@@ -169,6 +172,13 @@ function format_value(value, decimals = 0) {
     }
     const opts = { minimumFractionDigits: decimals, maximumFractionDigits: decimals };
     return new Intl.NumberFormat('de-DE', opts).format(value);
+}
+// NEW: format with as few decimals as possible, up to max 2 (de-DE)
+function format_number_max2(value) {
+    if (value === null || value === undefined) return "NA";
+    let num = (typeof value === 'number') ? value : Number(value);
+    if (!Number.isFinite(num)) return "NA";
+    return new Intl.NumberFormat('de-DE', { maximumFractionDigits: 2 }).format(num);
 }
 
 function hide_load_indicator() {

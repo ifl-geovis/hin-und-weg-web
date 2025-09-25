@@ -91,6 +91,8 @@ let app =
 		// CHANGED: fixed typo (missing comma)
 		classborders_negative: [-10, -9, -8, -7, -6, -5, -4, -3, -2, -1],
 		map_opacity: 0.8,
+		   // NEW: when true, build classification across all years for the selected area
+		   classification_overall: true,
 	},
 	view:
 	{
@@ -232,7 +234,11 @@ function classification_selected(event)
 	app.selection.classification = event.target.value;
 	process_selections(true);
 }
-
+function classification_overall_changed(event) {
+    app.selection.classification_overall = !!event.target.checked;
+    // Recompute classes from the new basis; reset filters (min/max bounds change)
+    process_selections(true);
+}
 function class_number_selected(event, positive)
 {
 	//console.log("class_number_selected:", event.target.value);
@@ -361,13 +367,17 @@ function renew_filters(reset_filters)
 	}
 	app.status.filter_changed = false;
 }
-
 function process_selections(reset_filters) {
     show_load_indicator("Daten werden prozessiert.");
     refresh_classification_message();
     recalculate_data(reset_filters);
     refresh_datalayer();
+
+    // Make sure map labels reflect current mode (Umzüge vs. Rate) and year
+    if (typeof refresh_map_labels === 'function') refresh_map_labels();
+
     refresh_title_years();
+
     refresh_swoopy_arrows();
     renew_filters(reset_filters);
     refresh_view(app.status.viewcomponent);
@@ -375,6 +385,7 @@ function process_selections(reset_filters) {
     refresh_settings_dialog();
     app.status.loading = false;
 }
+
 
 function recalculate_data(reset_filters)
 {
@@ -414,6 +425,84 @@ function list_selection_for_sql(additionals)
 	if (!app.selection.area_inside) list.push("fromid <> toid");
 	if (app.selection.years && (app.selection.years.length > 0)) list.push("year IN ('" + app.selection.years.join("', '") + "')");
 	return list;
+}
+
+// NEW: Build classification value series across all years for current area/theme
+function build_classification_values_all_years() {
+    if (!app.selection.area_id) return { all: [], pos: [], neg: [] };
+    const area = app.selection.area_id;
+    const all = [];
+    const pos = [];
+    const neg = [];
+
+    // Build WHERE conditions
+    const condsVon = ["fromid = ?"];
+    const condsNach = ["toid = ?"];
+    if (!app.selection.area_inside) {
+        condsVon.push("fromid <> toid");
+        condsNach.push("fromid <> toid");
+    }
+    const whereVon = " WHERE " + condsVon.join(" AND ");
+    const whereNach = " WHERE " + condsNach.join(" AND ");
+
+    if (app.selection.theme === 'von') {
+        // Values per destination per year (from this area)
+        const sql = "SELECT toid AS other, year, " + get_migration_select('from') +
+                    " FROM migrations" + whereVon + " GROUP BY toid, year";
+        const rows = alasql(sql, [area]);
+        for (const r of rows) {
+            const v = (r && r.migrations);
+            if (v !== null && v !== undefined && v !== 0) all.push(Number(v));
+        }
+    } else if (app.selection.theme === 'nach') {
+        // Values per origin per year (to this area)
+        const sql = "SELECT fromid AS other, year, " + get_migration_select('to') +
+                    " FROM migrations" + whereNach + " GROUP BY fromid, year";
+        const rows = alasql(sql, [area]);
+        for (const r of rows) {
+            const v = (r && r.migrations);
+            if (v !== null && v !== undefined && v !== 0) all.push(Number(v));
+        }
+    } else if (app.selection.theme === 'saldi') {
+        // Inflows to area per origin and year
+        const inflowSql = "SELECT fromid AS other, year, " + get_migration_select('to') +
+                          " FROM migrations" + whereNach + " GROUP BY fromid, year";
+        const inflows = alasql(inflowSql, [area]);
+
+        // Outflows from area per destination and year
+        const outflowSql = "SELECT toid AS other, year, " + get_migration_select('from') +
+                           " FROM migrations" + whereVon + " GROUP BY toid, year";
+        const outflows = alasql(outflowSql, [area]);
+
+        const inMap = new Map();
+        const outMap = new Map();
+
+        for (const r of inflows) {
+            const key = r.other + "|" + r.year;
+            inMap.set(key, (r && r.migrations) == null ? null : Number(r.migrations));
+        }
+        for (const r of outflows) {
+            const key = r.other + "|" + r.year;
+            outMap.set(key, (r && r.migrations) == null ? null : Number(r.migrations));
+        }
+
+        // Union of keys (pairs across all years)
+        const keys = new Set([...inMap.keys(), ...outMap.keys()]);
+        for (const k of keys) {
+            const iv = inMap.has(k) ? inMap.get(k) : null;
+            const ov = outMap.has(k) ? outMap.get(k) : null;
+            // Treat missing as 0 for saldo computation; if both missing, skip
+            if (iv == null && ov == null) continue;
+            const diff = (iv == null ? 0 : iv) - (ov == null ? 0 : ov);
+            if (diff !== 0) {
+                all.push(diff);
+                if (diff > 0) pos.push(diff);
+                else neg.push(diff);
+            }
+        }
+    }
+
+    return { all, pos, neg };
 }
 
 function get_migration_select(direction)
@@ -521,27 +610,64 @@ function recalculate_classification() {
     app.data.geostats_positive = null;
     app.data.geostats_negative = null;
     if (!app.data.processed) return;
-    
-    // Filter out zero values and missing data
+
+    // NEW: Stable classification across all years for the selected area
+    if (app.selection.classification_overall) {
+        const series = build_classification_values_all_years();
+        // Ensure there is data to build a classification domain
+        if (!series || !Array.isArray(series.all) || series.all.length === 0) return;
+
+        // Global geostats (used for filters/statistics)
+        app.data.geostats = new geostats(series.all);
+
+        if (app.selection.theme === 'saldi') {
+            // Positive/negative domains from all-year time series
+            const posData = [0, ...series.pos]; // include 0 to anchor
+            while (posData.length < 2) posData.push(0);
+            const negData = [0, ...series.neg];
+            while (negData.length < 2) negData.push(0);
+
+            const classcountPos = calculate_classcount(series.pos.length, true);
+            const classcountNeg = calculate_classcount(series.neg.length, false);
+
+            app.data.geostats_positive = new geostats(posData);
+            app.data.geostats_positive.setColors(chroma.scale(select_color(app.selection.colors)).colors(classcountPos));
+            set_classification_algorithm(app.data.geostats_positive, classcountPos);
+
+            app.data.geostats_negative = new geostats(negData);
+            app.data.geostats_negative.setColors(chroma.scale(select_color(app.selection.colors_negative)).colors(classcountNeg));
+            set_classification_algorithm(app.data.geostats_negative, classcountNeg, true);
+        } else {
+            const classcount = calculate_classcount(series.all.length, true);
+            app.data.geostats_positive = new geostats(series.all);
+            app.data.geostats_positive.setColors(chroma.scale(select_color(app.selection.colors)).colors(classcount));
+            set_classification_algorithm(app.data.geostats_positive, classcount);
+        }
+
+        // Color current map values using the stable classification
+        for (let row of app.data.processed) row.color = get_color_for_value(row.migrations);
+        return;
+    }
+
+    // Original behavior: classification based only on currently selected year(s)
     let data = [];
     for (let row of app.data.processed) {
         if (row.migrations !== 0 && row.migrations !== null && row.migrations !== undefined) {
             data.push(row.migrations);
         }
     }
-    
- // ADD THIS CHECK: Don't proceed if data array is empty
- if (data.length === 0) return;
-    
- app.data.geostats = new geostats(data);
+    if (data.length === 0) return;
 
+    app.data.geostats = new geostats(data);
     if (recalculate_classification_saldi()) return;
+
     const classcount = calculate_classcount(data.length, true);
     app.data.geostats_positive = new geostats(data);
     app.data.geostats_positive.setColors(chroma.scale(select_color(app.selection.colors)).colors(classcount));
     set_classification_algorithm(app.data.geostats_positive, classcount);
     for (let row of app.data.processed) row.color = get_color_for_value(row.migrations);
 }
+
 
 function separate_processed()
 {
@@ -636,59 +762,96 @@ function refresh_legend() {
 	const legend = document.getElementById("legend_view");
 	const legend_content = document.getElementById("legend_content");
 	legend.style.display = "none";
-	legend_content.innerHTML = ''; // Clear existing content
+	legend_content.innerHTML = '';
 	if (!app.data.geostats) return;
 
-	// Detect presence of zero and NA values in the dataset used for coloring.
-	// We use app.data.unfiltered (post-aggregation, pre-filter) because map colors are derived from these rows.
+	// Zero/NA inspection on unfiltered aggregated rows
 	const rows = app.data.unfiltered || [];
 	const hasZero = rows.some(r => r && r.migrations === 0);
 	const hasNA = rows.some(r => r && (r.migrations === null || r.migrations === undefined));
 
-	// Start the legend HTML with a single container
+	// Number formatter: Rate -> up to 2 decimals; Umzüge -> integer
+	const fmt = (n) => {
+		if (app.selection.data_interpretation === 'migration_rate') {
+			return format_number_max2(n); // up to 2 decimals
+		} else {
+			return format_value(n, 0);    // integer
+		}
+	};
+
+	// Build HTML entries from a geostats object
+	function buildFromGeostats(gs) {
+		if (!gs || !Array.isArray(gs.colors)) return '';
+		let bounds = Array.isArray(gs.bounds) ? gs.bounds : null;
+
+		// If bounds aren’t provided, fall back to parsing text ranges
+		if (!bounds || bounds.length < 2) {
+			const ranges = (typeof gs.getRanges === 'function') ? gs.getRanges() : [];
+			bounds = [];
+			for (const r of ranges) {
+				const parts = String(r).split(/\s*-\s*/);
+				if (parts.length === 2) {
+					const lo = Number(parts[0].replace(',', '.'));
+					const hi = Number(parts[1].replace(',', '.'));
+					if (!Number.isNaN(lo)) bounds.push(lo);
+					if (!Number.isNaN(hi)) bounds.push(hi);
+				}
+			}
+			bounds = [...new Set(bounds)].sort((a, b) => a - b);
+		}
+
+		let html = '';
+		const n = gs.colors.length;
+		for (let i = 0; i < n; i++) {
+			const clr = gs.colors[i];
+			const lo = (i < bounds.length) ? bounds[i] : undefined;
+			const hi = (i + 1 < bounds.length) ? bounds[i + 1] : undefined;
+			if (lo === undefined || hi === undefined) continue;
+			html += '<div>' +
+				'<div class="geostats-legend-block" style="background-color: ' + clr + ';"></div>' +
+				fmt(lo) + ' – ' + fmt(hi) +
+				'</div>';
+		}
+		return html;
+	}
+
 	let legendHtml = '<div class="geostats-legend">';
 
-	// Conditionally add legend entries for 0 values and NA
+	// 0 and NA entries
 	if (hasZero) {
 		legendHtml += '<div>' +
-					  '<div class="geostats-legend-block" style="background-color: white;"></div>' +
-					  '0-Werte' +
-					  '</div>';
+			'<div class="geostats-legend-block" style="background-color: white;"></div>' +
+			'0-Werte' +
+			'</div>';
 	}
 	if (hasNA) {
 		legendHtml += '<div>' +
-					  '<div class="geostats-legend-block" style="background-color: grey;"></div>' +
-					  'Fehlende/NA-Werte' +
-					  '</div>';
+			'<div class="geostats-legend-block" style="background-color: grey;"></div>' +
+			'Fehlende/NA-Werte' +
+			'</div>';
 	}
 
-	// Negative legend (if present) without outer container
+	// Negative then positive (for saldi); otherwise use single geostats
 	if (app.data.geostats_negative) {
-		let negLegend = app.data.geostats_negative.getHtmlLegend();
-		negLegend = negLegend.replace(/^<div class="geostats-legend">/, '').replace(/<\/div>\s*$/, '');
-		legendHtml += negLegend;
+		legendHtml += buildFromGeostats(app.data.geostats_negative);
 	}
-
-	// Positive legend (if present) without outer container
 	if (app.data.geostats_positive) {
-		let posLegend = app.data.geostats_positive.getHtmlLegend();
-		posLegend = posLegend.replace(/^<div class="geostats-legend">/, '').replace(/<\/div>\s*$/, '');
-		legendHtml += posLegend;
+		legendHtml += buildFromGeostats(app.data.geostats_positive);
+	}
+	if (!app.data.geostats_negative && !app.data.geostats_positive && app.data.geostats) {
+		legendHtml += buildFromGeostats(app.data.geostats);
 	}
 
-	// Close the main legend container
 	legendHtml += '</div>';
-
 	legend_content.innerHTML = legendHtml;
 	legend.style.display = "block";
 
-	// Apply collapsed/expanded state and sync ARIA
+	// Collapsed state
 	if (app.view.legend_collapsed) legend.classList.add('collapsed');
 	else legend.classList.remove('collapsed');
 	const toggle = document.getElementById('legend_toggle');
 	if (toggle) toggle.setAttribute('aria-expanded', (!app.view.legend_collapsed).toString());
 }
-  
 
 
 
