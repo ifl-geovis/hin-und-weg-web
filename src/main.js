@@ -770,14 +770,25 @@ function toggle_legend(event) {
 	app.view.legend_collapsed = collapsed;
   }
   
-
-function toggle_mobile_menu() { 
+// This keeps the same behavior (toggle .open on #selection_box) and updates ARIA on the burger.
+function toggle_mobile_menu() {
 	const box = document.getElementById("selection_box");
-	 if (!box) return; 
-	 const isOpen = box.classList.toggle("open"); 
-	 const toggle = document.getElementById("mobile_menu_toggle"); 
-	 if (toggle) toggle.setAttribute("aria-expanded", isOpen ? "true" : "false"); 
-	}
+	if (!box) return;
+  
+	const isOpen = box.classList.toggle("open");
+  
+	// Update ARIA on the burger
+	const burger = document.getElementById("menu_toggle_button");
+	if (burger) burger.setAttribute("aria-expanded", isOpen ? "true" : "false");
+  
+	// Reflect visibility state for screen readers
+	box.setAttribute("aria-hidden", (!isOpen).toString());
+  
+	// Backward-compat (if any legacy control still present)
+	const legacyToggle = document.getElementById("mobile_menu_toggle");
+	if (legacyToggle) legacyToggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
+  }
+  
 
 	function toggle_year_playback() {
 		if (app.view.year_player.isPlaying) {

@@ -10,9 +10,10 @@ body
 	font-size: 100%; /* 16px base for readability */ line-height: 1.4; 
 }
 
-/* FIXED: input/select/button/textarea + tap-target sizes */
+
+  /* Inputs: readable, no iOS zoom; accessible tap targets */
 input, select, button, textarea {
-	font-size: 1rem; /* iOS won't auto-zoom when >= 16px */
+	font-size: 1rem;
 	line-height: 1.2;
   }
   button,
@@ -21,8 +22,9 @@ input, select, button, textarea {
   input[type="checkbox"],
   input[type="radio"],
   select {
-	min-height: 44px; /* comfortable tap target */
+	min-height: 44px;
   }
+  
   
 div#leafletmap
 {
@@ -135,22 +137,6 @@ div#datasetloader_content select
 div#datasetloader_close_button
 {
 	display: none;
-}
-
-div#selection_box
-{
-	display: block;
-	position: fixed;
-	top: 85px;
-	left: -1px;
-	padding: 5px;
-	border-style: solid;
-	border-color: lightgray;
-	border-width: 1px;
-	border-top-right-radius: 10px;
-	border-bottom-right-radius: 10px;
-	background-color: #edededbd;
-	z-index: 1000;
 }
 
 input#area_inside_selector
@@ -513,41 +499,24 @@ div#link_container a {
 	h1 { font-size: 1.1rem; } 
 	h3 { font-size: 0.95rem; } 
 	span#versionsub { font-size: 0.6rem; }
-	/* Turn selection panel into a bottom sheet that is closed by default */
-div#selection_box {
-    top: auto;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    width: 100%;
-    max-height: 55vh;
-    overflow-y: auto;
-    border-top-right-radius: 12px;
-    border-top-left-radius: 12px;
-    border-bottom-right-radius: 0;
-    border-bottom-left-radius: 0;
-    transform: translateY(100%);
-    transition: transform 0.3s ease;
-    padding-bottom: env(safe-area-inset-bottom, 8px);
-}
-div#selection_box.open {
-    transform: translateY(0);
-}
+  
 /* Mobile toggle button (FAB-style) */
+/* main.css — ensure the menu toggle is visible on all screens (add this globally) */
 #mobile_menu_toggle {
-    position: fixed;
-    right: 12px;
-    bottom: 12px;
-    z-index: 1100;
-    background: #356184;
-    color: #fff;
-    border: none;
-    border-radius: 24px;
-    padding: 10px 14px;
-    font-size: 1rem;
-    min-height: 44px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.25);
-}
+	position: fixed;
+	right: 12px;
+	bottom: 12px;
+	z-index: 1300; /* above the sheet and other UI */
+	background: #356184;
+	color: #fff;
+	border: none;
+	border-radius: 24px;
+	padding: 10px 14px;
+	font-size: 1rem;
+	min-height: 44px;
+	box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+	cursor: pointer;
+  }
 /* Hide the right-side action buttons to save space on phones */
 div.action_button {
     display: none;
@@ -667,5 +636,247 @@ div.gradient_color { height: 0.8em; }
 	min-width: 44px; /* touch target */
 	padding: 4px 10px;
 	cursor: pointer;
+  }
+
+
+  /* main.css — right-side action buttons: center content and positions for new FABs */
+div.action_button {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	position: fixed;
+	right: -1px;
+	width: 40px;
+	height: 40px;
+	border-style: solid;
+	border-color: lightgray;
+	border-width: 1px;
+	border-top-left-radius: 5px;
+	border-bottom-left-radius: 5px;
+	padding: 0;
+	margin: 0;
+	background-color: #edededbd;
+	z-index: 1000;
+  }
+  
+  /* Inner buttons fill the container and show emoji/icons nicely */
+  div.action_button > button {
+	width: 100%;
+	height: 100%;
+	background: transparent;
+	border: none;
+	font-size: 20px;
+	line-height: 1;
+	cursor: pointer;
+  }
+  
+  /* Positions (stacked on the right) */
+  div#zoom_home_fab { top: 40px; }
+  div#classification_button { top: 90px; }
+  div#map_bg_fab { top: 140px; }
+  div#year_play_fab { top: 190px; }
+  
+  /* Make sure these action buttons stay visible on small screens */
+  @media (max-width: 768px) {
+	#zoom_home_fab,
+	#classification_button,
+	#map_bg_fab,
+	#year_play_fab {
+	  display: flex;
+	}
+  }
+  
+/* Position the burger button at the top of the stack */
+div#menu_toggle_button { top: 40px; }
+
+/* Keep settings below it */
+div#classification_button { top: 90px; }
+
+/* Ensure the old bottom-left mobile menu button is hidden everywhere */
+#mobile_menu_toggle {
+  display: none !important;
+}
+
+/* Make sure inline SVG inside action buttons scales correctly */
+div.action_button > svg {
+  width: 70%;
+  height: 70%;
+}
+/* Right-side sliding menu window sized to content */
+div#selection_box {
+	position: fixed;
+	top: 70px;             /* below header */
+	right: 50px;           /* gap from the edge / legend */
+	left: auto;
+	bottom: auto;
+	width: max-content;    /* size to content */
+	max-width: min(520px, 46vw);
+	max-height: calc(100vh - 140px);
+	overflow-y: auto;
+	padding: 10px 12px;
+	border: 1px solid lightgray;
+	border-radius: 10px;
+	background-color: #edededbd;
+	box-shadow: 0 8px 18px rgba(0,0,0,0.25);
+	z-index: 1200;
+  
+	/* hidden off-screen and non-interactive by default */
+	transform: translateX(110%);
+	visibility: hidden;
+	pointer-events: none;
+  
+	will-change: transform;
+	transition: transform 0.25s ease;
+  }
+  div#selection_box.open {
+	transform: translateX(0);
+	visibility: visible;
+	pointer-events: auto;
+  }
+  
+  /* Keep the same behavior on mobile, just tighter margins */
+  @media (max-width: 768px) {
+	div#selection_box {
+	  top: 64px;
+	  right: 10px;
+	  left: auto;
+	  bottom: auto;
+	  max-width: min(92vw, 520px);
+	  max-height: calc(100vh - 120px);
+	  transform: translateX(110%);
+	  visibility: hidden;
+	  pointer-events: none;
+	}
+	div#selection_box.open {
+	  transform: translateX(0);
+	  visibility: visible;
+	  pointer-events: auto;
+	}
+  }
+
+  
+  /* Keep the same behavior on mobile, just tighter margins */
+  @media (max-width: 768px) {
+	div#selection_box {
+	  top: 64px;
+	  right: 10px;
+	  left: auto;
+	  bottom: auto;
+	  max-width: min(92vw, 520px);
+	  max-height: calc(100vh - 120px);
+	  transform: translateX(110%);
+	}
+	div#selection_box.open {
+	  transform: translateX(0);
+	}
+  }
+  
+  
+  /* Hide the old bottom-left floating "Menü" button if it still exists */
+  #mobile_menu_toggle {
+	display: none !important;
+  }
+  
+ /* Right-side action buttons positions (stacked) */
+div#menu_toggle_button { top: 40px; }
+div#classification_button { top: 90px; }
+div#zoom_home_fab { top: 140px; }
+div#map_bg_fab { top: 190px; }
+div#year_play_fab { top: 240px; }
+  
+  /* Ensure buttons render nicely (emoji buttons fill, SVG scales) */
+  div.action_button > button {
+	width: 100%;
+	height: 100%;
+	background: transparent;
+	border: none;
+	font-size: 20px;
+	line-height: 1;
+	cursor: pointer;
+  }
+  div.action_button > svg {
+	width: 70%;
+	height: 70%;
+  }
+  
+  /* Optionally hide legacy right-side buttons if still in DOM */
+  div#dataset_load_button,
+  div#statistics_button,
+  div#table_button,
+  div#barchart_button {
+	display: none !important;
+  }
+
+  /* Action buttons on the right: make them flex-centered */
+div.action_button {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	position: fixed;
+	right: -1px;
+	width: 40px;
+	height: 40px;
+	border: 1px solid lightgray;
+	border-top-left-radius: 5px;
+	border-bottom-left-radius: 5px;
+	padding: 0;
+	margin: 0;
+	background-color: #edededbd;
+	z-index: 1000;
+  }
+  div.action_button > button {
+	width: 100%;
+	height: 100%;
+	background: transparent;
+	border: none;
+	font-size: 20px;
+	line-height: 1;
+	cursor: pointer;
+  }
+  div.action_button > svg {
+	width: 70%;
+	height: 70%;
+  }
+  
+  /* Place burger and keep cog below it; adjust others as needed */
+  div#menu_toggle_button { top: 40px; }
+  div#classification_button { top: 90px; }
+  /* If you also added: */
+  div#zoom_home_fab { top: 140px; }
+  div#map_bg_fab { top: 190px; }
+  div#year_play_fab { top: 240px; }
+  
+  /* Ensure old bottom-left mobile toggle is hidden everywhere */
+  #mobile_menu_toggle { display: none !important; }
+  
+  /* On small screens ensure burger/cog stay visible */
+  @media (max-width: 768px) {
+	#menu_toggle_button,
+	#classification_button {
+	  display: flex !important;
+	}
+  }
+  /* Align checkbox/radio controls and their labels inside the selection sidebar */
+#selection_box .control-inline {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+  }
+  
+  /* Override global min-height and size the native control reasonably */
+  #selection_box input[type="checkbox"],
+  #selection_box input[type="radio"] {
+	min-height: 0;        /* override global 44px */
+	width: 1.1em;
+	height: 1.1em;
+	vertical-align: middle;
+	margin: 0;            /* rely on the flex gap */
+  }
+  
+  /* Ensure labels align with controls */
+  #selection_box label {
+	display: inline-block;
+	vertical-align: middle;
+	line-height: 1.2;
   }
   

@@ -51,25 +51,46 @@
 		</div>
 	</div>
 	
-	
+<!-- right-side menu toggle (hamburger) -->
+<div id="menu_toggle_button"
+     class="action_button"
+     title="Menü ein-/ausblenden"
+     role="button"
+     aria-label="Menü ein-/ausblenden"
+     aria-controls="selection_box"
+     aria-expanded="false"
+     onclick="toggle_mobile_menu()">
+  <!-- inline SVG burger icon -->
+  <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+    <rect y="3" width="24" height="3" rx="1.5"></rect>
+    <rect y="10.5" width="24" height="3" rx="1.5"></rect>
+    <rect y="18" width="24" height="3" rx="1.5"></rect>
+  </svg>
+</div>
 
-		<!-- action buttons on the right -->
-		<div id="dataset_load_button" class="action_button" title="anderen Datensatz laden" onclick="dataset_load(event)">
-			<img src="img/document-download.svg" width="100%" height="100%" />
-		</div>
-		<div id="classification_button" class="action_button" title="Einstellungen" onclick="show_viewcomponent(event, 'classification_view')">
-			<img src="img/cog.svg" width="100%" height="100%" />
-		</div>
-		<div id="statistics_button" class="action_button" title="Statistiken" onclick="show_viewcomponent(event, 'statistics_view')">
-			<img src="img/calculator.svg" width="100%" height="100%" />
-		</div>
-		<div id="table_button" class="action_button" title="tabellarische Ansicht" onclick="show_viewcomponent(event, 'table_view')">
-			<img src="img/table-data.svg" width="100%" height="100%" />
-		</div>
-		<div id="barchart_button" class="action_button" title="Balkendiagramm" onclick="show_viewcomponent(event, 'barchart_view')">
-			<img src="img/chart-bar.svg" width="100%" height="100%" />
-		</div>
 
+<!-- Only keep the settings (cog) and add three new buttons: Zoom Home, Background Switch, Play Years -->
+<div id="zoom_home_fab" class="action_button" title="zur Gesamtausdehnung zoomen">
+	<button id="zoom_home_button" type="button" aria-label="zur Gesamtausdehnung zoomen" onclick="zoom_home(event)">🌐</button>
+  </div>
+  
+  <div id="classification_button" class="action_button" title="Einstellungen" onclick="show_viewcomponent(event, 'classification_view')">
+	<img src="img/cog.svg" width="100%" height="100%" />
+  </div>
+  
+  <div id="map_bg_fab" class="action_button" title="Hintergrundkarte ein-/ausschalten">
+	<button id="map_background_switcher_button" type="button" aria-label="Hintergrundkarte ein-/ausschalten" onclick="map_background_switcher(event)">🗺️</button>
+  </div>
+  
+  <div id="year_play_fab" class="action_button" title="Jahre automatisch abspielen / pausieren">
+	<button id="year_play_toggle"
+			class="selector"
+			type="button"
+			aria-pressed="false"
+			onclick="toggle_year_playback()"
+			disabled>▶</button>
+  </div>
+  
 		<!-- map -->
 		<div id="leafletmap"></div>
 
@@ -95,82 +116,91 @@
 		</div>
 
 		<!-- infos&selections -->
-		<div id="selection_box">
-			<button name="zoom_home" id="zoom_home_button" onclick="zoom_home(event)" title="zur Gesamtausdehnung zoomen" >&#x1F30D;&#xfe0e;</button>
-			<button name="map_background_switcher" id="map_background_switcher_button" onclick="map_background_switcher(event)" title="Hintergrundkarte ein-/ausschalten" >&#x1F5FA;&#xfe0e;</button>
-			<br />
-			<label for="map_transparency_selector" class="mmap_transparency_label">Transparenz:</label>
-			<input name="map_transparency" id="map_transparency_selector" class="selector" type="number" value="0.5" min="0.0" max="1.0" step="0.1" oninput="map_transparency_changed(event)" />
-			<br />
-			<hr />
-			<label for="dataset_name_value">Datensatz:</label><br />
-			<input name="dataset_name_value" id="dataset_name_value" type="text" value="" readonly onclick="dataset_load(event)" /><br />
-			<label for="category_name_value">Datenkategorie:</label><br />
-			<input name="category_name_value" id="category_name_value" type="text" value="" readonly onclick="dataset_load(event)" /><br />
-			<hr />
-			<label for="label_selector">Kartenlabels:</label><br />
-			<select name="labels" id="label_selector" class="selector" oninput="labels_selected(event)" disabled>
-				<option value="none" selected>keine Anzeige</option>
-				<option value="name">Namen anzeigen</option>
-				<option value="number">Anzahl/Rate anzeigen</option>
-			</select>
-			<br />
-			<input type="checkbox" id="swoopy_arrows_selector" class="selector" name="swoopy_arrows" value="swoopy_arrows" onchange="swoopy_arrows_changed(event)" disabled>
-			<label for="swoopy_arrows_selector"> Bewegungen visualisieren</label>
-			<hr />
-			<label for="theme_selector">Thema:</label><br />
-			<select name="theme" id="theme_selector" class="selector" oninput="theme_selected(event)" disabled>
-				<option value="von" selected>Von</option>
-				<option value="nach">Nach</option>
-				<option value="saldi">Saldi</option>
-			</select>
-			<br />
-			<fieldset id="data_interpretation" onchange="data_interpretation_changed(event)">
-				<input type="radio" id="absolute_selector" class="selector" name="data_interpretation" value="absolute" checked disabled />
-				<label for="absolute_selector">Umzüge</label>
-				<br />
-				<input type="radio" id="migration_rate_selector" class="selector" name="data_interpretation" value="migration_rate" disabled />
-				<label for="migration_rate_selector">Wanderungsrate</label>
-			</fieldset>
-			<hr />
-			<label for="area_selector">Fläche:</label><br />
-			<select name="area" id="area_selector" class="selector" oninput="area_selected(event)" disabled>
-				<option value="">-- Fläche auswählen --</option>
-			</select>
-			<br />
-			<input type="checkbox" id="area_inside_selector" class="selector" name="area_inside" value="area_inside" onchange="area_inside_changed(event)" disabled checked>
-			<label for="area_inside_selector"> Umzüge innerhalb</label>
-			<div id="years_selection">
-				<hr />
-				<div class="years_header">
-				  <label for="year_selector">Jahre:</label>
-				  <!-- NEW: Play/Pause button -->
-				  <button id="year_play_toggle"
-						  class="selector"
-						  type="button"
-						  title="Jahre automatisch abspielen / pausieren"
-						  aria-pressed="false"
-						  onclick="toggle_year_playback()"
-						  disabled>▶</button>
-				</div>
-				<select name="years" id="year_selector" class="selector" size="10" oninput="year_selected(event)" multiple disabled>
-				</select>
-			  </div>
-			  
-			<div id="filter">
-				<hr />
-				<span>Filtern:</span><br />
-				<div id="min_filter_container">
-					<label for="filter_min">untere Grenze:</label><br />
-					<input name="filter_min" id="filter_min" class="filter" type="number" value="0" oninput="filter_changed(event)" disabled /><br />
-				</div>
-				<label for="filter_max">obere Grenze:</label><br />
-				<input name="filter_max" id="filter_max" class="filter" type="number" value="0" oninput="filter_changed(event)" disabled /><br />
-			</div>			
-		</div>
-
-		<button id="mobile_menu_toggle" type="button" aria-expanded="false" aria-controls="selection_box" title="Menü öffnen/schließen" onclick="toggle_mobile_menu()">Menü</button> 
-		
+	
+		<div id="selection_box" aria-hidden="true">
+		<!-- 1. Thema -->
+	<label for="theme_selector">Thema:</label><br />
+	<select name="theme" id="theme_selector" class="selector" oninput="theme_selected(event)" disabled>
+	  <option value="von">Von</option>
+	  <option value="nach">Nach</option>
+	  <option value="saldi" selected>Saldi</option>
+	</select>
+	<br />
+	<fieldset id="data_interpretation" onchange="data_interpretation_changed(event)">
+		<span class="control-inline">
+		  <input type="radio" id="absolute_selector" class="selector" name="data_interpretation" value="absolute" checked disabled />
+		  <label for="absolute_selector">Umzüge</label>
+		</span>
+		<br />
+		<span class="control-inline">
+		  <input type="radio" id="migration_rate_selector" class="selector" name="data_interpretation" value="migration_rate" disabled />
+		  <label for="migration_rate_selector">Wanderungsrate</label>
+		</span>
+	  </fieldset>
+	  
+	<hr />
+  
+	<!-- 2. Filter -->
+	<div id="filter">
+	  <span>Filtern:</span><br />
+	  <div id="min_filter_container">
+		<label for="filter_min">untere Grenze:</label><br />
+		<input name="filter_min" id="filter_min" class="filter" type="number" value="0" oninput="filter_changed(event)" disabled /><br />
+	  </div>
+	  <label for="filter_max">obere Grenze:</label><br />
+	  <input name="filter_max" id="filter_max" class="filter" type="number" value="0" oninput="filter_changed(event)" disabled /><br />
+	</div>
+	<hr />
+  
+	<!-- 3. Jahre (Play/Pause button has been moved to the right-side action buttons) -->
+	<div id="years_selection">
+	  <label for="year_selector">Jahre:</label><br />
+	  <select name="years" id="year_selector" class="selector" size="10" oninput="year_selected(event)" multiple disabled>
+	  </select>
+	</div>
+	<hr />
+  
+	<!-- 4. Fläche -->
+	<label for="area_selector">Fläche:</label><br />
+	<select name="area" id="area_selector" class="selector" oninput="area_selected(event)" disabled>
+	  <option value="">-- Fläche auswählen --</option>
+	</select>
+	<br />
+	<span class="control-inline">
+		<input type="checkbox" id="area_inside_selector" class="selector" name="area_inside" value="area_inside" onchange="area_inside_changed(event)" disabled checked />
+		<label for="area_inside_selector">Umzüge innerhalb</label>
+	  </span>
+	  
+	<hr />
+  
+	<!-- 5. Kartenlabels -->
+	<label for="label_selector">Kartenlabels:</label><br />
+	<select name="labels" id="label_selector" class="selector" oninput="labels_selected(event)" disabled>
+	  <option value="none" selected>keine Anzeige</option>
+	  <option value="name">Namen anzeigen</option>
+	  <option value="number">Anzahl/Rate anzeigen</option>
+	</select>
+	<br />
+	<span class="control-inline">
+		<input type="checkbox" id="swoopy_arrows_selector" class="selector" name="swoopy_arrows" value="swoopy_arrows" onchange="swoopy_arrows_changed(event)" disabled />
+		<label for="swoopy_arrows_selector">Bewegungen visualisieren</label>
+	  </span>
+	  
+	<hr />
+  
+	<!-- 6. Datensatz und Datenkategorie -->
+	<label for="dataset_name_value">Datensatz:</label><br />
+	<input name="dataset_name_value" id="dataset_name_value" type="text" value="" readonly onclick="dataset_load(event)" /><br />
+	<label for="category_name_value">Datenkategorie:</label><br />
+	<input name="category_name_value" id="category_name_value" type="text" value="" readonly onclick="dataset_load(event)" /><br />
+	<hr />
+  
+	<!-- 7. Transparenz -->
+	<label for="map_transparency_selector" class="mmap_transparency_label">Transparenz:</label>
+	<input name="map_transparency" id="map_transparency_selector" class="selector" type="number" value="0.5" min="0.0" max="1.0" step="0.1" oninput="map_transparency_changed(event)" />
+  </div>
+  
+  
 		<!-- legend view -->
 <div id="legend_view">
 	<h2 class="title_bar"
