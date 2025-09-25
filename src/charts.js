@@ -82,8 +82,8 @@ function refresh_barchart_view()
             const barWidth = (abs === 0) ? 0 : Math.max(5, (abs / maxValue) * 100);
 			const barColor = item.color || (val >= 0 ? '#356184' : '#E45A47');
 			const barDirection = val >= 0 ? 'right' : 'left';
-            const labelValue = format_value(val);
-
+            const decimals = app.selection.data_interpretation === 'migration_rate' ? 3 : 0;
+            const labelValue = format_value(val, decimals);
 			dataview += `
 				<div class="barchart-row">
 					<div class="barchart-label">${labelText}</div>

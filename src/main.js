@@ -218,14 +218,13 @@ function year_selected(event) {
 }
 
 
-function filter_changed(event)
-{
-	let filter_min = document.getElementById("filter_min");
-	let filter_max = document.getElementById("filter_max");
-	app.selection.filter.min = filter_min.value;
-	app.selection.filter.max = filter_max.value;
+function filter_changed(event) {
+	const filter_min = document.getElementById("filter_min");
+	const filter_max = document.getElementById("filter_max");
+	app.selection.filter.min = Number(filter_min.value || 0);
+	app.selection.filter.max = Number(filter_max.value || 0);
 	process_selections(false);
-}
+  }
 
 function classification_selected(event)
 {
@@ -632,52 +631,63 @@ function refresh_title_years()
 	if (app.selection.years && (app.selection.years.length > 0)) years = " (" + app.selection.years.join(", ") + ")";
 	dataset_title_years.innerHTML = years;
 }
+
 function refresh_legend() {
 	const legend = document.getElementById("legend_view");
 	const legend_content = document.getElementById("legend_content");
 	legend.style.display = "none";
 	legend_content.innerHTML = ''; // Clear existing content
 	if (!app.data.geostats) return;
-  
+
+	// Detect presence of zero and NA values in the dataset used for coloring.
+	// We use app.data.unfiltered (post-aggregation, pre-filter) because map colors are derived from these rows.
+	const rows = app.data.unfiltered || [];
+	const hasZero = rows.some(r => r && r.migrations === 0);
+	const hasNA = rows.some(r => r && (r.migrations === null || r.migrations === undefined));
+
 	// Start the legend HTML with a single container
 	let legendHtml = '<div class="geostats-legend">';
-  
-	// Add legend entry for 0-values
-	legendHtml += '<div>' +
-				  '<div class="geostats-legend-block" style="background-color: white;"></div>' +
-				  '0-Werte' +
-				  '</div>';
-  
-	// Add legend entry for missing/NA values
-	legendHtml += '<div>' +
-				  '<div class="geostats-legend-block" style="background-color: grey;"></div>' +
-				  'Fehlende/NA-Werte' +
-				  '</div>';
-  
+
+	// Conditionally add legend entries for 0 values and NA
+	if (hasZero) {
+		legendHtml += '<div>' +
+					  '<div class="geostats-legend-block" style="background-color: white;"></div>' +
+					  '0-Werte' +
+					  '</div>';
+	}
+	if (hasNA) {
+		legendHtml += '<div>' +
+					  '<div class="geostats-legend-block" style="background-color: grey;"></div>' +
+					  'Fehlende/NA-Werte' +
+					  '</div>';
+	}
+
 	// Negative legend (if present) without outer container
 	if (app.data.geostats_negative) {
-	  let negLegend = app.data.geostats_negative.getHtmlLegend();
-	  negLegend = negLegend.replace(/^<div class="geostats-legend">/, '').replace(/<\/div>\s*$/, '');
-	  legendHtml += negLegend;
+		let negLegend = app.data.geostats_negative.getHtmlLegend();
+		negLegend = negLegend.replace(/^<div class="geostats-legend">/, '').replace(/<\/div>\s*$/, '');
+		legendHtml += negLegend;
 	}
-  
-	// Positive legend without outer container
-	let posLegend = app.data.geostats_positive.getHtmlLegend();
-	posLegend = posLegend.replace(/^<div class="geostats-legend">/, '').replace(/<\/div>\s*$/, '');
-	legendHtml += posLegend;
-  
+
+	// Positive legend (if present) without outer container
+	if (app.data.geostats_positive) {
+		let posLegend = app.data.geostats_positive.getHtmlLegend();
+		posLegend = posLegend.replace(/^<div class="geostats-legend">/, '').replace(/<\/div>\s*$/, '');
+		legendHtml += posLegend;
+	}
+
 	// Close the main legend container
 	legendHtml += '</div>';
-  
+
 	legend_content.innerHTML = legendHtml;
 	legend.style.display = "block";
-  
+
 	// Apply collapsed/expanded state and sync ARIA
 	if (app.view.legend_collapsed) legend.classList.add('collapsed');
 	else legend.classList.remove('collapsed');
 	const toggle = document.getElementById('legend_toggle');
 	if (toggle) toggle.setAttribute('aria-expanded', (!app.view.legend_collapsed).toString());
-  }
+}
   
 
 

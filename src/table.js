@@ -40,8 +40,9 @@ function refresh_table_view()
 		dataview += '<td><span style="color: ' + row.color + '">⬤</span></td>';
 		dataview += "<td>" + row.fromname + "</td>";
 		dataview += "<td>" + row.toname + "</td>";
-		dataview += '<td class="number">' + row.migrations + "</td>";
-		dataview += "</tr>";
+		const decimals = (app.selection.data_interpretation === 'migration_rate') ? 3 : 0;
+		dataview += '<td class="number">' + format_value(row.migrations, decimals) + "</td>";
+				dataview += "</tr>";
 		odd = !odd;
 	}
 	dataview += "</table>";
@@ -115,13 +116,18 @@ function tablesort_swap(sorted, index1, index2)
 	sorted[index2] = tmp;
 }
 
-function tablesort_compare(element1, element2)
-{
-	if (app.selection.tablesort === "number") return element1.migrations - element2.migrations;
+function tablesort_compare(element1, element2) {
+	if (app.selection.tablesort === "number") {
+	  // NA (null/undefined) last in ascending
+	  const a = (element1.migrations === null || element1.migrations === undefined) ? Infinity : Number(element1.migrations);
+	  const b = (element2.migrations === null || element2.migrations === undefined) ? Infinity : Number(element2.migrations);
+	  return a - b;
+	}
 	if (app.selection.tablesort === "from") return element1.fromname.localeCompare(element2.fromname);
 	if (app.selection.tablesort === "to") return element1.toname.localeCompare(element2.toname);
 	return element1.id.localeCompare(element2.id);
-}
+  }
+  
 
 function refresh_statistics_view()
 {

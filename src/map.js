@@ -39,12 +39,13 @@ function add_swoopy_arrows() {
     if (!app.data.processed) return;
     let min = app.data.geostats.min();
     let max = app.data.geostats.max();
+	const range = (max - min) || 1; // avoid division by zero when all values equal
     for (let dataset of app.data.processed) {
         // Skip arrows for zero values and missing data
         if (dataset.migrations === 0 || dataset.migrations === null || dataset.migrations === undefined) continue;
 
-        let weight_head = (((dataset.migrations - min) / (max - min)) * arrow_weight_head) + 1;
-        let weight_body = (((dataset.migrations - min) / (max - min)) * arrow_weight_body) + 1;
+		let weight_head = (((dataset.migrations - min) / range) * arrow_weight_head) + 1;
+		let weight_body = (((dataset.migrations - min) / range) * arrow_weight_body) + 1;		
         let color = "#3333dd";
         let hide_arrow_head = true;
         if (app.selection.theme === "von") {
@@ -82,7 +83,6 @@ function add_swoopy_arrows() {
         app.view.swoopy_arrows.push(swoopy_body);
     }
 }
-
 
 function show_swoopy_arrows()
 {
@@ -132,29 +132,31 @@ function map_interactivity(feature, layer)
 	layer.on(interactivity_mapping);
 }
 
-function show_info_popup(event)
-{
+// Unified, NA-aware popup; uses format_value and correct decimals
+function show_info_popup(event) {
 	const feature_id = get_feature_id(event.target.feature);
 	const feature_info = get_feature_by_id(feature_id, false);
 	const feature_name = app.data.featurename_mapping[feature_id];
-	let feature_info_popup = document.getElementById("feature_info_popup");
+	const feature_info_popup = document.getElementById("feature_info_popup");
 	let info_text = "";
+  
 	info_text += feature_name + " (" + feature_id + ")<br />";
-	if (feature_info)
-	{
-		info_text += feature_info.fromname;
-		if (app.selection.theme === 'von') info_text += "→";
-		else if (app.selection.theme === 'nach') info_text += "←";
-		else if (app.selection.theme === 'saldi') info_text += "←→";
-		// CHANGE THIS LINE to properly check for null/undefined values
-		info_text += feature_info.toname + ":<br />" + 
-		            (feature_info.migrations === null || feature_info.migrations === undefined ? "NA" : feature_info.migrations);
+	if (feature_info) {
+	  info_text += feature_info.fromname;
+	  if (app.selection.theme === 'von') info_text += "→";
+	  else if (app.selection.theme === 'nach') info_text += "←";
+	  else if (app.selection.theme === 'saldi') info_text += "←→";
+  
+	  const decimals = (app.selection.data_interpretation === 'migration_rate') ? 3 : 0;
+	  info_text += feature_info.toname + ":<br />" + format_value(feature_info.migrations, decimals);
 	}
+  
 	feature_info_popup.innerHTML = info_text;
 	feature_info_popup.style.display = "block";
 	feature_info_popup.style.left = event.originalEvent.clientX + "px";
 	feature_info_popup.style.top = event.originalEvent.clientY + "px";
-}
+  }
+  
 
 function map_labels(feature, layer)
 {
@@ -164,8 +166,11 @@ function map_labels(feature, layer)
 	const feature_info = get_feature_by_id(feature.properties[app.selection.dataset.id_property], false);
 	if (!feature_info) return;
 	if (app.selection.labels === 'name') label_text = feature.properties[app.selection.dataset.name_property];
-	if (app.selection.labels === 'number') label_text = "" + feature_info.migrations;
-	if (!label_text) return;
+	// CHANGED: NA-aware formatting for numbers
+	if (app.selection.labels === 'number') {
+		const decimals = (app.selection.data_interpretation === 'migration_rate') ? 3 : 0;
+		label_text = format_value(feature_info.migrations, decimals);
+	  }	if (!label_text) return;
 	const label =
 	{
 		className: 'map_info_label',
@@ -248,27 +253,7 @@ function highlight_feature(event)
 	show_info_popup(event);
 }
 
-function show_info_popup(event)
-{
-	const feature_id = get_feature_id(event.target.feature);
-	const feature_info = get_feature_by_id(feature_id, false);
-	const feature_name = app.data.featurename_mapping[feature_id];
-	let feature_info_popup = document.getElementById("feature_info_popup");
-	let info_text = "";
-	info_text += feature_name + " (" + feature_id + ")<br />";
-	if (feature_info)
-	{
-		info_text += feature_info.fromname;
-		if (app.selection.theme === 'von') info_text += "→";
-		else if (app.selection.theme === 'nach') info_text += "←";
-		else if (app.selection.theme === 'saldi') info_text += "←→";
-		info_text += feature_info.toname + ":<br />" + feature_info.migrations;
-	}
-	feature_info_popup.innerHTML = info_text;
-	feature_info_popup.style.display = "block";
-	feature_info_popup.style.left = event.originalEvent.clientX + "px";
-	feature_info_popup.style.top = event.originalEvent.clientY + "px";
-}
+// CHANGED: removed duplicate show_info_popup() here (was overwriting NA logic)
 
 function move_feature_popup(event)
 {

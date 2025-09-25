@@ -10,10 +10,20 @@ body
 	font-size: 100%; /* 16px base for readability */ line-height: 1.4; 
 }
 
-input, select, button, textarea { 
-	font-size: 1rem; /* iOS won’t auto-zoom when >= 16px/ line-height: 1.2; } button, input[type="button"], input[type="submit"], input[type="checkbox"], input[type="radio"], select { min-height: 44px; / comfortable tap target */ 
-}
-
+/* FIXED: input/select/button/textarea + tap-target sizes */
+input, select, button, textarea {
+	font-size: 1rem; /* iOS won't auto-zoom when >= 16px */
+	line-height: 1.2;
+  }
+  button,
+  input[type="button"],
+  input[type="submit"],
+  input[type="checkbox"],
+  input[type="radio"],
+  select {
+	min-height: 44px; /* comfortable tap target */
+  }
+  
 div#leafletmap
 {
 	width: 100%;
