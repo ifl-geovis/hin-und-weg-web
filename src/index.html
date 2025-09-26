@@ -8,6 +8,11 @@
 		<link rel="stylesheet" href="lib/leaflet.css">
 		<link rel="stylesheet" href="lib/geostats.css">
 		<link rel="stylesheet" href="main.css">
+		
+	<!-- NEW: Flaticon UIcons (thin-rounded + thin-straight) for the requested icons -->
+	<!-- Provides: fi fi-tr-menu-burger, fi fi-tr-globe, fi fi-tr-settings-sliders, fi fi-ts-map -->
+	<link rel="stylesheet" href="https://cdn-uicons.flaticon.com/uicons-thin-rounded/css/uicons-thin-rounded.css"><!-- ADDED -->
+	<link rel="stylesheet" href="https://cdn-uicons.flaticon.com/uicons-thin-straight/css/uicons-thin-straight.css"><!-- ADDED -->
 		<script type="text/javascript" src="lib/leaflet.js"></script>
 		<script type="text/javascript" src="lib/Leaflet.SwoopyArrow.js"></script>
 		<script type="text/javascript" src="lib/turf.min.js"></script>
@@ -60,35 +65,39 @@
      aria-controls="selection_box"
      aria-expanded="false"
      onclick="toggle_mobile_menu()">
-  <!-- inline SVG burger icon -->
-  <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-    <rect y="3" width="24" height="3" rx="1.5"></rect>
-    <rect y="10.5" width="24" height="3" rx="1.5"></rect>
-    <rect y="18" width="24" height="3" rx="1.5"></rect>
-  </svg>
+  <!-- CHANGED: use local SVG file instead of inline or webfont -->
+  <img src="img/menu-burger.svg" alt="" class="icon" aria-hidden="true" />
 </div>
 
 
-<!-- Only keep the settings (cog) and add three new buttons: Zoom Home, Background Switch, Play Years -->
+
 <div id="zoom_home_fab" class="action_button" title="zur Gesamtausdehnung zoomen">
-	<button id="zoom_home_button" type="button" aria-label="zur Gesamtausdehnung zoomen" onclick="zoom_home(event)">🌐</button>
+	<!-- CHANGED: use local SVG icon -->
+	<button id="zoom_home_button" type="button" aria-label="zur Gesamtausdehnung zoomen" onclick="zoom_home(event)">
+	  <img src="img/globe.svg" alt="" class="icon" aria-hidden="true" />
+	</button>
   </div>
   
   <div id="classification_button" class="action_button" title="Einstellungen" onclick="show_viewcomponent(event, 'classification_view')">
-	<img src="img/cog.svg" width="100%" height="100%" />
+	<!-- CHANGED: use requested settings sliders icon -->
+	<img src="img/settings-sliders.svg" alt="" class="icon" aria-hidden="true" />
+  </div>
+  <div id="map_bg_fab" class="action_button" title="Hintergrundkarte ein-/ausschalten">
+	<!-- CHANGED: use requested map icon -->
+	<button id="map_background_switcher_button" type="button" aria-label="Hintergrundkarte ein-/ausschalten" onclick="map_background_switcher(event)">
+	  <img src="img/map.svg" alt="" class="icon" aria-hidden="true" />
+	</button>
   </div>
   
-  <div id="map_bg_fab" class="action_button" title="Hintergrundkarte ein-/ausschalten">
-	<button id="map_background_switcher_button" type="button" aria-label="Hintergrundkarte ein-/ausschalten" onclick="map_background_switcher(event)">🗺️</button>
-  </div>
+
   
   <div id="year_play_fab" class="action_button" title="Jahre automatisch abspielen / pausieren">
 	<button id="year_play_toggle"
 			class="selector"
 			type="button"
-			aria-pressed="false"
-			onclick="toggle_year_playback()"
-			disabled>▶</button>
+			aria-label="Wiedergabe/Pause" 
+			onclick="toggle_year_playback()"></button>
+			<img src="img/play-pause.svg" alt="" class="icon" aria-hidden="true" />
   </div>
   
 		<!-- map -->
