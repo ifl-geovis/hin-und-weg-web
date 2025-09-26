@@ -35,6 +35,46 @@ function get_map_fit_padding_options() {
 	const paddingBottomRight = L.point(Math.max(vpPadX, rightUI), Math.max(vpPadY, bottomUI));
 	return { paddingTopLeft, paddingBottomRight };
 }
+// === NEW: Position header, zoom control, and year badge in the top-right ===
+function position_header_zoom_year() {
+	const mapEl = document.getElementById('leafletmap');
+	const headerEl = document.getElementById('header');
+	const badgeEl = document.getElementById('current_year_badge');
+	if (!mapEl) return;
+
+	// Corner container for Leaflet's top-right controls
+	const corner = mapEl.querySelector('.leaflet-top.leaflet-right');
+	if (!corner) return;
+
+	// Measure header size; place things below it with a little spacing
+	const rect = headerEl ? headerEl.getBoundingClientRect() : null;
+	const spacing = 8;
+	const headerBottom = rect ? rect.bottom : 10; // fallback
+
+	// 1) Vertically: both zoom control and year badge sit below the header
+	corner.style.marginTop = (headerBottom + spacing) + 'px';
+	if (badgeEl) {
+		badgeEl.style.top = (headerBottom + spacing) + 'px';
+	}
+
+	// 2) Horizontally:
+	//    - Year badge aligns to right: 10px (via CSS).
+	//    - Zoom control is pushed left so that the badge can be 20px to its right.
+	//      margin-right = 10px (edge) + [badge width] + 20px (gap)
+	let badgeW = 0;
+	if (badgeEl) {
+		const bRect = badgeEl.getBoundingClientRect();
+		badgeW = Math.round(bRect.width);
+	}
+	const baseRightGap = 10;      // right margin for the outermost item (badge)
+	const gapBetween = 20;        // required space "to the right of the zoom toggle"
+	const totalRight = baseRightGap + badgeW + gapBetween;
+
+	corner.style.marginRight = totalRight + 'px';
+}
+
+// Expose for other modules to call after text/layout changes
+window.position_header_zoom_year = position_header_zoom_year;
 
 // Centralized fit-to-data with proper padding and size invalidation
 function fit_map_to_data() {
@@ -53,6 +93,7 @@ function fit_map_to_data() {
 
 function init_map()
 {
+	/* CHANGED: remove default zoom control so we can place it top-right */
 	app.map.map = L.map("leafletmap");
 	// Initial placeholder view; will be replaced by fit_map_to_data() once data loads
 	app.map.map.setView([51.5, 10], 7);
@@ -65,11 +106,20 @@ function init_map()
 	app.map.backgroundlayer.addTo(app.map.map);
 	app.status.background_active = true;
 
-	// Refit when the window resizes
+
+	/* NEW: Position zoom under header and offset by year badge */
+	app.map.map.whenReady(() => {
+		position_header_zoom_year(); // ADDED
+	});
+
+	// Refit when the window resizes and keep the layout tidy
 	window.addEventListener('resize', () => {
 		if (app.map.datalayer) fit_map_to_data();
+		position_header_zoom_year(); // ADDED
 	});
 }
+
+
 
 
 function refresh_swoopy_arrows()

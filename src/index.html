@@ -26,15 +26,19 @@
 
 	<body>
 
-		<!-- title header -->
-		<div id="header">
-				<img src="img/huw-logo_32.png" title="hin&amp;weg logo" />
-			<h1>
-				hin&amp;weg web
-				<span id="versionsub"></span>
-				</h1>
-				<h3><span id="dataset_title"></span><span id="dataset_title_years"></span></h3>
-		</div>
+<!-- title header -->
+<div id="header">
+	<img src="img/huw-logo_32.png" title="hin&weg logo" />
+	<h1>
+		hin&weg web
+		<span id="versionsub"></span>
+	</h1>
+	<h3><span id="dataset_title"></span></h3> <!-- CHANGED: removed years from title -->
+</div>
+
+<!-- NEW: current year in its own box (rounded), positioned below the title -->
+<div id="current_year_badge" class="year-badge" aria-live="polite" title="Ausgewähltes Jahr"><!-- filled by JS --></div>
+
 
 	<!-- credits -->
 	<div id="credits">

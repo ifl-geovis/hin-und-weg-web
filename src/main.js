@@ -751,14 +751,35 @@ function generate_classification_array(geostats, classcount, negative)
 	//console.log("generate_classification_array: " + classification);
 	return classification;
 }
+// CHANGED: Show the current year in a separate badge (not in the title)
+// and keep the zoom controls below the title dynamically.
+// CHANGED: Show current year in a separate badge; keep the title clean
+function refresh_title_years() {
+	// Clear legacy “years in title” if the span still exists
+	const legacy = document.getElementById("dataset_title_years");
+	if (legacy) legacy.innerHTML = "";
 
-function refresh_title_years()
-{
-	let dataset_title_years = document.getElementById("dataset_title_years");
-	let years = "";
-	if (app.selection.years && (app.selection.years.length > 0)) years = " (" + app.selection.years.join(", ") + ")";
-	dataset_title_years.innerHTML = years;
+	// Determine the current (active) year: usually the first selected year
+	let text = "";
+	if (app.selection.years && app.selection.years.length > 0) {
+		text = String(app.selection.years[0]);
+	}
+
+	// Update the badge text
+	const badge = document.getElementById("current_year_badge");
+	if (badge) {
+		badge.textContent = text || ""; // empty if no year yet
+	}
+
+	// Reposition zoom and year badge relative to header and to each other
+	if (typeof window.position_header_zoom_year === 'function') {
+		window.position_header_zoom_year();
+	}
 }
+
+
+
+
 
 function refresh_legend() {
 	const legend = document.getElementById("legend_view");

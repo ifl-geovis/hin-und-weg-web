@@ -1012,4 +1012,55 @@ div.action_button > button {
 	object-position: center;       /* ADDED */
 	pointer-events: none;          /* ADDED: clicks go to the button element */
   }
+  /* === New: separate year badge in header === */
+div#header .year-badge {
+	display: inline-block;         /* box sizing to content */
+	margin-top: 6px;               /* space below the title */
+	padding: 6px 12px;             /* pleasant padding */
+	background: #ffffffcc;         /* subtle translucent background */
+	border: 1px solid lightgray;   /* subtle border */
+	border-radius: 12px;           /* rounded corners */
+	font-weight: 700;              /* big and bold */
+	font-size: 1.25rem;            /* larger text */
+	line-height: 1.1;
+}
+
+
+
+/* === Header: fit to content and move 10px from right edge === */
+div#header {
+	/* OVERRIDES: make the box only as wide as its content */
+	display: inline-block;      /* shrink-wrap the box */
+	width: fit-content;         /* prefer fit-content for modern browsers */
+	max-width: 90vw;            /* safety: don’t overflow viewport */
   
+	/* Anchor top-right with a 10px gap; cancel any left positioning */
+	position: fixed;
+	top: 10px;
+	left: 10px;                /* CHANGED: gap from screen edge = 10px */
+	               /* CHANGED: cancel previous left */
+  }
+  
+  /* === Year badge: separate box below the title, rightmost, rounded === */
+  #current_year_badge.year-badge {
+    position: fixed;
+    left: 60px;                /* align the badge to 10px from the left edge */
+    top: 90;                 /* safe default; JS will compute precise top */
+	z-index: 1000;
+  
+	display: inline-block;
+	padding: 8px 14px;
+	background: #ffffffcc;
+	border: 1px solid lightgray;
+	border-radius: 12px;
+	font-weight: 700;
+	font-size: 1.35rem;
+	line-height: 1.1;
+  }
+  
+ /* === Zoom control (top-left) default spacing ===
+   Sits below the header and 10px from the left edge (JS can refine margin-top if needed) */
+#leafletmap .leaflet-top.leaflet-left {
+    margin-top: 90px;   /* safe default so it starts below the header */
+    margin-left: 10px;  /* align with header’s 10px left gap */
+}
