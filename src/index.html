@@ -8,11 +8,6 @@
 		<link rel="stylesheet" href="lib/leaflet.css">
 		<link rel="stylesheet" href="lib/geostats.css">
 		<link rel="stylesheet" href="main.css">
-		
-	<!-- NEW: Flaticon UIcons (thin-rounded + thin-straight) for the requested icons -->
-	<!-- Provides: fi fi-tr-menu-burger, fi fi-tr-globe, fi fi-tr-settings-sliders, fi fi-ts-map -->
-	<link rel="stylesheet" href="https://cdn-uicons.flaticon.com/uicons-thin-rounded/css/uicons-thin-rounded.css"><!-- ADDED -->
-	<link rel="stylesheet" href="https://cdn-uicons.flaticon.com/uicons-thin-straight/css/uicons-thin-straight.css"><!-- ADDED -->
 		<script type="text/javascript" src="lib/leaflet.js"></script>
 		<script type="text/javascript" src="lib/Leaflet.SwoopyArrow.js"></script>
 		<script type="text/javascript" src="lib/turf.min.js"></script>
@@ -47,7 +42,7 @@
 		<img src="img/Signet_gruen_transparent.png" height="40px" />
 		<div id="credits_text">
 			<div id="text_with_links">
-				<span>Diese Maßnahme wird mitfinanziert <br> mit Steuermitteln auf Grundlage <br>des vom Sächsischen Landtag <br> beschlossenen Haushaltes.</span>
+				<span>Diese Maßnahme wird mitfinanziert mit Steuermitteln <br> auf Grundlage des vom Sächsischen Landtag <br> beschlossenen Haushaltes.</span>
 				<div id="link_container">
 					<a href="datenschutz.html">Datenschutz</a>
 					<a href="impressum.html">Impressum</a>
@@ -95,6 +90,7 @@
 	<button id="year_play_toggle"
 			class="selector"
 			type="button"
+			aria-pressed="false"
 			aria-label="Wiedergabe/Pause" 
 			onclick="toggle_year_playback()"></button>
 			<img src="img/play-pause.svg" alt="" class="icon" aria-hidden="true" />
