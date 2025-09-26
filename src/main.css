@@ -990,4 +990,26 @@ div#credits {
 	line-height: 1.1;
 	margin-left: 12px;          /* tidy spacing from the text */
   }
+  /* === Play/Pause button: center SVG, remove native styling, avoid text glyphs === */
+
+/* Center the icon within the fixed 40x40 action button */
+div.action_button > button {
+	display: grid;                 /* ADDED: perfect centering */
+	place-items: center;           /* ADDED */
+	padding: 0;                    /* ADDED: remove default button padding */
+	background: transparent;       /* ADDED */
+	border: none;                  /* ADDED */
+	-webkit-appearance: none;      /* ADDED: suppress native iOS/macOS style */
+	appearance: none;              /* ADDED */
+  }
+  
+  /* Scale and center the SVG image used inside the button */
+  div.action_button img.icon {
+	width: 70%;                    /* ADDED: scale to fit 40x40 nicely */
+	height: 70%;                   /* ADDED */
+	display: block;                /* ADDED: avoid baseline offset */
+	object-fit: contain;           /* ADDED */
+	object-position: center;       /* ADDED */
+	pointer-events: none;          /* ADDED: clicks go to the button element */
+  }
   

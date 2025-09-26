@@ -84,17 +84,21 @@
 	</button>
   </div>
   
-
-  
-  <div id="year_play_fab" class="action_button" title="Jahre automatisch abspielen / pausieren">
-	<button id="year_play_toggle"
-			class="selector"
-			type="button"
-			aria-pressed="false"
-			aria-label="Wiedergabe/Pause" 
-			onclick="toggle_year_playback()"></button>
-			<img src="img/play-pause.svg" alt="" class="icon" aria-hidden="true" />
+<!-- index.html — FIX: clean Play/Pause button: no inline comments in tag; icon-only content -->
+<div id="year_play_fab" class="action_button" title="Jahre automatisch abspielen / pausieren">
+	<button
+	  id="year_play_toggle"
+	  class="selector"
+	  type="button"
+	  aria-pressed="false"
+	  aria-label="Jahre abspielen"
+	  onclick="toggle_year_playback()"
+	  disabled>
+	  <!-- icon-only; JS will swap play.svg <-> pause.svg -->
+	  <img id="year_play_icon" src="img/play.svg" alt="" class="icon" aria-hidden="true" />
+	</button>
   </div>
+  
   
 		<!-- map -->
 		<div id="leafletmap"></div>

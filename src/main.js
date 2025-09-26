@@ -324,12 +324,14 @@ function renew_year_selection() {
             const idx = yearsAsc.indexOf(cur);
             app.view.year_player.index = (idx >= 0 ? idx : 0);
 
-            // Enable play button (it will be globally enabled later as well)
-            if (playBtn) {
-                playBtn.disabled = false;
-                playBtn.setAttribute('aria-pressed', 'false');
-                playBtn.textContent = '▶';
-            }
+     // Enable play button (no glyphs; use SVG + ARIA)
+if (playBtn) {
+    playBtn.disabled = false;
+    playBtn.setAttribute('aria-pressed', 'false');            // keep state
+    playBtn.setAttribute('aria-label', 'Jahre abspielen');    // CHANGED: accessible label
+    const icon = document.getElementById('year_play_icon');    // CHANGED: swap to play icon
+    if (icon) icon.src = 'img/play.svg';
+}
         } else {
             // No years
             app.view.year_player.order = [];
@@ -975,10 +977,13 @@ function toggle_mobile_menu() {
 		if (app.view.year_player.timer) clearInterval(app.view.year_player.timer);
 	
 		app.view.year_player.isPlaying = true;
-		if (btn) {
-			btn.textContent = '⏸';
-			btn.setAttribute('aria-pressed', 'true');
-		}
+if (btn) {
+    btn.setAttribute('aria-pressed', 'true');
+    btn.setAttribute('aria-label', 'Wiedergabe pausieren');   // CHANGED
+    const icon = document.getElementById('year_play_icon');    // CHANGED
+    if (icon) icon.src = 'img/pause.svg';                      // CHANGED
+}
+
 	
 		// Immediately show current index (so it aligns), then step every delay
 		set_current_year(years[app.view.year_player.index]);
@@ -994,10 +999,13 @@ function toggle_mobile_menu() {
 		if (updateButtonUI) {
 			const btn = document.getElementById("year_play_toggle");
 			if (btn) {
-				btn.textContent = '▶';
 				btn.setAttribute('aria-pressed', 'false');
+				btn.setAttribute('aria-label', 'Jahre abspielen');    // CHANGED
+				const icon = document.getElementById('year_play_icon'); // CHANGED
+				if (icon) icon.src = 'img/play.svg';                    // CHANGED
 			}
 		}
+		
 	}
 	
 	function year_play_step() {
