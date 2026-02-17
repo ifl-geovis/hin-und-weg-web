@@ -77,10 +77,21 @@
 	</button>
   </div>
   
-  <div id="classification_button" class="action_button" title="Einstellungen" onclick="show_viewcomponent(event, 'classification_view')">
-	<!-- CHANGED: use requested settings sliders icon -->
-	<img src="img/settings-sliders.svg" alt="" class="icon" aria-hidden="true" />
-  </div>
+  <!-- CHANGED: onclick now calls toggle_settings_panel() instead of show_viewcomponent();
+     added aria-controls and aria-expanded for accessibility, matching burger button pattern -->
+<div id="classification_button"
+class="action_button"
+title="Einstellungen"
+role="button"
+aria-label="Einstellungen ein-/ausblenden"
+aria-controls="classification_view"
+aria-expanded="false"
+onclick="toggle_settings_panel()">
+<!-- CHANGED: use local SVG icon (unchanged icon, just new click behavior) -->
+<img src="img/settings-sliders.svg" alt="" class="icon" aria-hidden="true" />
+</div>
+
+
   <div id="map_bg_fab" class="action_button" title="Hintergrundkarte ein-/ausschalten">
 	<!-- CHANGED: use requested map icon -->
 	<button id="map_background_switcher_button" type="button" aria-label="Hintergrundkarte ein-/ausschalten" onclick="map_background_switcher(event)">
@@ -274,13 +285,22 @@
 		</div>
 
 		<!-- classification view -->
-		<div id="classification_view" class="viewcomponent">
-			<h2 class="title_bar" draggable="true" ondragstart="move_start(event, 'classification_view')" ondragend="move_stop(event, 'classification_view')">
+<!-- CHANGED: added aria-hidden="true" so panel starts hidden for screen readers;
+		     the panel is now controlled via CSS transform/visibility, not display:none -->
+			 <div id="classification_view" class="viewcomponent" aria-hidden="true">		
+							<!-- CHANGED: removed draggable="true", ondragstart, ondragend
+			     because the panel is now a fixed slide-in; dragging is not needed -->
+			<h2 class="title_bar">
 				Einstellungen
 			</h2>
-			<div id="table_view_close_button" class="close_button" onclick="close_view(event, 'classification_view')">
-				<img src="img/x-square.svg" width="100%" height="100%" />
-			</div>
+			<!-- CHANGED: renamed id from "table_view_close_button" (was a duplicate of the
+			     table_view's close button) to "classification_view_close_button";
+			     onclick now calls toggle_settings_panel() so it uses the same
+			     slide-out animation instead of abruptly hiding via display:none -->
+				 <div id="classification_view_close_button" class="close_button" onclick="toggle_settings_panel()">
+					<img src="img/x-square.svg" width="100%" height="100%" />
+				</div>
+	
 			<div id="classification_view_data" class="view_content">
 				<label for="classification_selector">Klassifikationsalgorithmus:</label><br />
 				<select name="area" id="classification_selector" class="selector" oninput="classification_selected(event)">

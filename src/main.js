@@ -953,25 +953,71 @@ function toggle_legend(event) {
 	app.view.legend_collapsed = collapsed;
   }
   
-// This keeps the same behavior (toggle .open on #selection_box) and updates ARIA on the burger.
+// CHANGED: added mutual-exclusion logic so that opening the burger menu
+// automatically closes the settings panel (and vice versa via toggle_settings_panel)
 function toggle_mobile_menu() {
 	const box = document.getElementById("selection_box");
 	if (!box) return;
-  
+
 	const isOpen = box.classList.toggle("open");
-  
+
+	// CHANGED: if opening the burger menu, close the settings panel to prevent overlap
+	if (isOpen) {
+		const settingsPanel = document.getElementById("classification_view");
+		if (settingsPanel && settingsPanel.classList.contains("open")) {
+			settingsPanel.classList.remove("open");
+			settingsPanel.setAttribute("aria-hidden", "true");
+			// CHANGED: also remove any leftover inline display style from old code paths
+			settingsPanel.style.removeProperty("display");
+			const settingsBtn = document.getElementById("classification_button");
+			if (settingsBtn) settingsBtn.setAttribute("aria-expanded", "false");
+		}
+	}
+
 	// Update ARIA on the burger
 	const burger = document.getElementById("menu_toggle_button");
 	if (burger) burger.setAttribute("aria-expanded", isOpen ? "true" : "false");
-  
+
 	// Reflect visibility state for screen readers
 	box.setAttribute("aria-hidden", (!isOpen).toString());
-  
+
 	// Backward-compat (if any legacy control still present)
 	const legacyToggle = document.getElementById("mobile_menu_toggle");
 	if (legacyToggle) legacyToggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
-  }
-  
+}
+
+  // CHANGED: New function to slide the settings panel in/out from the right,
+// matching the burger menu pattern. Mutually exclusive with the burger menu:
+// opening one closes the other to prevent overlap.
+function toggle_settings_panel() {
+	const panel = document.getElementById("classification_view");
+	if (!panel) return;
+
+	// CHANGED: remove any leftover inline display style that old code paths
+	// (e.g., show_viewcomponent / close_view) may have set, so CSS controls visibility
+	panel.style.removeProperty("display");
+
+	const isOpen = panel.classList.toggle("open");
+
+	// CHANGED: if opening, close the burger menu (mutual exclusion)
+	if (isOpen) {
+		const selBox = document.getElementById("selection_box");
+		if (selBox && selBox.classList.contains("open")) {
+			selBox.classList.remove("open");
+			selBox.setAttribute("aria-hidden", "true");
+			const burger = document.getElementById("menu_toggle_button");
+			if (burger) burger.setAttribute("aria-expanded", "false");
+		}
+		// CHANGED: refresh settings content when opening so it reflects current state
+		refresh_settings_dialog();
+	}
+
+	// CHANGED: update ARIA attributes on the panel and its toggle button
+	panel.setAttribute("aria-hidden", (!isOpen).toString());
+	const btn = document.getElementById("classification_button");
+	if (btn) btn.setAttribute("aria-expanded", isOpen ? "true" : "false");
+}
+
 
 	function toggle_year_playback() {
 		if (app.view.year_player.isPlaying) {

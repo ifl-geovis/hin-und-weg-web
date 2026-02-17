@@ -1188,3 +1188,117 @@ div#header h1 {
 	display: none;
   }
   
+  /* ===================================================================
+   CHANGED: Settings panel (#classification_view) — slide-in from the
+   right edge, matching the burger menu (#selection_box) behavior.
+   Overrides .viewcomponent positioning/display for this panel only.
+   =================================================================== */
+
+/* CHANGED: always rendered (display:block) so the CSS transition works;
+   hidden off-screen via transform + visibility, exactly like #selection_box */
+div#classification_view {
+	display: block;                    /* CHANGED: override .viewcomponent display:none */
+	position: fixed;
+	top: 70px;                        /* CHANGED: below header, same as #selection_box */
+	right: 50px;                      /* CHANGED: gap from right edge, same as #selection_box */
+	left: auto;                       /* CHANGED: cancel .viewcomponent left:200px */
+	bottom: auto;
+	width: max-content;               /* CHANGED: size to content, same as #selection_box */
+	max-width: min(520px, 46vw);      /* CHANGED: cap width, same as #selection_box */
+	max-height: calc(100vh - 140px);  /* CHANGED: leave room for header + footer */
+	overflow-y: auto;                 /* CHANGED: scroll if content overflows */
+	padding: 0;                       /* keep inner content padding on .view_content */
+	margin-left: 0;                   /* CHANGED: cancel .viewcomponent margin-left:15% */
+	min-width: 300px;                 /* preserve readable minimum */
+	border: 1px solid lightgray;
+	border-radius: 10px;
+	border-width: 1px;                /* CHANGED: override .viewcomponent 3px border */
+	background-color: #edededbd;
+	box-shadow: 0 8px 18px rgba(0,0,0,0.25); /* CHANGED: same shadow as #selection_box */
+	z-index: 1200;                    /* CHANGED: same z-index as #selection_box */
+  
+	/* CHANGED: hidden off-screen and non-interactive by default (slide-out state) */
+	transform: translateX(110%);
+	visibility: hidden;
+	pointer-events: none;
+  
+	/* CHANGED: smooth slide transition, matching #selection_box */
+	will-change: transform;
+	transition: transform 0.25s ease;
+  }
+  
+  /* CHANGED: when the .open class is present, slide in and become interactive */
+  div#classification_view.open {
+	transform: translateX(0);
+	visibility: visible;
+	pointer-events: auto;
+  }
+  
+  /* CHANGED: mobile responsive — tighter margins, same slide behavior */
+  @media (max-width: 768px) {
+	div#classification_view {
+	  top: 64px;
+	  right: 10px;
+	  left: auto;
+	  bottom: auto;
+	  max-width: min(92vw, 520px);
+	  max-height: calc(100vh - 120px);
+	}
+  }
+  
+
+  /* CHANGED: Remove the dark grey title bar background for the settings panel only.
+   The global h2.title_bar still uses #00000066 for other viewcomponents. */
+#classification_view .title_bar {
+    background-color: transparent;  /* CHANGED: remove dark grey bar */
+    margin-bottom: 2px;             /* CHANGED: tighten spacing below title */
+}
+/* ===================================================================
+   CHANGED: Left-align all labels and their corresponding controls
+   inside the settings panel so every element sits flush to the left.
+   =================================================================== */
+
+/* CHANGED: base left-alignment for all inline/text content */
+#classification_view_data {
+    text-align: left;               /* CHANGED: left-align all inline/text children */
+    padding-left: 12px;             /* CHANGED: consistent left inset from panel edge */
+    padding-right: 12px;            /* CHANGED: matching right inset */
+}
+
+/* CHANGED: Make <select> dropdowns full-width blocks so they sit below
+   their label and align to the left edge. */
+#classification_view_data select {
+    display: block;                 /* CHANGED: each dropdown on its own line */
+    width: 100%;                    /* CHANGED: stretch to panel width */
+    max-width: 100%;                /* CHANGED: don't overflow */
+    box-sizing: border-box;         /* CHANGED: include padding in width */
+}
+
+/* CHANGED: Number inputs (classborder fields etc.) stay inline with their
+   label but have a consistent width and right-aligned numbers. */
+#classification_view_data input[type="number"] {
+    display: inline-block;          /* CHANGED: sit on the same line as label */
+    width: 6em;                     /* CHANGED: consistent width */
+    text-align: right;              /* CHANGED: numbers read better right-aligned */
+}
+
+/* CHANGED: Checkbox + label pairs as a left-aligned inline-flex group
+   so the checkbox and text sit on one line, vertically centered. */
+#classification_view_data .classification_overall_toggle {
+    display: inline-flex;           /* CHANGED: single-line group */
+    align-items: center;            /* CHANGED: vertical centering of checkbox + label */
+    gap: 8px;                       /* CHANGED: space between checkbox and label text */
+}
+
+/* CHANGED: Vertically align color-scale radio buttons and gradient bars
+   with their label text so they don't float at different baselines. */
+#classification_view_data input[type="radio"],
+#classification_view_data .color_gradient {
+    vertical-align: middle;         /* CHANGED: align with adjacent text */
+}
+
+/* CHANGED: Classborder labels keep their fixed width for neat columns
+   and right-align their text so it sits flush against the number input. */
+#classification_view_data .classborder_label {
+    text-align: right;              /* CHANGED: label text hugs the input field */
+}
