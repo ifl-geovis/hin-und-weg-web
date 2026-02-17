@@ -39,7 +39,43 @@ let app =
 		backgroundlayer: null,
 		selectionlayer: null,
 		labels: [],
+		// CHANGED: array of available background tile providers;
+		// several omit sea borders entirely for a cleaner look.
+		background_options: [
+			//{
+			//	name: "OpenStreetMap",
+			//	url: "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+			//	attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+			//	maxZoom: 19,
+			//},
+			{
+			// OpenStreetMap.DE — German community tile server that renders
+				// all labels using the name:de tag, so everything is in German.
+				name: "OpenStreetMap (deutsch)",
+				url: "https://{s}.tile.openstreetmap.de/tiles/osmde/{z}/{x}/{y}.png",
+				attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+				maxZoom: 18,
+				// License: ODbL — free with attribution (same as standard OSM)
+			},
+			{
+				// CHANGED: CartoDB Positron — very clean, light style, no sea borders
+				name: "CartoDB Positron",
+				url: "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
+				attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> &copy; <a href="https://carto.com/">CARTO</a>',
+				maxZoom: 20,
+			},
+			{
+				// CHANGED: CartoDB Positron No Labels — cleanest option, no text, no borders
+				name: "CartoDB (keine Labels)",
+				url: "https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png",
+				attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> &copy; <a href="https://carto.com/">CARTO</a>',
+				maxZoom: 20,
+			}
+		],
+		// CHANGED: index into background_options; -1 means "off"
+		background_index: 0,
 	},
+
 	status:
 	{
 		dataset_loads: 0,
@@ -52,8 +88,8 @@ let app =
 		dragstart_x_legend: 0,
 		dragstart_y_legend: 0,
 		loading: false,
-		background_active: false,
-	},
+// CHANGED: replaced by map.background_index; kept for legacy checks
+background_active: true,	},
 	data:
 	{
 		geodata: null,

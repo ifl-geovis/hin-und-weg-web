@@ -98,14 +98,16 @@ function init_map()
 	// Initial placeholder view; will be replaced by fit_map_to_data() once data loads
 	app.map.map.setView([51.5, 10], 7);
 
-	const mapconfig =
-	{
-		attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-	};
-	app.map.backgroundlayer = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', mapconfig);
+	// CHANGED: create the initial background layer from the options array
+	// instead of hard-coding the OSM URL
+	const firstOption = app.map.background_options[0];
+	app.map.backgroundlayer = L.tileLayer(firstOption.url, {
+		attribution: firstOption.attribution,
+		maxZoom: firstOption.maxZoom || 19,
+	});
 	app.map.backgroundlayer.addTo(app.map.map);
+	app.map.background_index = 0;
 	app.status.background_active = true;
-
 
 	/* NEW: Position zoom under header and offset by year badge */
 	app.map.map.whenReady(() => {
@@ -118,7 +120,6 @@ function init_map()
 		position_header_zoom_year(); // ADDED
 	});
 }
-
 
 
 
@@ -354,14 +355,60 @@ function zoom_home(event)
 	}
 }
 
-
+// CHANGED: cycle through multiple background tile providers on each click.
+// The sequence is: option 0 → option 1 → ... → option N → off → option 0 → ...
+// This lets the user pick a style without sea borders or turn the background off entirely.
 function map_background_switcher(event)
 {
-	if (!app.map.backgroundlayer) return;
-	if (app.status.background_active) app.map.backgroundlayer.removeFrom(app.map.map);
-	else app.map.backgroundlayer.addTo(app.map.map);
-	app.status.background_active = !app.status.background_active;
+	const options = app.map.background_options;
+	if (!options || options.length === 0) return;
+
+	// CHANGED: remove the current background layer if active
+	if (app.map.backgroundlayer && app.status.background_active) {
+		app.map.backgroundlayer.removeFrom(app.map.map);
+	}
+
+	// CHANGED: advance index; after the last option, go to -1 (off), then wrap to 0
+	let nextIndex = app.map.background_index + 1;
+	if (nextIndex >= options.length) {
+		nextIndex = -1; // CHANGED: -1 means "background off"
+	}
+	if (nextIndex === -1 && !app.status.background_active) {
+		// CHANGED: if we were already off, wrap back to 0
+		nextIndex = 0;
+	}
+
+	app.map.background_index = nextIndex;
+
+	if (nextIndex === -1) {
+		// CHANGED: turn background off
+		app.status.background_active = false;
+		console.log("Hintergrundkarte: aus");
+	} else {
+		// CHANGED: create and add the new tile layer
+		const opt = options[nextIndex];
+		app.map.backgroundlayer = L.tileLayer(opt.url, {
+			attribution: opt.attribution,
+			maxZoom: opt.maxZoom || 19,
+		});
+		app.map.backgroundlayer.addTo(app.map.map);
+
+		// CHANGED: ensure background stays behind the data layer
+		if (app.map.backgroundlayer.setZIndex) {
+			app.map.backgroundlayer.setZIndex(0);
+		}
+		app.status.background_active = true;
+		console.log("Hintergrundkarte:", opt.name);
+	}
+
+	// CHANGED: bring data and selection layers back to the front
+	if (app.map.datalayer) app.map.datalayer.bringToBack();
+	if (app.map.backgroundlayer && app.status.background_active) {
+		app.map.backgroundlayer.bringToBack();
+	}
+	if (app.map.selectionlayer) app.map.selectionlayer.bringToFront();
 }
+
 
 function get_feature_id(feature)
 {
