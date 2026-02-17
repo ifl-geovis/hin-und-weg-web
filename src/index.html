@@ -33,29 +33,28 @@
 		hin&weg web
 		<span id="versionsub"></span>
 	</h1>
-	<h3><span id="dataset_title"></span></h3> <!-- CHANGED: removed years from title -->
+	<h3><span id="dataset_title"></span></h3>
 </div>
 
-<!-- NEW: current year in its own box (rounded), positioned below the title -->
-<div id="current_year_badge" class="year-badge" aria-live="polite" title="Ausgewähltes Jahr"><!-- filled by JS --></div>
+<!-- Current year badge (positioned by JS below the header) -->
+<div id="current_year_badge" class="year-badge" aria-live="polite" title="Ausgewähltes Jahr"></div>
 
-
-	<!-- credits -->
-	<div id="credits">
-		<img src="img/ifl_logo.svg" height="40px" />
-		<img src="img/Signet_gruen_transparent.png" height="40px" />
-		<div id="credits_text">
-			<div id="text_with_links">
-				<span>Diese Maßnahme wird mitfinanziert mit Steuermitteln <br> auf Grundlage des vom Sächsischen Landtag <br> beschlossenen Haushaltes.</span>
-				<div id="link_container">
-					<a href="datenschutz.html">Datenschutz</a>
-					<a href="impressum.html">Impressum</a>
-				</div>
+<!-- credits -->
+<div id="credits">
+	<img src="img/ifl_logo.svg" height="40px" />
+	<img src="img/Signet_gruen_transparent.png" height="40px" />
+	<div id="credits_text">
+		<div id="text_with_links">
+			<span>Diese Maßnahme wird mitfinanziert mit Steuermitteln <br> auf Grundlage des vom Sächsischen Landtag <br> beschlossenen Haushaltes.</span>
+			<div id="link_container">
+				<a href="datenschutz.html">Datenschutz</a>
+				<a href="impressum.html">Impressum</a>
 			</div>
 		</div>
 	</div>
-	
-<!-- right-side menu toggle (hamburger) -->
+</div>
+
+<!-- Right-side action buttons -->
 <div id="menu_toggle_button"
      class="action_button"
      title="Menü ein-/ausblenden"
@@ -64,42 +63,32 @@
      aria-controls="selection_box"
      aria-expanded="false"
      onclick="toggle_mobile_menu()">
-  <!-- CHANGED: use local SVG file instead of inline or webfont -->
   <img src="img/menu-burger.svg" alt="" class="icon" aria-hidden="true" />
 </div>
 
-
-
-<div id="zoom_home_fab" class="action_button" title="zur Gesamtausdehnung zoomen">
-	<!-- CHANGED: use local SVG icon -->
-	<button id="zoom_home_button" type="button" aria-label="zur Gesamtausdehnung zoomen" onclick="zoom_home(event)">
-	  <img src="img/globe.svg" alt="" class="icon" aria-hidden="true" />
-	</button>
-  </div>
-  
-  <!-- CHANGED: onclick now calls toggle_settings_panel() instead of show_viewcomponent();
-     added aria-controls and aria-expanded for accessibility, matching burger button pattern -->
 <div id="classification_button"
-class="action_button"
-title="Einstellungen"
-role="button"
-aria-label="Einstellungen ein-/ausblenden"
-aria-controls="classification_view"
-aria-expanded="false"
-onclick="toggle_settings_panel()">
-<!-- CHANGED: use local SVG icon (unchanged icon, just new click behavior) -->
-<img src="img/settings-sliders.svg" alt="" class="icon" aria-hidden="true" />
+     class="action_button"
+     title="Einstellungen"
+     role="button"
+     aria-label="Einstellungen ein-/ausblenden"
+     aria-controls="classification_view"
+     aria-expanded="false"
+     onclick="toggle_settings_panel()">
+  <img src="img/settings-sliders.svg" alt="" class="icon" aria-hidden="true" />
 </div>
 
+<div id="zoom_home_fab" class="action_button" title="zur Gesamtausdehnung zoomen">
+	<button id="zoom_home_button" type="button" aria-label="zur Gesamtausdehnung zoomen" onclick="zoom_home()">
+	  <img src="img/globe.svg" alt="" class="icon" aria-hidden="true" />
+	</button>
+</div>
 
-  <div id="map_bg_fab" class="action_button" title="Hintergrundkarte ein-/ausschalten">
-	<!-- CHANGED: use requested map icon -->
-	<button id="map_background_switcher_button" type="button" aria-label="Hintergrundkarte ein-/ausschalten" onclick="map_background_switcher(event)">
+<div id="map_bg_fab" class="action_button" title="Hintergrundkarte ein-/ausschalten">
+	<button id="map_background_switcher_button" type="button" aria-label="Hintergrundkarte ein-/ausschalten" onclick="map_background_switcher()">
 	  <img src="img/map.svg" alt="" class="icon" aria-hidden="true" />
 	</button>
-  </div>
-  
-<!-- index.html — FIX: clean Play/Pause button: no inline comments in tag; icon-only content -->
+</div>
+
 <div id="year_play_fab" class="action_button" title="Jahre automatisch abspielen / pausieren">
 	<button
 	  id="year_play_toggle"
@@ -109,40 +98,36 @@ onclick="toggle_settings_panel()">
 	  aria-label="Jahre abspielen"
 	  onclick="toggle_year_playback()"
 	  disabled>
-	  <!-- icon-only; JS will swap play.svg <-> pause.svg -->
 	  <img id="year_play_icon" src="img/play.svg" alt="" class="icon" aria-hidden="true" />
 	</button>
-  </div>
-  
-  
-		<!-- map -->
-		<div id="leafletmap"></div>
+</div>
 
-		<!-- feature info popup -->
-		<div id="feature_info_popup">
-		</div>
+<!-- map -->
+<div id="leafletmap"></div>
 
-		<!-- load indicator -->
-		<div id="load_indicator">
-			<div id="load_indicator_text">Bitte warten!<br /><span id="load_indicator_message"></span></div>
-			<div id="load_inidicator_blocks">
-				<div class="load_inidicator_block" id="load_inidicator_block_0"></div>
-				<div class="load_inidicator_block" id="load_inidicator_block_1"></div>
-				<div class="load_inidicator_block" id="load_inidicator_block_2"></div>
-				<div class="load_inidicator_block" id="load_inidicator_block_3"></div>
-				<div class="load_inidicator_block" id="load_inidicator_block_4"></div>
-				<div class="load_inidicator_block" id="load_inidicator_block_5"></div>
-				<div class="load_inidicator_block" id="load_inidicator_block_6"></div>
-				<div class="load_inidicator_block" id="load_inidicator_block_7"></div>
-				<div class="load_inidicator_block" id="load_inidicator_block_8"></div>
-				<div class="load_inidicator_block" id="load_inidicator_block_9"></div>
-			</div>
-		</div>
+<!-- feature info popup -->
+<div id="feature_info_popup"></div>
 
-		<!-- infos&selections -->
-	
-		<div id="selection_box" aria-hidden="true">
-		<!-- 1. Thema -->
+<!-- load indicator -->
+<div id="load_indicator">
+	<div id="load_indicator_text">Bitte warten!<br /><span id="load_indicator_message"></span></div>
+	<div id="load_inidicator_blocks">
+		<div class="load_inidicator_block" id="load_inidicator_block_0"></div>
+		<div class="load_inidicator_block" id="load_inidicator_block_1"></div>
+		<div class="load_inidicator_block" id="load_inidicator_block_2"></div>
+		<div class="load_inidicator_block" id="load_inidicator_block_3"></div>
+		<div class="load_inidicator_block" id="load_inidicator_block_4"></div>
+		<div class="load_inidicator_block" id="load_inidicator_block_5"></div>
+		<div class="load_inidicator_block" id="load_inidicator_block_6"></div>
+		<div class="load_inidicator_block" id="load_inidicator_block_7"></div>
+		<div class="load_inidicator_block" id="load_inidicator_block_8"></div>
+		<div class="load_inidicator_block" id="load_inidicator_block_9"></div>
+	</div>
+</div>
+
+<!-- Selection sidebar (burger menu) -->
+<div id="selection_box" aria-hidden="true">
+	<!-- 1. Thema -->
 	<label for="theme_selector">Thema:</label><br />
 	<select name="theme" id="theme_selector" class="selector" oninput="theme_selected(event)" disabled>
 	  <option value="von">Von</option>
@@ -160,10 +145,9 @@ onclick="toggle_settings_panel()">
 		  <input type="radio" id="migration_rate_selector" class="selector" name="data_interpretation" value="migration_rate" disabled />
 		  <label for="migration_rate_selector">Wanderungsrate</label>
 		</span>
-	  </fieldset>
-	  
+	</fieldset>
 	<hr />
-  
+
 	<!-- 2. Filter -->
 	<div id="filter">
 	  <span>Filtern:</span><br />
@@ -175,15 +159,15 @@ onclick="toggle_settings_panel()">
 	  <input name="filter_max" id="filter_max" class="filter" type="number" value="0" oninput="filter_changed(event)" disabled /><br />
 	</div>
 	<hr />
-  
-	<!-- 3. Jahre (Play/Pause button has been moved to the right-side action buttons) -->
+
+	<!-- 3. Jahre -->
 	<div id="years_selection">
 	  <label for="year_selector">Jahre:</label><br />
 	  <select name="years" id="year_selector" class="selector" size="10" oninput="year_selected(event)" multiple disabled>
 	  </select>
 	</div>
 	<hr />
-  
+
 	<!-- 4. Fläche -->
 	<label for="area_selector">Fläche:</label><br />
 	<select name="area" id="area_selector" class="selector" oninput="area_selected(event)" disabled>
@@ -193,10 +177,9 @@ onclick="toggle_settings_panel()">
 	<span class="control-inline">
 		<input type="checkbox" id="area_inside_selector" class="selector" name="area_inside" value="area_inside" onchange="area_inside_changed(event)" disabled checked />
 		<label for="area_inside_selector">Umzüge innerhalb</label>
-	  </span>
-	  
+	</span>
 	<hr />
-  
+
 	<!-- 5. Kartenlabels -->
 	<label for="label_selector">Kartenlabels:</label><br />
 	<select name="labels" id="label_selector" class="selector" oninput="labels_selected(event)" disabled>
@@ -208,281 +191,226 @@ onclick="toggle_settings_panel()">
 	<span class="control-inline">
 		<input type="checkbox" id="swoopy_arrows_selector" class="selector" name="swoopy_arrows" value="swoopy_arrows" onchange="swoopy_arrows_changed(event)" disabled />
 		<label for="swoopy_arrows_selector">Bewegungen visualisieren</label>
-	  </span>
-	  
+	</span>
 	<hr />
-  
+
 	<!-- 6. Datensatz und Datenkategorie -->
 	<label for="dataset_name_value">Datensatz:</label><br />
-	<input name="dataset_name_value" id="dataset_name_value" type="text" value="" readonly onclick="dataset_load(event)" /><br />
+	<input name="dataset_name_value" id="dataset_name_value" type="text" value="" readonly onclick="dataset_load()" /><br />
 	<label for="category_name_value">Datenkategorie:</label><br />
-	<input name="category_name_value" id="category_name_value" type="text" value="" readonly onclick="dataset_load(event)" /><br />
+	<input name="category_name_value" id="category_name_value" type="text" value="" readonly onclick="dataset_load()" /><br />
 	<hr />
-  
+
 	<!-- 7. Transparenz -->
-	<label for="map_transparency_selector" class="mmap_transparency_label">Transparenz:</label>
+	<label for="map_transparency_selector">Transparenz:</label>
 	<input name="map_transparency" id="map_transparency_selector" class="selector" type="number" value="0.5" min="0.0" max="1.0" step="0.1" oninput="map_transparency_changed(event)" />
-  </div>
-  
-  
-		<!-- legend view -->
+</div>
+
+<!-- Legend view -->
 <div id="legend_view">
-	<!-- index.html (changed): crisp, visible chevron; no text glyph -->
-<!-- CHANGED: arrow is an inline SVG chevron, placed right next to “Legende” inside the legend box -->
-<!-- index.html (changed): arrow is an inline SVG chevron; kept inline next to “Legende” -->
-<!-- CHANGED: entire title bar is now the clickable toggle (no separate button);
-     the chevron sits at the right edge with no box around it -->
-	 <h2 class="title_bar"
-	 draggable="true"
-	 ondragstart="move_start_legend(event, 'legend_view')"
-	 ondragend="move_stop_legend(event, 'legend_view')"
-	 id="legend_toggle"
-	 role="button"
-	 tabindex="0"
-	 aria-expanded="true"
-	 aria-controls="legend_content"
-	 title="Legende ein-/ausklappen"
-	 onclick="toggle_legend(event)"
-	 onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggle_legend(event);}">
-   Legende
-   <!-- CHANGED: chevron is a bare inline SVG, no wrapping <button>;
-		CSS rotates it smoothly on collapse -->
-   <svg class="legend_chevron" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-	 <polyline points="6,14 12,8 18,14"
-			   stroke="currentColor"
-			   stroke-width="2.5"
-			   fill="none"
-			   stroke-linecap="round"
-			   stroke-linejoin="round"></polyline>
-   </svg>
- </h2>
- 
+	<!-- Title bar is the clickable toggle; chevron at right edge -->
+	<h2 class="title_bar"
+		draggable="true"
+		ondragstart="move_start_legend(event, 'legend_view')"
+		ondragend="move_stop_legend(event, 'legend_view')"
+		id="legend_toggle"
+		role="button"
+		tabindex="0"
+		aria-expanded="true"
+		aria-controls="legend_content"
+		title="Legende ein-/ausklappen"
+		onclick="toggle_legend(event)"
+		onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggle_legend(event);}">
+		Legende
+		<svg class="legend_chevron" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+			<polyline points="6,14 12,8 18,14"
+				stroke="currentColor"
+				stroke-width="2.5"
+				fill="none"
+				stroke-linecap="round"
+				stroke-linejoin="round"></polyline>
+		</svg>
+	</h2>
+	<div id="legend_content" class="view_content">
+		<div id="legend_content_inner"></div>
+	</div>
+</div>
 
+<!-- Dataset loader dialog -->
+<div id="datasetloader_dialog" class="viewcomponent">
+	<h2 class="title_bar" draggable="true" ondragstart="move_start(event, 'datasetloader_dialog')" ondragend="move_stop(event, 'datasetloader_dialog')">
+		Datensatz einladen
+	</h2>
+	<div id="datasetloader_close_button" class="close_button" onclick="close_view('datasetloader_dialog')">
+		<img src="img/x-square.svg" width="100%" height="100%" />
+	</div>
+	<div id="datasetloader_content">
+		<p>Bitte laden sie den gewünschten Datensatz</p>
+		<label for="dataset_selector">Datensatz:</label>
+		<select name="dataset" id="dataset_selector" oninput="dataset_selected(event)">
+			<option value="">-- Bitte wählen sie einen Datensatz aus --</option>
+		</select>
+		<br />
+		<label for="category_selector">Datenkategorie:</label>
+		<select name="category" id="category_selector" oninput="category_selected(event)" disabled>
+			<option value="">-- Bitte wählen sie eine Datenkategorie aus --</option>
+		</select>
+		<br />
+		<button name="load_dataset" id="load_dataset_button" onclick="load_dataset()" disabled>Daten einladen</button>
+	</div>
+</div>
 
-
-	<!-- CHANGED: added legend_content_inner so we can measure scrollHeight
-	     for smooth accordion animation -->
-		 <div id="legend_content" class="view_content">
-			<div id="legend_content_inner"></div>
+<!-- Settings panel (slide-in) -->
+<div id="classification_view" class="viewcomponent" aria-hidden="true">
+	<h2 class="title_bar">Einstellungen</h2>
+	<div id="classification_view_close_button" class="close_button" onclick="toggle_settings_panel()">
+		<img src="img/x-square.svg" width="100%" height="100%" />
+	</div>
+	<div id="classification_view_data" class="view_content">
+		<label for="classification_selector">Klassifikationsalgorithmus:</label><br />
+		<!-- FIXED: name="classification" instead of duplicate name="area" -->
+		<select name="classification" id="classification_selector" class="selector" oninput="classification_selected(event)">
+			<option value="equidistant">abstandsgetreu</option>
+			<option value="stddeviation">Standardabweichung</option>
+			<option value="arithmetic_progression">arithmetische Reihe</option>
+			<option value="quantile" selected>Quantile</option>
+			<option value="jenks">Brüche nach Jenks</option>
+			<option value="own">eigene Klassifikation</option>
+		</select>
+		<div id="classification_message"></div>
+		<br />
+		<label for="class_number_selector">Klassenzahl:</label><br />
+		<!-- FIXED: name="class_number" instead of duplicate name="area" -->
+		<select name="class_number" id="class_number_selector" class="selector" oninput="class_number_selected(event, true)">
+			<option value="automatic" selected>automatische Wahl</option>
+			<option value="1">1</option>
+			<option value="2">2</option>
+			<option value="3">3</option>
+			<option value="4">4</option>
+			<option value="5">5</option>
+			<option value="6">6</option>
+			<option value="7">7</option>
+			<option value="8">8</option>
+			<option value="9">9</option>
+			<option value="10">10</option>
+		</select>
+		<div id="class_number_negative_section">
+			<label for="class_number_selector_negative">Klassenzahl für negative Zahlen:</label><br />
+			<!-- FIXED: name="class_number_negative" instead of duplicate name="area" -->
+			<select name="class_number_negative" id="class_number_selector_negative" class="selector" oninput="class_number_selected(event, false)">
+				<option value="automatic" selected>automatische Wahl</option>
+				<option value="1">1</option>
+				<option value="2">2</option>
+				<option value="3">3</option>
+				<option value="4">4</option>
+				<option value="5">5</option>
+				<option value="6">6</option>
+				<option value="7">7</option>
+				<option value="8">8</option>
+				<option value="9">9</option>
+				<option value="10">10</option>
+			</select>
 		</div>
-	  </div>
-	
-  
-
-		<!-- dataset loader dialog -->
-		<div id="datasetloader_dialog" class="viewcomponent">
-			<h2 class="title_bar" draggable="true" ondragstart="move_start(event, 'datasetloader_dialog')" ondragend="move_stop(event, 'datasetloader_dialog')">
-				Datensatz einladen
-			</h2>
-			<div id="datasetloader_close_button" class="close_button" onclick="close_view(event, 'datasetloader_dialog')">
-				<img src="img/x-square.svg" width="100%" height="100%" />
-			</div>
-			<div id="datasetloader_content">
-				<p>Bitte laden sie den gewünschten Datensatz</p>
-				<label for="dataset_selector">Datensatz:</label>
-				<select name="dataset" id="dataset_selector" oninput="dataset_selected(event)">
-					<option value="">-- Bitte wählen sie einen Datensatz aus --</option>
-				</select>
-				<br />
-				<label for="category_selector">Datenkategorie:</label>
-				<select name="category" id="category_selector" oninput="category_selected(event)" disabled>
-					<option value="">-- Bitte wählen sie eine Datenkategorie aus --</option>
-				</select>
-				<br />
-				<button name="load_dataset" id="load_dataset_button" onclick="load_dataset(event)" disabled>Daten einladen</button>
-			</div>
-		</div>
-
-		<!-- classification view -->
-<!-- CHANGED: added aria-hidden="true" so panel starts hidden for screen readers;
-		     the panel is now controlled via CSS transform/visibility, not display:none -->
-			 <div id="classification_view" class="viewcomponent" aria-hidden="true">		
-							<!-- CHANGED: removed draggable="true", ondragstart, ondragend
-			     because the panel is now a fixed slide-in; dragging is not needed -->
-			<h2 class="title_bar">
-				Einstellungen
-			</h2>
-			<!-- CHANGED: renamed id from "table_view_close_button" (was a duplicate of the
-			     table_view's close button) to "classification_view_close_button";
-			     onclick now calls toggle_settings_panel() so it uses the same
-			     slide-out animation instead of abruptly hiding via display:none -->
-				 <div id="classification_view_close_button" class="close_button" onclick="toggle_settings_panel()">
-					<img src="img/x-square.svg" width="100%" height="100%" />
-				</div>
-	
-			<div id="classification_view_data" class="view_content">
-				<label for="classification_selector">Klassifikationsalgorithmus:</label><br />
-				<select name="area" id="classification_selector" class="selector" oninput="classification_selected(event)">
-					<option value="equidistant">abstandsgetreu</option>
-					<option value="stddeviation">Standardabweichung</option>
-					<option value="arithmetic_progression">arithmetische Reihe</option>
-					<!-- <option value="geometric_progression">geometrische Reihe</option> -->
-					<option value="quantile" selected>Quantile</option>
-					<option value="jenks">Brüche nach Jenks</option>
-					<option value="own">eigene Klassifikation</option>
-				</select>
-				<div id="classification_message"></div>
-				<br />
-				<label for="class_number_selector">Klassenzahl:</label><br />
-				<select name="area" id="class_number_selector" class="selector" oninput="class_number_selected(event, true)">
-					<option value="automatic" selected>automatische Wahl</option>
-					<option value="1">1</option>
-					<option value="2">2</option>
-					<option value="3">3</option>
-					<option value="4">4</option>
-					<option value="5">5</option>
-					<option value="6">6</option>
-					<option value="7">7</option>
-					<option value="8">8</option>
-					<option value="9">9</option>
-					<option value="10">10</option>
-				</select>
-				<div id="class_number_negative_section">
-					<label for="class_number_selector_negative">Klassenzahl für negative Zahlen:</label><br />
-					<select name="area" id="class_number_selector_negative" class="selector" oninput="class_number_selected(event, false)">
-						<option value="automatic" selected>automatische Wahl</option>
-						<option value="1">1</option>
-						<option value="2">2</option>
-						<option value="3">3</option>
-						<option value="4">4</option>
-						<option value="5">5</option>
-						<option value="6">6</option>
-						<option value="7">7</option>
-						<option value="8">8</option>
-						<option value="9">9</option>
-						<option value="10">10</option>
-					</select>
-				</div>
+		<hr />
+		<div id="classborder_selection_section">
+			Eigene Klassifikation:<br />
+			<label for="classborder1_selector" class="classborder_label">Klassengrenze 1:</label>
+			<input name="classborder1" id="classborder1_selector" class="selector" type="number" value="1" min="0" oninput="classborder_changed(event)" /><br />
+			<label for="classborder2_selector" class="classborder_label">Klassengrenze 2:</label>
+			<input name="classborder2" id="classborder2_selector" class="selector" type="number" value="2" min="0" oninput="classborder_changed(event)" /><br />
+			<label for="classborder3_selector" class="classborder_label">Klassengrenze 3:</label>
+			<input name="classborder3" id="classborder3_selector" class="selector" type="number" value="3" min="0" oninput="classborder_changed(event)" /><br />
+			<label for="classborder4_selector" class="classborder_label">Klassengrenze 4:</label>
+			<input name="classborder4" id="classborder4_selector" class="selector" type="number" value="4" min="0" oninput="classborder_changed(event)" /><br />
+			<label for="classborder5_selector" class="classborder_label">Klassengrenze 5:</label>
+			<input name="classborder5" id="classborder5_selector" class="selector" type="number" value="5" min="0" oninput="classborder_changed(event)" /><br />
+			<label for="classborder6_selector" class="classborder_label">Klassengrenze 6:</label>
+			<input name="classborder6" id="classborder6_selector" class="selector" type="number" value="6" min="0" oninput="classborder_changed(event)" /><br />
+			<label for="classborder7_selector" class="classborder_label">Klassengrenze 7:</label>
+			<input name="classborder7" id="classborder7_selector" class="selector" type="number" value="7" min="0" oninput="classborder_changed(event)" /><br />
+			<label for="classborder8_selector" class="classborder_label">Klassengrenze 8:</label>
+			<input name="classborder8" id="classborder8_selector" class="selector" type="number" value="8" min="0" oninput="classborder_changed(event)" /><br />
+			<label for="classborder9_selector" class="classborder_label">Klassengrenze 9:</label>
+			<input name="classborder9" id="classborder9_selector" class="selector" type="number" value="9" min="0" oninput="classborder_changed(event)" /><br />
+			<label for="classborder10_selector" class="classborder_label">Klassengrenze 10:</label>
+			<input name="classborder10" id="classborder10_selector" class="selector" type="number" value="10" min="0" oninput="classborder_changed(event)" /><br />
+			<div id="classborder_negative_section">
 				<hr />
-				<div id="classborder_selection_section">
-					Eigene Klassifikation:<br />
-					<label for="classborder1_selector" class="classborder_label">Klassengrenze 1:</label>
-					<input name="classborder1" id="classborder1_selector" class="selector" type="number" value="1" min="0" oninput="classborder_changed(event)" />
-					<br />
-					<label for="classborder2_selector" class="classborder_label">Klassengrenze 2:</label>
-					<input name="classborder2" id="classborder2_selector" class="selector" type="number" value="2" min="0" oninput="classborder_changed(event)" />
-					<br />
-					<label for="classborder3_selector" class="classborder_label">Klassengrenze 3:</label>
-					<input name="classborder3" id="classborder3_selector" class="selector" type="number" value="3" min="0" oninput="classborder_changed(event)" />
-					<br />
-					<label for="classborder4_selector" class="classborder_label">Klassengrenze 4:</label>
-					<input name="classborder4" id="classborder4_selector" class="selector" type="number" value="4" min="0" oninput="classborder_changed(event)" />
-					<br />
-					<label for="classborder5_selector" class="classborder_label">Klassengrenze 5:</label>
-					<input name="classborder5" id="classborder5_selector" class="selector" type="number" value="5" min="0" oninput="classborder_changed(event)" />
-					<br />
-					<label for="classborder6_selector" class="classborder_label">Klassengrenze 6:</label>
-					<input name="classborder6" id="classborder6_selector" class="selector" type="number" value="6" min="0" oninput="classborder_changed(event)" />
-					<br />
-					<label for="classborder7_selector" class="classborder_label">Klassengrenze 7:</label>
-					<input name="classborder7" id="classborder7_selector" class="selector" type="number" value="7" min="0" oninput="classborder_changed(event)" />
-					<br />
-					<label for="classborder8_selector" class="classborder_label">Klassengrenze 8:</label>
-					<input name="classborder8" id="classborder8_selector" class="selector" type="number" value="8" min="0" oninput="classborder_changed(event)" />
-					<br />
-					<label for="classborder9_selector" class="classborder_label">Klassengrenze 9:</label>
-					<input name="classborder9" id="classborder9_selector" class="selector" type="number" value="9" min="0" oninput="classborder_changed(event)" />
-					<br />
-					<label for="classborder10_selector" class="classborder_label">Klassengrenze 10:</label>
-					<input name="classborder10" id="classborder10_selector" class="selector" type="number" value="10" min="0" oninput="classborder_changed(event)" />
-					<br />
-					<div id="classborder_negative_section">
-						<hr />
-						Eigene Klassifikation für negative Werte:<br />
-						<label for="classborder1_negative_selector" class="classborder_label">Klassengrenze 1:</label>
-						<input name="classborder1_negative" id="classborder1_negative_selector" class="selector" type="number" value="-1" max="0" oninput="classborder_changed(event)" />
-						<br />
-						<label for="classborder2_negative_selector" class="classborder_label">Klassengrenze 2:</label>
-						<input name="classborder2_negative" id="classborder2_negative_selector" class="selector" type="number" value="-2" max="0" oninput="classborder_changed(event)" />
-						<br />
-						<label for="classborder3_negative_selector" class="classborder_label">Klassengrenze 3:</label>
-						<input name="classborder3_negative" id="classborder3_negative_selector" class="selector" type="number" value="-3" max="0" oninput="classborder_changed(event)" />
-						<br />
-						<label for="classborder4_negative_selector" class="classborder_label">Klassengrenze 4:</label>
-						<input name="classborder4_negative" id="classborder4_negative_selector" class="selector" type="number" value="-4" max="0" oninput="classborder_changed(event)" />
-						<br />
-						<label for="classborder5_negative_selector" class="classborder_label">Klassengrenze 5:</label>
-						<input name="classborder5_negative" id="classborder5_negative_selector" class="selector" type="number" value="-5" max="0" oninput="classborder_changed(event)" />
-						<br />
-						<label for="classborder6_negative_selector" class="classborder_label">Klassengrenze 6:</label>
-						<input name="classborder6_negative" id="classborder6_negative_selector" class="selector" type="number" value="-6" max="0" oninput="classborder_changed(event)" />
-						<br />
-						<label for="classborder7_negative_selector" class="classborder_label">Klassengrenze 7:</label>
-						<input name="classborder7_negative" id="classborder7_negative_selector" class="selector" type="number" value="-7" max="0" oninput="classborder_changed(event)" />
-						<br />
-						<label for="classborder8_negative_selector" class="classborder_label">Klassengrenze 8:</label>
-						<input name="classborder8_negative" id="classborder8_negative_selector" class="selector" type="number" value="-8" max="0" oninput="classborder_changed(event)" />
-						<br />
-						<label for="classborder9_negative_selector" class="classborder_label">Klassengrenze 9:</label>
-						<input name="classborder9_negative" id="classborder9_negative_selector" class="selector" type="number" value="-9" max="0" oninput="classborder_changed(event)" />
-						<br />
-						<label for="classborder10_negative_selector" class="classborder_label">Klassengrenze 10:</label>
-						<input name="classborder10_negative" id="classborder10_negative_selector" class="selector" type="number" value="-10" max="0" oninput="classborder_changed(event)" />
-						<br />
-					</div>
-					<hr />
-				</div>
-				<!-- NEW: Stable classification toggle across all years -->
-<div class="classification_overall_toggle">
-	<input
-	  type="checkbox"
-	  id="classification_overall_selector"
-	  class="selector"
-	  oninput="classification_overall_changed(event)" />
-	<label for="classification_overall_selector">Klassifikation gesamt</label>
-  </div>
-  <hr />
-				Farben:
-				<div id="colors_positive_selections"></div>
-				<div id="colors_negative_section">
-					<hr />
-					Farben für die negative Skala:
-					<div id="colors_negative_selections"></div>
-				</div>
+				Eigene Klassifikation für negative Werte:<br />
+				<label for="classborder1_negative_selector" class="classborder_label">Klassengrenze 1:</label>
+				<input name="classborder1_negative" id="classborder1_negative_selector" class="selector" type="number" value="-1" max="0" oninput="classborder_changed(event)" /><br />
+				<label for="classborder2_negative_selector" class="classborder_label">Klassengrenze 2:</label>
+				<input name="classborder2_negative" id="classborder2_negative_selector" class="selector" type="number" value="-2" max="0" oninput="classborder_changed(event)" /><br />
+				<label for="classborder3_negative_selector" class="classborder_label">Klassengrenze 3:</label>
+				<input name="classborder3_negative" id="classborder3_negative_selector" class="selector" type="number" value="-3" max="0" oninput="classborder_changed(event)" /><br />
+				<label for="classborder4_negative_selector" class="classborder_label">Klassengrenze 4:</label>
+				<input name="classborder4_negative" id="classborder4_negative_selector" class="selector" type="number" value="-4" max="0" oninput="classborder_changed(event)" /><br />
+				<label for="classborder5_negative_selector" class="classborder_label">Klassengrenze 5:</label>
+				<input name="classborder5_negative" id="classborder5_negative_selector" class="selector" type="number" value="-5" max="0" oninput="classborder_changed(event)" /><br />
+				<label for="classborder6_negative_selector" class="classborder_label">Klassengrenze 6:</label>
+				<input name="classborder6_negative" id="classborder6_negative_selector" class="selector" type="number" value="-6" max="0" oninput="classborder_changed(event)" /><br />
+				<label for="classborder7_negative_selector" class="classborder_label">Klassengrenze 7:</label>
+				<input name="classborder7_negative" id="classborder7_negative_selector" class="selector" type="number" value="-7" max="0" oninput="classborder_changed(event)" /><br />
+				<label for="classborder8_negative_selector" class="classborder_label">Klassengrenze 8:</label>
+				<input name="classborder8_negative" id="classborder8_negative_selector" class="selector" type="number" value="-8" max="0" oninput="classborder_changed(event)" /><br />
+				<label for="classborder9_negative_selector" class="classborder_label">Klassengrenze 9:</label>
+				<input name="classborder9_negative" id="classborder9_negative_selector" class="selector" type="number" value="-9" max="0" oninput="classborder_changed(event)" /><br />
+				<label for="classborder10_negative_selector" class="classborder_label">Klassengrenze 10:</label>
+				<input name="classborder10_negative" id="classborder10_negative_selector" class="selector" type="number" value="-10" max="0" oninput="classborder_changed(event)" /><br />
 			</div>
+			<hr />
 		</div>
-
-		<!-- statistics view -->
-		<div id="statistics_view" class="viewcomponent">
-			<h2 class="title_bar" draggable="true" ondragstart="move_start(event, 'statistics_view')" ondragend="move_stop(event, 'statistics_view')">
-				Statistiken
-			</h2>
-			<div id="statistics_view_close_button" class="close_button" onclick="close_view(event, 'statistics_view')">
-				<img src="img/x-square.svg" width="100%" height="100%" />
-			</div>
-			<div id="statistics_view_data" class="view_content">
-			</div>
+		<div class="classification_overall_toggle">
+			<input type="checkbox" id="classification_overall_selector" class="selector" oninput="classification_overall_changed(event)" />
+			<label for="classification_overall_selector">Klassifikation gesamt</label>
 		</div>
-
-		<!-- table view -->
-		<div id="table_view" class="viewcomponent">
-			<h2 class="title_bar" draggable="true" ondragstart="move_start(event, 'table_view')" ondragend="move_stop(event, 'table_view')">
-				tabellarische Ansicht
-			</h2>
-			<div id="table_view_close_button" class="close_button" onclick="close_view(event, 'table_view')">
-				<img src="img/x-square.svg" width="100%" height="100%" />
-			</div>
-			<div id="table_view_data" class="view_content">
-			</div>
+		<hr />
+		Farben:
+		<div id="colors_positive_selections"></div>
+		<div id="colors_negative_section">
+			<hr />
+			Farben für die negative Skala:
+			<div id="colors_negative_selections"></div>
 		</div>
+	</div>
+</div>
 
-		<!-- bar chart view -->
-		<div id="barchart_view" class="viewcomponent">
-			<h2 class="title_bar" draggable="true" ondragstart="move_start(event, 'barchart_view')" ondragend="move_stop(event, 'barchart_view')">
-				Balkendiagramm
-			</h2>
-			<div id="barchart_view_close_button" class="close_button" onclick="close_view(event, 'barchart_view')">
-				<img src="img/x-square.svg" width="100%" height="100%" />
-			</div>
-			<div id="barchart_view_data" class="view_content">
-			</div>
-		</div>
+<!-- Statistics view -->
+<div id="statistics_view" class="viewcomponent">
+	<h2 class="title_bar" draggable="true" ondragstart="move_start(event, 'statistics_view')" ondragend="move_stop(event, 'statistics_view')">
+		Statistiken
+	</h2>
+	<div id="statistics_view_close_button" class="close_button" onclick="close_view('statistics_view')">
+		<img src="img/x-square.svg" width="100%" height="100%" />
+	</div>
+	<div id="statistics_view_data" class="view_content"></div>
+</div>
 
-		<!-- scripting load -->
-		<!-- after the map-div, because otherwise it may go wrong -->
-		<script type="text/javascript" defer>
-			init();
-		</script>
+<!-- Table view -->
+<div id="table_view" class="viewcomponent">
+	<h2 class="title_bar" draggable="true" ondragstart="move_start(event, 'table_view')" ondragend="move_stop(event, 'table_view')">
+		tabellarische Ansicht
+	</h2>
+	<div id="table_view_close_button" class="close_button" onclick="close_view('table_view')">
+		<img src="img/x-square.svg" width="100%" height="100%" />
+	</div>
+	<div id="table_view_data" class="view_content"></div>
+</div>
+
+<!-- Bar chart view -->
+<div id="barchart_view" class="viewcomponent">
+	<h2 class="title_bar" draggable="true" ondragstart="move_start(event, 'barchart_view')" ondragend="move_stop(event, 'barchart_view')">
+		Balkendiagramm
+	</h2>
+	<div id="barchart_view_close_button" class="close_button" onclick="close_view('barchart_view')">
+		<img src="img/x-square.svg" width="100%" height="100%" />
+	</div>
+	<div id="barchart_view_data" class="view_content"></div>
+</div>
+
+<script type="text/javascript" defer>
+	init();
+</script>
 
 	</body>
 </html>

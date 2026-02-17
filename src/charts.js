@@ -1,166 +1,90 @@
-// File: charts.js
-// Function to modify: refresh_barchart_view()
+/* ==========================================================================
+   charts.js — bar chart rendering
+   FIX: removed inline <style> block (styles now in main.css)
+   FIX: simplified saldi label ternary (all three branches were identical)
+   FIX: guarded against -Infinity/0 maxValue
+   ========================================================================== */
 
-charts.js
-javascript
-
-// File: charts.js
-// Function to modify: refresh_barchart_view()
-
-function refresh_barchart_view()
-{
-	console.log("refresh_barchart_view");
-	console.log("app.data.processed:", app.data.processed);
-	let barchart_view_data = document.getElementById("barchart_view_data");
-	let dataview = '';
-	if (!app.data.processed)
-	{
-		barchart_view_data.innerHTML = "Für die gewählte Selektion sind keine Daten verfügbar!";
-		return;
-	}
-	
-	// Sort data by migration values in descending order
-    let sortedData = [...app.data.processed].sort((a, b) => {
-        // Handle null or undefined values
-        if (a.migrations === null || a.migrations === undefined) return 1;
-        if (b.migrations === null || b.migrations === undefined) return -1;
-        
-        // Ensure numerical comparison (in case migrations are stored as strings)
-        const aVal = typeof a.migrations === 'string' ? parseFloat(a.migrations) : a.migrations;
-        const bVal = typeof b.migrations === 'string' ? parseFloat(b.migrations) : b.migrations;
-        
-        // Sort by actual values in descending order
-        return bVal - aVal;
-    });
-
-	// Removed the limitation to top 20 entries
-	
-	// Calculate max value for scaling - properly handle null/undefined values
-	// CHANGED: guard against -Infinity/0 and non-finite values
-	let maxValue = Math.max(
-        ...sortedData
-            .filter(item => item.migrations !== null && item.migrations !== undefined)
-            .map(item => Math.abs(Number(item.migrations)))
-    );
-    if (!Number.isFinite(maxValue) || maxValue <= 0) {
-        maxValue = 1;
-    }
-    
-    console.log("Max value for scaling:", maxValue);
-	
-    // Generate bar chart HTML with responsive design and scrollbar
-    dataview = `
-    <div class="barchart-container">
-        <h3>${app.selection.theme === 'von' ? 'Wanderungen von' : 
-              app.selection.theme === 'nach' ? 'Wanderungen nach' : 
-              'Wanderungssaldi für'}
-             ${app.data.featurename_mapping[app.selection.area_id] || ''}</h3>
-        <div class="barchart-wrapper">`;
-	
-	// Add bars
-	sortedData.forEach(item => {
-		const labelText = app.selection.theme === 'von' ? item.toname : 
-						 app.selection.theme === 'nach' ? item.fromname :
-						 (item.migrations >= 0) ? item.fromname : item.fromname;
-		
-		// Check if migrations value is null or undefined
-		if (item.migrations === null || item.migrations === undefined) {
-			// Handle NA values with grey color and "NA" text
-			dataview += `
-				<div class="barchart-row">
-					<div class="barchart-label">${labelText}</div>
-					<div class="barchart-bar-container">
-						<div class="barchart-bar" style="width: 0; background-color: grey;">
-							<span class="barchart-value">NA</span>
-						</div>
-					</div>
-				</div>`;
-		} else {
-			// CHANGED: robust width and localized/NA value
-            const val = Number(item.migrations);
-            const abs = Math.abs(val);
-            const barWidth = (abs === 0) ? 0 : Math.max(5, (abs / maxValue) * 100);
-			const barColor = item.color || (val >= 0 ? '#356184' : '#E45A47');
-			const barDirection = val >= 0 ? 'right' : 'left';
-            const decimals = app.selection.data_interpretation === 'migration_rate' ? 3 : 0;
-            const labelValue = format_value(val, decimals);
-			dataview += `
-				<div class="barchart-row">
-					<div class="barchart-label">${labelText}</div>
-					<div class="barchart-bar-container">
-						<div class="barchart-bar ${barDirection}" 
-							 style="width: ${barWidth}%; background-color: ${barColor};">
-							<span class="barchart-value">${labelValue}</span>
-						</div>
-					</div>
-				</div>`;
-		}
-	});
-	
-	dataview += `
-		</div>
-	</div>
-	<style>
-		.barchart-container { 
-            width: 100%; 
-            resize: both; /* Enable manual resizing */
-            overflow: auto;
-            min-height: 100px;
-            min-width: 300px;
-            max-width: 100%; /* Allow full width */
-            max-height: 500px; /* Add max-height for scrollbar */
-        }
-		.barchart-wrapper { 
-            margin-top: 20px; 
-            width: 100%;
-            overflow-y: auto; /* Add vertical scrollbar when needed */
-            max-height: 450px; /* Set height to allow scrolling */
-        }
-		.barchart-row { 
-            display: flex; 
-            margin-bottom: 8px; 
-            align-items: center; 
-            width: 100%;
-        }
-		.barchart-label { 
-            width: 150px; 
-            text-align: right; 
-            padding-right: 10px; 
-            white-space: nowrap; 
-            overflow: hidden; 
-            text-overflow: ellipsis; 
-            flex-shrink: 0; /* Prevent label from shrinking */
-        }
-		.barchart-bar-container { 
-            flex-grow: 1; 
-            background-color: #f0f0f0; 
-            position: relative; 
-            height: 24px;
-        }
-		.barchart-bar { 
-            height: 100%; 
-            position: relative; 
-            transition: width 0.3s ease-in-out; 
-        }
-		.barchart-bar.right { 
-            margin-left: 0; 
-        }
-		.barchart-bar.left { 
-            /* Fix the position of left-directed bars */
-            margin-left: auto; 
-            margin-right: 0;
-        }
-		.barchart-value { 
-            position: absolute; 
-            padding: 0 5px; 
-            font-size: 12px; 
-            line-height: 24px; 
-            color: black; /* Changed from white to black */
-            white-space: nowrap;
-        }
-		.barchart-bar.right .barchart-value { left: 5px; }
-		.barchart-bar.left .barchart-value { right: 5px; }
-	</style>`;
-	
-	barchart_view_data.innerHTML = dataview;
-}
+   function refresh_barchart_view()
+   {
+       let barchart_view_data = document.getElementById("barchart_view_data");
+       if (!app.data.processed)
+       {
+           barchart_view_data.innerHTML = "Für die gewählte Selektion sind keine Daten verfügbar!";
+           return;
+       }
+   
+       /* Sort data by migration values descending */
+       let sortedData = [...app.data.processed].sort((a, b) => {
+           if (a.migrations === null || a.migrations === undefined) return 1;
+           if (b.migrations === null || b.migrations === undefined) return -1;
+           const aVal = typeof a.migrations === 'string' ? parseFloat(a.migrations) : a.migrations;
+           const bVal = typeof b.migrations === 'string' ? parseFloat(b.migrations) : b.migrations;
+           return bVal - aVal;
+       });
+   
+       /* Calculate max value for scaling */
+       let maxValue = Math.max(
+           ...sortedData
+               .filter(item => item.migrations !== null && item.migrations !== undefined)
+               .map(item => Math.abs(Number(item.migrations)))
+       );
+       if (!Number.isFinite(maxValue) || maxValue <= 0) {
+           maxValue = 1;
+       }
+   
+       /* Build chart HTML — no inline <style>; styles are in main.css */
+       let dataview = `
+       <div class="barchart-container">
+           <h3>${app.selection.theme === 'von' ? 'Wanderungen von' :
+                 app.selection.theme === 'nach' ? 'Wanderungen nach' :
+                 'Wanderungssaldi für'}
+                ${app.data.featurename_mapping[app.selection.area_id] || ''}</h3>
+           <div class="barchart-wrapper">`;
+   
+       sortedData.forEach(item => {
+           /* FIX: simplified label — for 'von' use toname (destination),
+              otherwise always fromname (the other area) */
+           const labelText = (app.selection.theme === 'von') ? item.toname : item.fromname;
+   
+           if (item.migrations === null || item.migrations === undefined) {
+               /* NA values: grey with "NA" text */
+               dataview += `
+                   <div class="barchart-row">
+                       <div class="barchart-label">${labelText}</div>
+                       <div class="barchart-bar-container">
+                           <div class="barchart-bar" style="width: 0; background-color: grey;">
+                               <span class="barchart-value">NA</span>
+                           </div>
+                       </div>
+                   </div>`;
+           } else {
+               const val = Number(item.migrations);
+               const abs = Math.abs(val);
+               const barWidth = (abs === 0) ? 0 : Math.max(5, (abs / maxValue) * 100);
+               const barColor = item.color || (val >= 0 ? '#356184' : '#E45A47');
+               const barDirection = val >= 0 ? 'right' : 'left';
+               const decimals = app.selection.data_interpretation === 'migration_rate' ? 3 : 0;
+               const labelValue = format_value(val, decimals);
+               dataview += `
+                   <div class="barchart-row">
+                       <div class="barchart-label">${labelText}</div>
+                       <div class="barchart-bar-container">
+                           <div class="barchart-bar ${barDirection}"
+                                style="width: ${barWidth}%; background-color: ${barColor};">
+                               <span class="barchart-value">${labelValue}</span>
+                           </div>
+                       </div>
+                   </div>`;
+           }
+       });
+   
+       dataview += `
+           </div>
+       </div>`;
+   
+       /* FIX: no <style> block appended here — all barchart styles are in main.css */
+   
+       barchart_view_data.innerHTML = dataview;
+   }
+   

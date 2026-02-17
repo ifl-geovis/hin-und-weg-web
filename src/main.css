@@ -1,102 +1,118 @@
-html, body
-{
+/* ==========================================================================
+   main.css — consolidated, deduplicated, with bug fixes noted inline
+   ========================================================================== */
+
+/* --- Reset / Base --------------------------------------------------------- */
+html, body {
 	height: 100%;
-	margin: 0px;
+	margin: 0;
 	font-family: sans-serif;
+	font-size: 100%;
+	line-height: 1.4;
 }
 
-body
-{
-	font-size: 100%; /* 16px base for readability */ line-height: 1.4; 
-}
-
-
-  /* Inputs: readable, no iOS zoom; accessible tap targets */
 input, select, button, textarea {
 	font-size: 1rem;
 	line-height: 1.2;
-  }
-  button,
-  input[type="button"],
-  input[type="submit"],
-  input[type="checkbox"],
-  input[type="radio"],
-  select {
-	min-height: 44px;
-  }
-  
-  
-div#leafletmap
-{
-	width: 100%;
-	height: 100%;
-	margin: 0px;
 }
 
-div#header
-{
-	display: block;
+button,
+input[type="button"],
+input[type="submit"],
+input[type="checkbox"],
+input[type="radio"],
+select {
+	min-height: 44px;
+}
+
+/* --- Map ------------------------------------------------------------------ */
+div#leafletmap {
+	width: 100%;
+	height: 100%;
+	margin: 0;
+}
+
+/* --- Header --------------------------------------------------------------- */
+/* CONSOLIDATED: was defined twice; now one clean rule */
+div#header {
+	display: inline-block;
 	position: fixed;
 	top: 10px;
-	left: 50px;
-	max-width: 80%;
-	border-style: solid;
-	border-color: lightgray;
-	border-width: 1px;
+	left: 10px;
+	width: fit-content;
+	max-width: 90vw;
+	border: 1px solid lightgray;
 	border-radius: 10px;
-	padding-top: 5px;
-	padding-left: 5px;
-	padding-right: 5px;
-	padding-bottom: 0px;
-	margin: 0px;
+	padding: 5px 5px 0 5px;
+	margin: 0;
 	background-color: #edededbd;
 	z-index: 1000;
 }
 
-span#versionsub
-{
+/* CONSOLIDATED: three contradicting rules merged; final intent: normal weight */
+div#header h1 {
+	display: inline;
+	position: relative;
+	bottom: 6px;
+	font-weight: 400;
+	letter-spacing: normal;
+	font-stretch: normal;
+	font-family: inherit;
+}
+
+span#versionsub {
 	font-size: xx-small;
 	font-weight: lighter;
 }
 
-h1
-{
-	display: inline;
-	position: relative;
-	bottom: 6px;
-}
-
-h3
-{
-	margin: 0px;
+h3 {
+	margin: 0;
 	position: relative;
 	top: -5px;
 	font-weight: normal;
 }
 
-div#feature_info_popup
-{
+/* --- Year badge ----------------------------------------------------------- */
+#current_year_badge.year-badge {
+	position: fixed;
+	left: 60px;
+	top: 90px;               /* FIXED: was "top: 90;" — missing px unit */
+	z-index: 1000;
+	display: inline-block;
+	padding: 8px 14px;
+	background: #ffffffcc;
+	border: 1px solid lightgray;
+	border-radius: 12px;
+	font-weight: 700;
+	font-size: 1.35rem;
+	line-height: 1.1;
+}
+/* REMOVED: dead rule "div#header .year-badge" — badge is outside #header, never matched */
+
+/* --- Zoom control --------------------------------------------------------- */
+#leafletmap .leaflet-top.leaflet-left {
+	margin-top: 90px;
+	margin-left: 10px;
+}
+
+/* --- Feature info popup --------------------------------------------------- */
+div#feature_info_popup {
 	display: none;
 	position: fixed;
 	top: 200px;
 	left: 200px;
-	border-style: solid;
-	border-color: lightgray;
-	border-width: 1px;
+	border: 1px solid lightgray;
 	border-radius: 10px;
 	background-color: #edededbd;
 	padding: 10px;
 	z-index: 1000;
 }
 
-div.map_info_label
-{
+div.map_info_label {
 	display: block;
 	top: -20px;
 	left: -35px;
-	border-style: solid;
-	border-color: lightgray;
-	border-width: 1px;
+	border: 1px solid lightgray;
 	border-radius: 10px;
 	background-color: #edededbd;
 	padding: 10px;
@@ -104,544 +120,69 @@ div.map_info_label
 	height: auto;
 }
 
-div#datasetloader_dialog { /* CHANGED: hide by default to skip selection window on startup */ 
-	display: none; 
-	min-width: 500px; 
+/* --- Dataset loader ------------------------------------------------------- */
+div#datasetloader_dialog {
+	display: none;
+	min-width: 500px;
 }
 
-div#datasetloader_content
-{
+div#datasetloader_content {
 	padding: 5px;
 }
-
-div#datasetloader_content p
-{
-	margin-top: 0px;
+div#datasetloader_content p {
+	margin-top: 0;
 	margin-bottom: 3px;
 }
-
-div#datasetloader_content label
-{
+div#datasetloader_content label {
 	display: inline-block;
 	min-width: 50px;
 	margin-bottom: 10px;
 }
-
-div#datasetloader_content select
-{
+div#datasetloader_content select {
 	position: absolute;
 	left: 9em;
 	width: 25em;
 }
-
-div#datasetloader_close_button
-{
+div#datasetloader_close_button {
 	display: none;
 }
 
-input#area_inside_selector
-{
-	margin-left: 0px;
-}
-
+/* --- Tables (table_view, statistics_view) --------------------------------- */
 div#table_view table,
-div#statistics_view table
-{
+div#statistics_view table {
 	border-collapse: collapse;
 }
-
 div#table_view tr.header,
-div#statistics_view th
-{
+div#statistics_view th {
 	background-color: #00000055;
 }
-
 div#table_view tr.odd,
-div#statistics_view tr.odd
-{
+div#statistics_view tr.odd {
 	background-color: #edededbd;
 }
-
 div#table_view tr.even,
-div#statistics_view tr.even
-{
+div#statistics_view tr.even {
 	background-color: #00000033;
 }
-
 div#table_view td.number,
-div#statistics_view td.number
-{
+div#statistics_view td.number {
 	text-align: right;
 }
-
 div#table_view td,
 div#table_view th,
 div#statistics_view td,
-div#statistics_view th
-{
+div#statistics_view th {
 	border: 1px solid;
 }
-
-div.action_button
-{
-	display: block;
-	position: fixed;
-	right: -1px;
-	width: 40px;
-	height: 40px;
-	border-style: solid;
-	border-color: lightgray;
-	border-width: 1px;
-	border-top-left-radius: 5px;
-	border-bottom-left-radius: 5px;
-	padding: 0px;
-	margin: 0px;
-	background-color: #edededbd;
-	z-index: 1000;
-}
-
-div#dataset_load_button
-{
-	top: 40px;
-}
-
-div#classification_button
-{
-	top: 90px;
-}
-
-div#statistics_button
-{
-	top: 150px;
-}
-
-div#table_button
-{
-	top: 200px;
-}
-
-div#barchart_button
-{
-	top: 250px;
-}
-
-div#legend_view
-{
-	display: none;
-	position: fixed;
-	right: 50px;
-	bottom: 30px;
-	min-width: 100px;
-	min-height: 0;                  /* CHANGED: allow panel to shrink to content when collapsed */
-	background-color: #edededbd;
-	border: 1px solid lightgray;
-	border-radius: 10px;
-	padding: 0;                     /* CHANGED: removed — title bar handles all internal spacing */
-	overflow: hidden;
-	z-index: 1000;
-}
-
-
-div.viewcomponent
-{
-	display: none;
-	position: fixed;
-	top: 100px;
-	left: 200px;
-	margin-left: 15%;
-	margin-top: 0px;
-	min-width: 300px;
-	min-height: 40px;
-	background-color: rgb(234, 234, 234);
-	border-style: solid;
-	border-width: 3px;
-	padding: 0px;
-	z-index: 1000;
-}
-
-div#legend_content
-{
-	margin-left: 0px;
-}
-
-
-
-div.view_content
-{
-	margin: 10px;
-	max-height: 700px;
-	max-width: 1000px;
-	overflow: auto;
-}
-
-div.close_button
-{
-	display: block;
+div#table_heading_arrow {
 	position: absolute;
-	right: 0px;
-	top: 0px;
-	width: 25px;
-	height: 25px;
+	right: 0;
 }
-
-h2.title_bar
-{
-	margin-left: 0px;
-	margin-top: 0px;
-	margin-right: 0px;
-	margin-bottom: 5px;
-	background-color: #00000066;
-	padding-left: 0px;
-	padding-right: 0px;
-	padding-top: 3px;
-	padding-bottom: 3px;
-	width: 100%;
-	height: 20px;
-	text-align: center;
-	font-size: larger;
-	font-weight: bold;
-}
-
-div#legend
-{
-	display: none;
-}
-
-div#years_selection
-{
-	display: none;
-}
-
-option.year_option
-{
-	padding-left: 5px;
-	padding-right: 15px;
-}
-
-div#credits
-{
-	display: block;
-	position: fixed;
-	left: -1px;
-	bottom: -1px;
-	border-style: solid;
-	border-color: lightgray;
-	border-width: 1px;
-	border-top-right-radius: 5px;
-	padding: 5px;
-	margin: 0px;
-	background-color: #edededbd;
-	z-index: 1000;
-}
-
-div#credits img
-{
-	float: left;
-	padding-right: 5px;
-}
-
-
-div#credits_text {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-}
-
-div#credits_text span {
-    margin-bottom: 5px;
-}
-
-div#credits_text a {
-    margin-right: 10px;
-}
-
-div.color_gradient
-{
-	display: inline-block;
-	width: 100px;
-	height: 1em;
-}
-
-div.gradient_color
-{
-	display: inline-block;
-	width: 1px;
-	height: 1em;
-}
-
-div#load_indicator
-{
-	display: none;
-	position: fixed;
-	top: 100px;
-	left: 100px;
-	margin-top: 15%;
-	margin-left: 30%;
-	background-color: #edededbd;
-	border-style: solid;
-	border-width: 3px;
-	padding: 5px;
-	z-index: 1000;
-}
-
-div#load_indicator_text
-{
-	text-align: center;
-}
-
-div#load_inidicator_blocks
-{
-	width: 100%;
-	margin-top: 10px;
-}
-
-div.load_inidicator_block
-{
-	float: left;
-	padding: 0px;
-	margin: 1px;
-	width: 20px;
-	height: 10px;
-	border-style: solid;
-	border-width: 1px;
-}
-
-fieldset#data_interpretation
-{
-	border-style: none;
-	border-width: 0px;
-	display: none;
-}
-
-label.classborder_label
-{
-	display: inline-block;
-	width: 9.5em;
-}
-
-div#table_heading_arrow
-{
-	position: absolute;
-	right: 0px;
-}
-
-div#table_view_data th
-{
+div#table_view_data th {
 	position: relative;
 }
 
-div#classification_message
-{
-	display: none;
-}
-@media (max-width: 600px) {
-    div#credits {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    div#credits img {
-        margin-bottom: 5px;
-    }
-
-    div#credits_text {
-        align-items: flex-start;
-    }
-
-    div#credits_text a {
-        margin-bottom: 5px;
-    }
-}
-div#credits {
-    display: flex;
-    align-items: flex-start;
-    position: fixed;
-    left: -1px;
-    bottom: -1px;
-    border-style: solid;
-    border-color: lightgray;
-    border-width: 1px;
-    border-top-right-radius: 5px;
-    padding: 5px;
-    margin: 0px;
-    background-color: #edededbd;
-    z-index: 1000;
-}
-
-div#credits img {
-    float: left;
-    padding-right: 5px;
-}
-
-div#credits_text {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-}
-
-div#text_with_links {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-}
-
-div#link_container {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    margin-left: 20px;
-}
-
-div#link_container a {
-    margin-bottom: 5px;
-}
-
-@media (max-width: 768px) { /* Compact header */ 
-	div#header { top: 8px; left: 8px; max-width: calc(100% - 16px); padding: 4px 6px; } 
-	h1 { font-size: 1.1rem; } 
-	h3 { font-size: 0.95rem; } 
-	span#versionsub { font-size: 0.6rem; }
-  
-/* Mobile toggle button (FAB-style) */
-/* main.css — ensure the menu toggle is visible on all screens (add this globally) */
-#mobile_menu_toggle {
-	position: fixed;
-	right: 12px;
-	bottom: 12px;
-	z-index: 1300; /* above the sheet and other UI */
-	background: #356184;
-	color: #fff;
-	border: none;
-	border-radius: 24px;
-	padding: 10px 14px;
-	font-size: 1rem;
-	min-height: 44px;
-	box-shadow: 0 2px 6px rgba(0,0,0,0.25);
-	cursor: pointer;
-  }
-/* Hide the right-side action buttons to save space on phones */
-div.action_button {
-    display: none;
-}
-/* Compact credits panel */
-div#credits {
-    font-size: 0.8rem;
-    padding: 4px;
-    opacity: 0.95;
-}
-div#credits img {
-    height: 24px;
-}
-div#text_with_links { 
-    gap: 8px; 
-    font-size: 0.85rem;
-}
-/* Legend and popups: smaller and kept off corners */
-div#legend_view {
-    right: 8px;
-    bottom: 70px; /* leave room for the mobile toggle button */
-    max-width: 65%;
-}
-div#feature_info_popup {
-    font-size: 0.9rem;
-    padding: 8px;
-}
-/* Dialogs and views become near-full-width */
-div.viewcomponent {
-    left: 8px;
-    right: 8px;
-    top: auto;
-    bottom: 8px;
-    width: auto;
-    max-width: calc(100% - 16px);
-    max-height: 70vh;
-    overflow: auto;
-    margin-left: 0;
-}
-h2.title_bar {
-    height: auto;
-    font-size: 1rem;
-    padding: 6px 0;
-}
-/* Make selectors readable and scannable */
-select.selector, input.selector, input.filter, select.filter, button.selector, fieldset#data_interpretation {
-    font-size: 1rem;
-    min-height: 44px;
-}
-#year_selector {
-    max-height: 35vh;
-    overflow-y: auto;
-}
-/* Load indicator centered and sized */
-div#load_indicator {
-    top: auto;
-    left: 50%;
-    bottom: 30%;
-    transform: translateX(-50%);
-    margin: 0;
-    width: 90%;
-}
-/* Color gradients compact */
-div.color_gradient { width: 80px; height: 0.8em; }
-div.gradient_color { height: 0.8em; }
-}
-
-  
-  #legend_view.collapsed {
-	min-height: 0;
-  }
-  
-  #legend_view.collapsed .legend_toggle {
-	transform: rotate(-90deg);
-  }
-  
-  /* Mobile touch target */
-  @media (max-width: 768px) {
-	#legend_view .legend_toggle {
-	  font-size: 1.1rem;
-	  padding: 8px;
-	}
-  }
-
-    /* CHANGED: toggle button is now borderless and transparent to match the
-     clean panel style; only the chevron icon itself is visible */
-	 #legend_view .legend_toggle {
-		position: static !important;
-		display: grid;
-		place-items: center;
-		width: 26px;
-		height: 26px;
-		padding: 0;
-		background: transparent;       /* CHANGED: no white box behind chevron */
-		border: none;                  /* CHANGED: removed border around button */
-		border-radius: 0;             /* CHANGED: no rounded box needed */
-		cursor: pointer;
-	  }
- /* Hide credits/logos only on small screens */
-@media (max-width: 768px) {
-	#credits,
-	#credits * {
-	  display: none !important;
-	  visibility: hidden !important;
-	}
-  }
-
-  /* Years header row with play/pause */
-.years_header {
-	display: flex;
-	align-items: center;
-	gap: 8px;
-	margin-bottom: 6px;
-  }
-  #year_play_toggle {
-	min-height: 32px;
-	min-width: 44px; /* touch target */
-	padding: 4px 10px;
-	cursor: pointer;
-  }
-
-
-  /* main.css — right-side action buttons: center content and positions for new FABs */
+/* --- Action buttons (CONSOLIDATED: was defined 4x) ----------------------- */
 div.action_button {
 	display: flex;
 	align-items: center;
@@ -650,111 +191,78 @@ div.action_button {
 	right: -1px;
 	width: 40px;
 	height: 40px;
-	border-style: solid;
-	border-color: lightgray;
-	border-width: 1px;
+	border: 1px solid lightgray;
 	border-top-left-radius: 5px;
 	border-bottom-left-radius: 5px;
 	padding: 0;
 	margin: 0;
 	background-color: #edededbd;
 	z-index: 1000;
-  }
-  
-  /* Inner buttons fill the container and show emoji/icons nicely */
-  div.action_button > button {
+}
+
+/* Inner <button> fills container — CONSOLIDATED: was defined 4x */
+div.action_button > button {
+	display: grid;
+	place-items: center;
 	width: 100%;
 	height: 100%;
+	padding: 0;
 	background: transparent;
 	border: none;
 	font-size: 20px;
 	line-height: 1;
 	cursor: pointer;
-  }
-
-  
-/* NEW: Ensure Flaticon UIcons scale and center nicely in the right-side action buttons */
-div.action_button i.fi {
-	font-size: 20px;     /* visually balanced within 40x40 */
-	line-height: 1;
-	pointer-events: none; /* keep click handling on the button/div */
-  }
-  
-  /* If the icon is inside a <button> (e.g., globe, map), allow a slightly larger size */
-  div.action_button > button i.fi {
-	font-size: 22px;
-  }
-  
-  /* Positions (stacked on the right) */
-  div#zoom_home_fab { top: 40px; }
-  div#classification_button { top: 90px; }
-  div#map_bg_fab { top: 140px; }
-  div#year_play_fab { top: 190px; }
-  
-  /* Make sure these action buttons stay visible on small screens */
-  @media (max-width: 768px) {
-	#zoom_home_fab,
-	#classification_button,
-	#map_bg_fab,
-	#year_play_fab {
-	  display: flex;
-	}
-  }
-  
-/* Position the burger button at the top of the stack */
-div#menu_toggle_button { top: 40px; }
-
-/* Keep settings below it */
-div#classification_button { top: 90px; }
-
-/* Ensure the old bottom-left mobile menu button is hidden everywhere */
-#mobile_menu_toggle {
-  display: none !important;
+	-webkit-appearance: none;
+	appearance: none;
 }
 
-/* Make sure inline SVG inside action buttons scales correctly */
-div.action_button > svg {
-  width: 70%;
-  height: 70%;
-}
-/* ADDED: grid centering prevents baseline/padding offsets that made icons look off-center */
-div.action_button > button {
-	display: grid;         /* ADDED */
-	place-items: center;   /* ADDED */
-	padding: 0;            /* ADDED: remove browser default button padding */
-  }
-  
-/* ADDED: use a shared .icon class for the images you placed inside the buttons */
+/* SVG / img inside action buttons */
 div.action_button img.icon {
-	width: 70%;            /* ADDED: consistent scale inside 40x40 buttons */
-	height: 70%;           /* ADDED */
-	object-fit: contain;   /* ADDED */
-	object-position: center;/* ADDED */
-	display: block;        /* ADDED: avoid baseline offset */
-	pointer-events: none;  /* ADDED: clicks go to the button */
-  }
-  
-  /* Optional: if you still have inline <svg> directly in the .action_button (e.g., the burger),
-	 this keeps it visually consistent */
-  div.action_button > svg {
 	width: 70%;
 	height: 70%;
-  }
-  
-  /* Optional: if you ever fall back to font icons (<i>), this keeps them centered and crisp */
-  div.action_button i {
+	display: block;
+	object-fit: contain;
+	object-position: center;
+	pointer-events: none;
+}
+div.action_button > svg {
+	width: 70%;
+	height: 70%;
+}
+div.action_button i {
 	font-size: 22px;
 	line-height: 1;
 	display: inline-block;
-  }
-/* Right-side sliding menu window sized to content */
+}
+
+/* Button positions — CONSOLIDATED: was defined 3x each */
+div#menu_toggle_button  { top:  40px; }
+div#classification_button { top:  90px; }
+div#zoom_home_fab       { top: 140px; }
+div#map_bg_fab          { top: 190px; }
+div#year_play_fab       { top: 240px; }
+
+/* Hide legacy buttons that no longer exist in the UI */
+div#dataset_load_button,
+div#statistics_button,
+div#table_button,
+div#barchart_button {
+	display: none !important;
+}
+
+/* CONSOLIDATED: was repeated 3x */
+#mobile_menu_toggle {
+	display: none !important;
+}
+
+/* --- Selection box (burger menu sidebar) ---------------------------------- */
 div#selection_box {
 	position: fixed;
-	top: 70px;             /* below header */
-	right: 50px;           /* gap from the edge / legend */
+	top: 70px;
+	right: 50px;
 	left: auto;
 	bottom: auto;
-	width: max-content;    /* size to content */
+	width: max-content;
 	max-width: min(520px, 46vw);
 	max-height: calc(100vh - 140px);
 	overflow-y: auto;
@@ -764,529 +272,595 @@ div#selection_box {
 	background-color: #edededbd;
 	box-shadow: 0 8px 18px rgba(0,0,0,0.25);
 	z-index: 1200;
-  
-	/* hidden off-screen and non-interactive by default */
 	transform: translateX(110%);
 	visibility: hidden;
 	pointer-events: none;
-  
 	will-change: transform;
 	transition: transform 0.25s ease;
-  }
-  div#selection_box.open {
+}
+div#selection_box.open {
 	transform: translateX(0);
 	visibility: visible;
 	pointer-events: auto;
-  }
-  
-  /* Keep the same behavior on mobile, just tighter margins */
-  @media (max-width: 768px) {
-	div#selection_box {
-	  top: 64px;
-	  right: 10px;
-	  left: auto;
-	  bottom: auto;
-	  max-width: min(92vw, 520px);
-	  max-height: calc(100vh - 120px);
-	  transform: translateX(110%);
-	  visibility: hidden;
-	  pointer-events: none;
-	}
-	div#selection_box.open {
-	  transform: translateX(0);
-	  visibility: visible;
-	  pointer-events: auto;
-	}
-  }
+}
 
-  
-  /* Keep the same behavior on mobile, just tighter margins */
-  @media (max-width: 768px) {
-	div#selection_box {
-	  top: 64px;
-	  right: 10px;
-	  left: auto;
-	  bottom: auto;
-	  max-width: min(92vw, 520px);
-	  max-height: calc(100vh - 120px);
-	  transform: translateX(110%);
-	}
-	div#selection_box.open {
-	  transform: translateX(0);
-	}
-  }
-  
-  
-  /* Hide the old bottom-left floating "Menü" button if it still exists */
-  #mobile_menu_toggle {
-	display: none !important;
-  }
-  
- /* Right-side action buttons positions (stacked) */
-div#menu_toggle_button { top: 40px; }
-div#classification_button { top: 90px; }
-div#zoom_home_fab { top: 140px; }
-div#map_bg_fab { top: 190px; }
-div#year_play_fab { top: 240px; }
-  
-  /* Ensure buttons render nicely (emoji buttons fill, SVG scales) */
-  div.action_button > button {
-	width: 100%;
-	height: 100%;
-	background: transparent;
-	border: none;
-	font-size: 20px;
-	line-height: 1;
-	cursor: pointer;
-  }
-  div.action_button > svg {
-	width: 70%;
-	height: 70%;
-  }
-  
-  /* Optionally hide legacy right-side buttons if still in DOM */
-  div#dataset_load_button,
-  div#statistics_button,
-  div#table_button,
-  div#barchart_button {
-	display: none !important;
-  }
-
-  /* Action buttons on the right: make them flex-centered */
-div.action_button {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	position: fixed;
-	right: -1px;
-	width: 40px;
-	height: 40px;
-	border: 1px solid lightgray;
-	border-top-left-radius: 5px;
-	border-bottom-left-radius: 5px;
-	padding: 0;
-	margin: 0;
-	background-color: #edededbd;
-	z-index: 1000;
-  }
-  div.action_button > button {
-	width: 100%;
-	height: 100%;
-	background: transparent;
-	border: none;
-	font-size: 20px;
-	line-height: 1;
-	cursor: pointer;
-  }
-  div.action_button > svg {
-	width: 70%;
-	height: 70%;
-  }
-  
-  /* Place burger and keep cog below it; adjust others as needed */
-  div#menu_toggle_button { top: 40px; }
-  div#classification_button { top: 90px; }
-  /* If you also added: */
-  div#zoom_home_fab { top: 140px; }
-  div#map_bg_fab { top: 190px; }
-  div#year_play_fab { top: 240px; }
-  
-  /* Ensure old bottom-left mobile toggle is hidden everywhere */
-  #mobile_menu_toggle { display: none !important; }
-  
-  /* On small screens ensure burger/cog stay visible */
-  @media (max-width: 768px) {
-	#menu_toggle_button,
-	#classification_button {
-	  display: flex !important;
-	}
-  }
-  /* Align checkbox/radio controls and their labels inside the selection sidebar */
+/* Checkbox/radio alignment inside sidebar */
 #selection_box .control-inline {
 	display: inline-flex;
 	align-items: center;
 	gap: 8px;
-  }
-  
-  /* Override global min-height and size the native control reasonably */
-  #selection_box input[type="checkbox"],
-  #selection_box input[type="radio"] {
-	min-height: 0;        /* override global 44px */
+}
+#selection_box input[type="checkbox"],
+#selection_box input[type="radio"] {
+	min-height: 0;
 	width: 1.1em;
 	height: 1.1em;
 	vertical-align: middle;
-	margin: 0;            /* rely on the flex gap */
-  }
-  
-  /* Ensure labels align with controls */
-  #selection_box label {
+	margin: 0;
+}
+#selection_box label {
 	display: inline-block;
 	vertical-align: middle;
 	line-height: 1.2;
-  }
-/* === Credits: auto-width and exactly 3 lines, no extra empty space === */
+}
 
-/* Center row vertically to the 40px logos */
-div#credits {
-	align-items: center; /* OVERRIDE */
-  }
-  
-  /* Let flex control layout; avoid floats; unify logo height at 40px */
-  div#credits img {
-	float: none;        /* OVERRIDE: stop floats so flex works */
-	height: 40px;       /* keep logos defining the row height */
-	margin-right: 6px;  /* small spacing between logos and text */
-  }
-  
-  /* Keep text container at the same height as logos, center content vertically */
-  div#credits_text {
-	height: 40px;       /* equal to logo height */
-	max-height: 40px;
-	overflow: hidden;   /* clip anything exceeding 3 lines */
-	display: flex;
-	align-items: center;
-  }
-  
-  /* Shrink-to-fit content: don't stretch across the whole credits panel */
-  div#text_with_links {
-	display: inline-flex;       /* inline-flex makes it size to content width */
-	align-items: center;
-	justify-content: flex-start;/* no spacing push to the far right */
-	gap: 12px;                  /* controlled spacing between text and links */
-	width: auto;                /* OVERRIDE: cancel width: 100% */
-  }
-  
-  /* Text: 3 lines, compact, with normal wrapping via <br> only */
-  div#credits_text #text_with_links span {
-	font-size: 12px;
-	line-height: 1.1;           /* 3 x 12px x 1.1 ≈ 39.6px → fits into 40px */
-	display: block;             /* let line breaks (<br>) apply naturally */
-	overflow: hidden;           /* clip if anything spills */
-	white-space: normal;        /* allow wrapping at <br> and spaces */
-	/* OVERRIDES if previous clamp was added */
-	-webkit-line-clamp: unset;
-	-webkit-box-orient: unset;
-	max-height: none;
-	flex: 0 1 auto;             /* cancel any fixed ch-based width from earlier */
-	width: auto;
-  }
-  
-  /* We currently have 3 <br> which create 4 lines; hide the 3rd to yield exactly 3 lines */
-  div#credits_text #text_with_links span br:nth-of-type(3) {
+input#area_inside_selector {
+	margin-left: 0;
+}
+
+/* --- Viewcomponents (shared base) ----------------------------------------- */
+div.viewcomponent {
 	display: none;
-  }
-  
-  /* Re-enable <br> if a previous rule hid all of them */
-  div#credits_text br {
-	display: inline;
-  }
-  
-  /* Links: compact column, don’t force the text area wide */
-  div#link_container {
-	display: flex;
-	flex-direction: column;
-	justify-content: center;    /* center vertically in the 40px row */
-	align-items: flex-start;    /* no right alignment that increases width */
-	gap: 2px;
-	font-size: 12px;
-	line-height: 1.1;
-	margin-left: 12px;          /* tidy spacing from the text */
-  }
-  /* === Play/Pause button: center SVG, remove native styling, avoid text glyphs === */
-
-/* Center the icon within the fixed 40x40 action button */
-div.action_button > button {
-	display: grid;                 /* ADDED: perfect centering */
-	place-items: center;           /* ADDED */
-	padding: 0;                    /* ADDED: remove default button padding */
-	background: transparent;       /* ADDED */
-	border: none;                  /* ADDED */
-	-webkit-appearance: none;      /* ADDED: suppress native iOS/macOS style */
-	appearance: none;              /* ADDED */
-  }
-  
-  /* Scale and center the SVG image used inside the button */
-  div.action_button img.icon {
-	width: 70%;                    /* ADDED: scale to fit 40x40 nicely */
-	height: 70%;                   /* ADDED */
-	display: block;                /* ADDED: avoid baseline offset */
-	object-fit: contain;           /* ADDED */
-	object-position: center;       /* ADDED */
-	pointer-events: none;          /* ADDED: clicks go to the button element */
-  }
-  /* === New: separate year badge in header === */
-div#header .year-badge {
-	display: inline-block;         /* box sizing to content */
-	margin-top: 6px;               /* space below the title */
-	padding: 6px 12px;             /* pleasant padding */
-	background: #ffffffcc;         /* subtle translucent background */
-	border: 1px solid lightgray;   /* subtle border */
-	border-radius: 12px;           /* rounded corners */
-	font-weight: 700;              /* big and bold */
-	font-size: 1.25rem;            /* larger text */
-	line-height: 1.1;
-}
-
-
-
-/* === Header: fit to content and move 10px from right edge === */
-div#header {
-	/* OVERRIDES: make the box only as wide as its content */
-	display: inline-block;      /* shrink-wrap the box */
-	width: fit-content;         /* prefer fit-content for modern browsers */
-	max-width: 90vw;            /* safety: don’t overflow viewport */
-  
-	/* Anchor top-right with a 10px gap; cancel any left positioning */
 	position: fixed;
-	top: 10px;
-	left: 10px;                /* CHANGED: gap from screen edge = 10px */
-	               /* CHANGED: cancel previous left */
-  }
-  
-  /* === Year badge: separate box below the title, rightmost, rounded === */
-  #current_year_badge.year-badge {
-    position: fixed;
-    left: 60px;                /* align the badge to 10px from the left edge */
-    top: 90;                 /* safe default; JS will compute precise top */
+	top: 100px;
+	left: 200px;
+	margin-left: 15%;
+	min-width: 300px;
+	min-height: 40px;
+	background-color: rgb(234, 234, 234);
+	border: 3px solid;
+	padding: 0;
 	z-index: 1000;
-  
-	display: inline-block;
-	padding: 8px 14px;
-	background: #ffffffcc;
-	border: 1px solid lightgray;
-	border-radius: 12px;
-	font-weight: 700;
-	font-size: 1.35rem;
-	line-height: 1.1;
-  }
-  
- /* === Zoom control (top-left) default spacing ===
-   Sits below the header and 10px from the left edge (JS can refine margin-top if needed) */
-#leafletmap .leaflet-top.leaflet-left {
-    margin-top: 90px;   /* safe default so it starts below the header */
-    margin-left: 10px;  /* align with header’s 10px left gap */
 }
 
-/* === Title: use a narrower/condensed font for “hin&weg web” === */
-div#header h1 {
-	/* Condensed/”narrow” system font stack without loading external fonts */
-	font-family: "Helvetica Neue Condensed", "Arial Narrow", "Roboto Condensed",
-				 "Nimbus Sans Narrow", Arial, sans-serif; /* ADDED */
-	font-stretch: condensed;   /* ADDED: ask for a condensed width if available */
-	font-weight: 600;          /* ADDED: slightly heavier for readability */
-	letter-spacing: -0.2px;    /* ADDED: subtle tracking for condensed look */
-  }
-  
-  /* === Title (site): normal spacing and no bold === */
-div#header h1 {
-	font-weight: 400;          /* ADDED: not bold */
-	letter-spacing: normal;    /* ADDED: normal spacing */
-	font-stretch: normal;      /* ADDED: ensure not condensed */
-	font-family: sans-serif;   /* ADDED: keep default sans-serif look */
-  }
-  
-  /* === Title (site): normal spacing and weight (not condensed, not bold) === */
-div#header h1 {
-	font-weight: 400;        /* make title non-bold */
-	letter-spacing: normal;  /* normal tracking */
-	font-stretch: normal;    /* ensure not condensed */
-	font-family: inherit;    /* use the page’s default sans-serif */
-  }
-  
- 
-  /* ===================================================================
-   CHANGED: Settings panel (#classification_view) — slide-in from the
-   right edge, matching the burger menu (#selection_box) behavior.
-   Overrides .viewcomponent positioning/display for this panel only.
-   =================================================================== */
+div.view_content {
+	margin: 10px;
+	max-height: 700px;
+	max-width: 1000px;
+	overflow: auto;
+}
 
-/* CHANGED: always rendered (display:block) so the CSS transition works;
-   hidden off-screen via transform + visibility, exactly like #selection_box */
+div.close_button {
+	display: block;
+	position: absolute;
+	right: 0;
+	top: 0;
+	width: 25px;
+	height: 25px;
+}
+
+h2.title_bar {
+	margin: 0 0 5px 0;
+	background-color: #00000066;
+	padding: 3px 0;
+	width: 100%;
+	height: 20px;
+	text-align: center;
+	font-size: larger;
+	font-weight: bold;
+}
+
+/* --- Settings panel (classification_view) — slide-in override ------------- */
 div#classification_view {
-	display: block;                    /* CHANGED: override .viewcomponent display:none */
+	display: block;
 	position: fixed;
-	top: 70px;                        /* CHANGED: below header, same as #selection_box */
-	right: 50px;                      /* CHANGED: gap from right edge, same as #selection_box */
-	left: auto;                       /* CHANGED: cancel .viewcomponent left:200px */
+	top: 70px;
+	right: 50px;
+	left: auto;
 	bottom: auto;
-	width: max-content;               /* CHANGED: size to content, same as #selection_box */
-	max-width: min(520px, 46vw);      /* CHANGED: cap width, same as #selection_box */
-	max-height: calc(100vh - 140px);  /* CHANGED: leave room for header + footer */
-	overflow-y: auto;                 /* CHANGED: scroll if content overflows */
-	padding: 0;                       /* keep inner content padding on .view_content */
-	margin-left: 0;                   /* CHANGED: cancel .viewcomponent margin-left:15% */
-	min-width: 300px;                 /* preserve readable minimum */
+	width: max-content;
+	max-width: min(520px, 46vw);
+	max-height: calc(100vh - 140px);
+	overflow-y: auto;
+	padding: 0;
+	margin-left: 0;
+	min-width: 300px;
 	border: 1px solid lightgray;
 	border-radius: 10px;
-	border-width: 1px;                /* CHANGED: override .viewcomponent 3px border */
 	background-color: #edededbd;
-	box-shadow: 0 8px 18px rgba(0,0,0,0.25); /* CHANGED: same shadow as #selection_box */
-	z-index: 1200;                    /* CHANGED: same z-index as #selection_box */
-  
-	/* CHANGED: hidden off-screen and non-interactive by default (slide-out state) */
+	box-shadow: 0 8px 18px rgba(0,0,0,0.25);
+	z-index: 1200;
 	transform: translateX(110%);
 	visibility: hidden;
 	pointer-events: none;
-  
-	/* CHANGED: smooth slide transition, matching #selection_box */
 	will-change: transform;
 	transition: transform 0.25s ease;
-  }
-  
-  /* CHANGED: when the .open class is present, slide in and become interactive */
-  div#classification_view.open {
+}
+div#classification_view.open {
 	transform: translateX(0);
 	visibility: visible;
 	pointer-events: auto;
-  }
-  
-  /* CHANGED: mobile responsive — tighter margins, same slide behavior */
-  @media (max-width: 768px) {
-	div#classification_view {
-	  top: 64px;
-	  right: 10px;
-	  left: auto;
-	  bottom: auto;
-	  max-width: min(92vw, 520px);
-	  max-height: calc(100vh - 120px);
-	}
-  }
-  
+}
 
-  /* CHANGED: Remove the dark grey title bar background for the settings panel only.
-   The global h2.title_bar still uses #00000066 for other viewcomponents. */
 #classification_view .title_bar {
-    background-color: transparent;  /* CHANGED: remove dark grey bar */
-    margin-bottom: 2px;             /* CHANGED: tighten spacing below title */
+	background-color: transparent;
+	margin-bottom: 2px;
 }
-/* ===================================================================
-   CHANGED: Left-align all labels and their corresponding controls
-   inside the settings panel so every element sits flush to the left.
-   =================================================================== */
 
-/* CHANGED: base left-alignment for all inline/text content */
+/* Left-align settings content */
 #classification_view_data {
-    text-align: left;               /* CHANGED: left-align all inline/text children */
-    padding-left: 12px;             /* CHANGED: consistent left inset from panel edge */
-    padding-right: 12px;            /* CHANGED: matching right inset */
+	text-align: left;
+	padding-left: 12px;
+	padding-right: 12px;
 }
-
-/* CHANGED: Make <select> dropdowns full-width blocks so they sit below
-   their label and align to the left edge. */
 #classification_view_data select {
-    display: block;                 /* CHANGED: each dropdown on its own line */
-    width: 100%;                    /* CHANGED: stretch to panel width */
-    max-width: 100%;                /* CHANGED: don't overflow */
-    box-sizing: border-box;         /* CHANGED: include padding in width */
+	display: block;
+	width: 100%;
+	max-width: 100%;
+	box-sizing: border-box;
 }
-
-/* CHANGED: Number inputs (classborder fields etc.) stay inline with their
-   label but have a consistent width and right-aligned numbers. */
 #classification_view_data input[type="number"] {
-    display: inline-block;          /* CHANGED: sit on the same line as label */
-    width: 6em;                     /* CHANGED: consistent width */
-    text-align: right;              /* CHANGED: numbers read better right-aligned */
+	display: inline-block;
+	width: 6em;
+	text-align: right;
 }
-
-/* CHANGED: Checkbox + label pairs as a left-aligned inline-flex group
-   so the checkbox and text sit on one line, vertically centered. */
 #classification_view_data .classification_overall_toggle {
-    display: inline-flex;           /* CHANGED: single-line group */
-    align-items: center;            /* CHANGED: vertical centering of checkbox + label */
-    gap: 8px;                       /* CHANGED: space between checkbox and label text */
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
 }
-
-/* CHANGED: Vertically align color-scale radio buttons and gradient bars
-   with their label text so they don't float at different baselines. */
 #classification_view_data input[type="radio"],
 #classification_view_data .color_gradient {
-    vertical-align: middle;         /* CHANGED: align with adjacent text */
+	vertical-align: middle;
 }
-
-/* CHANGED: Classborder labels keep their fixed width for neat columns
-   and right-align their text so it sits flush against the number input. */
 #classification_view_data .classborder_label {
-    text-align: right;              /* CHANGED: label text hugs the input field */
+	text-align: right;
 }
 
+div#classification_message {
+	display: none;
+}
+
+/* --- Legend view ----------------------------------------------------------- */
+div#legend_view {
+	display: none;
+	position: fixed;
+	right: 50px;
+	bottom: 30px;
+	min-width: 100px;
+	min-height: 0;
+	background-color: #edededbd;
+	border: 1px solid lightgray;
+	border-radius: 10px;
+	padding: 0;
+	overflow: hidden;
+	z-index: 1000;
+}
+
+div#legend_content {
+	margin-left: 0;
+}
+
+#legend_view .title_bar {
+	background-color: transparent !important;
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	justify-content: space-between;
+	padding: 8px 14px;
+	height: auto;
+	line-height: 1.2;
+	text-align: left;
+	position: static;
+	margin: 0;
+	width: auto;
+	box-sizing: border-box;
+	cursor: pointer;
+	user-select: none;
+	-webkit-user-select: none;
+	transition: color 0.15s ease;
+	color: #333;
+}
+#legend_view .title_bar:hover {
+	color: #000;
+}
+#legend_view .title_bar:focus-visible {
+	outline: 2px solid #356184;
+	outline-offset: 2px;
+	border-radius: 4px;
+}
+
+#legend_view .legend_chevron {
+	width: 18px;
+	height: 18px;
+	display: block;
+	flex-shrink: 0;
+	transition: transform 0.25s ease;
+	color: #666;
+}
+#legend_view .title_bar:hover .legend_chevron {
+	color: #333;
+}
+#legend_view.collapsed .legend_chevron {
+	transform: rotate(180deg);
+}
+
+/* REMOVED: .legend_toggle button styles — button element no longer exists */
+
+/* Accordion animation */
+#legend_view #legend_content {
+	overflow: hidden;
+	max-height: 600px;
+	opacity: 1;
+	transition: max-height 0.3s ease,
+	            opacity 0.2s ease,
+	            margin 0.3s ease,
+	            padding 0.3s ease;
+}
+#legend_view.collapsed #legend_content {
+	max-height: 0;
+	opacity: 0;
+	pointer-events: none;
+	margin: 0;
+	padding: 0;
+}
+#legend_view.collapsed {
+	min-height: 0;
+}
+
+/* --- Credits -------------------------------------------------------------- */
+/* CONSOLIDATED: was defined 3+ times with conflicting rules */
+div#credits {
+	display: flex;
+	align-items: center;
+	position: fixed;
+	left: -1px;
+	bottom: -1px;
+	border: 1px solid lightgray;
+	border-top-right-radius: 5px;
+	padding: 5px;
+	margin: 0;
+	background-color: #edededbd;
+	z-index: 1000;
+}
+div#credits img {
+	float: none;
+	height: 40px;
+	padding-right: 5px;
+	margin-right: 6px;
+}
+div#credits_text {
+	height: 40px;
+	max-height: 40px;
+	overflow: hidden;
+	display: flex;
+	align-items: center;
+}
+div#text_with_links {
+	display: inline-flex;
+	align-items: center;
+	justify-content: flex-start;
+	gap: 12px;
+	width: auto;
+}
+div#credits_text #text_with_links span {
+	font-size: 12px;
+	line-height: 1.1;
+	display: block;
+	overflow: hidden;
+	white-space: normal;
+	-webkit-line-clamp: unset;
+	-webkit-box-orient: unset;
+	max-height: none;
+	flex: 0 1 auto;
+	width: auto;
+}
+/* Hide 3rd <br> to keep exactly 3 visible lines */
+div#credits_text #text_with_links span br:nth-of-type(3) {
+	display: none;
+}
+div#credits_text br {
+	display: inline;
+}
+div#link_container {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: flex-start;
+	gap: 2px;
+	font-size: 12px;
+	line-height: 1.1;
+	margin-left: 12px;
+}
+div#link_container a {
+	margin-bottom: 5px;
+}
+
+/* --- Misc UI elements ----------------------------------------------------- */
+div#legend {
+	display: none;
+}
+div#years_selection {
+	display: none;
+}
+option.year_option {
+	padding-left: 5px;
+	padding-right: 15px;
+}
+fieldset#data_interpretation {
+	border: none;
+	display: none;
+}
+label.classborder_label {
+	display: inline-block;
+	width: 9.5em;
+}
+div.color_gradient {
+	display: inline-block;
+	width: 100px;
+	height: 1em;
+}
+div.gradient_color {
+	display: inline-block;
+	width: 1px;
+	height: 1em;
+}
+
+/* --- Load indicator ------------------------------------------------------- */
+div#load_indicator {
+	display: none;
+	position: fixed;
+	top: 100px;
+	left: 100px;
+	margin-top: 15%;
+	margin-left: 30%;
+	background-color: #edededbd;
+	border: 3px solid;
+	padding: 5px;
+	z-index: 1000;
+}
+div#load_indicator_text {
+	text-align: center;
+}
+div#load_inidicator_blocks {
+	width: 100%;
+	margin-top: 10px;
+}
+div.load_inidicator_block {
+	float: left;
+	padding: 0;
+	margin: 1px;
+	width: 20px;
+	height: 10px;
+	border: 1px solid;
+}
+
+/* --- Barchart (MOVED from inline <style> in charts.js) -------------------- */
+.barchart-container {
+	width: 100%;
+	resize: both;
+	overflow: auto;
+	min-height: 100px;
+	min-width: 300px;
+	max-width: 100%;
+	max-height: 500px;
+}
+.barchart-wrapper {
+	margin-top: 20px;
+	width: 100%;
+	overflow-y: auto;
+	max-height: 450px;
+}
+.barchart-row {
+	display: flex;
+	margin-bottom: 8px;
+	align-items: center;
+	width: 100%;
+}
+.barchart-label {
+	width: 150px;
+	text-align: right;
+	padding-right: 10px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	flex-shrink: 0;
+}
+.barchart-bar-container {
+	flex-grow: 1;
+	background-color: #f0f0f0;
+	position: relative;
+	height: 24px;
+}
+.barchart-bar {
+	height: 100%;
+	position: relative;
+	transition: width 0.3s ease-in-out;
+}
+.barchart-bar.right  { margin-left: 0; }
+.barchart-bar.left   { margin-left: auto; margin-right: 0; }
+.barchart-value {
+	position: absolute;
+	padding: 0 5px;
+	font-size: 12px;
+	line-height: 24px;
+	color: black;
+	white-space: nowrap;
+}
+.barchart-bar.right .barchart-value { left: 5px; }
+.barchart-bar.left .barchart-value  { right: 5px; }
+
+/* ==========================================================================
+   Responsive — CONSOLIDATED: all @media (max-width: 768px) into one block
+   ========================================================================== */
+@media (max-width: 768px) {
+	/* Compact header */
+	div#header {
+		top: 8px;
+		left: 8px;
+		max-width: calc(100% - 16px);
+		padding: 4px 6px;
+	}
+	h1 { font-size: 1.1rem; }
+	h3 { font-size: 0.95rem; }
+	span#versionsub { font-size: 0.6rem; }
+
+	/* Hide ALL action buttons by default, then show the ones we need */
+	div.action_button { display: none; }
+	#menu_toggle_button,
+	#classification_button,
+	#zoom_home_fab,
+	#map_bg_fab,
+	#year_play_fab {
+		display: flex !important;
+	}
+
+	/* Credits: hidden on mobile */
+	#credits,
+	#credits * {
+		display: none !important;
+		visibility: hidden !important;
+	}
+
+	/* Legend: smaller, above FABs */
+	div#legend_view {
+		right: 8px;
+		bottom: 70px;
+		max-width: 65%;
+	}
+
+	/* Popups */
+	div#feature_info_popup {
+		font-size: 0.9rem;
+		padding: 8px;
+	}
+
+	/* Viewcomponents become near-full-width sheets */
+	div.viewcomponent {
+		left: 8px;
+		right: 8px;
+		top: auto;
+		bottom: 8px;
+		width: auto;
+		max-width: calc(100% - 16px);
+		max-height: 70vh;
+		overflow: auto;
+		margin-left: 0;
+	}
+	h2.title_bar {
+		height: auto;
+		font-size: 1rem;
+		padding: 6px 0;
+	}
+
+	/* Selection box (burger menu) */
+	div#selection_box {
+		top: 64px;
+		right: 10px;
+		left: auto;
+		bottom: auto;
+		max-width: min(92vw, 520px);
+		max-height: calc(100vh - 120px);
+	}
+
+	/* Settings panel */
+	div#classification_view {
+		top: 64px;
+		right: 10px;
+		left: auto;
+		bottom: auto;
+		max-width: min(92vw, 520px);
+		max-height: calc(100vh - 120px);
+	}
+
+	/* Readable controls */
+	select.selector, input.selector, input.filter,
+	select.filter, button.selector,
+	fieldset#data_interpretation {
+		font-size: 1rem;
+		min-height: 44px;
+	}
+	#year_selector {
+		max-height: 35vh;
+		overflow-y: auto;
+	}
+
+	/* Load indicator centered */
+	div#load_indicator {
+		top: auto;
+		left: 50%;
+		bottom: 30%;
+		transform: translateX(-50%);
+		margin: 0;
+		width: 90%;
+	}
+
+	/* Compact gradients */
+	div.color_gradient  { width: 80px; height: 0.8em; }
+	div.gradient_color  { height: 0.8em; }
+}
+
+@media (max-width: 600px) {
+	div#credits {
+		flex-direction: column;
+		align-items: flex-start;
+	}
+	div#credits img {
+		margin-bottom: 5px;
+	}
+}
 /* ===================================================================
-   CHANGED: Legend collapse — elegant full-bar toggle with borderless
-   chevron and smooth accordion animation.
+   Legend — columnar grid layout.
+   Lower bound, dash, and upper bound each sit in their own column.
+   "0" uses the same 4-column layout (value in the lo column).
+   "Keine Daten" spans the 3 text columns.
+
+   FONT SIZE: To adjust the legend font size, change the font-size
+   property on .geostats-legend below. The current value "inherit"
+   keeps it identical to the parent (legend panel). Change it to
+   e.g. "0.85em" or "14px" to make legend text smaller/larger.
    =================================================================== */
 
-  /* CHANGED: legend title bar — increased horizontal padding to keep text
-     and chevron away from the rounded border edges */
-	 #legend_view .title_bar {
-		background-color: transparent !important;
-		display: flex;
-		align-items: center;
-		gap: 8px;
-		justify-content: space-between;
-		padding: 8px 14px;              /* CHANGED: match year badge padding exactly */
-		height: auto;
-		line-height: 1.2;
-		text-align: left;
-		position: static;
-		margin: 0;                      /* CHANGED: zero all margins so collapsed height equals content only */
-		width: auto;                    /* CHANGED: override global h2.title_bar width:100% — prevents chevron overflow */
-		box-sizing: border-box;         /* CHANGED: include padding in width calculation */
-	  }
-
-	
-
-/* CHANGED: hover feedback on the whole title bar */
-#legend_view .title_bar:hover {
-    color: #000;                              /* CHANGED: darken text on hover */
+   .geostats-legend {
+    display: inline-grid;
+    grid-template-columns: auto auto auto auto;   /* [block] [lo] [dash] [hi] */
+    row-gap: 3px;
+    column-gap: 6px;
+    align-items: center;
+    font-size: 0.9em;           /* ← CHANGE THIS to adjust legend font size */
+    line-height: 1.3;
 }
 
-/* CHANGED: focus outline for keyboard accessibility */
-#legend_view .title_bar:focus-visible {
-    outline: 2px solid #356184;               /* CHANGED: visible focus ring */
-    outline-offset: 2px;
-    border-radius: 4px;
-}
-
-/* CHANGED: chevron is now a bare inline SVG — no button box, no border */
-#legend_view .legend_chevron {
-    width: 18px;                              /* CHANGED: slightly larger for visibility */
-    height: 18px;
+/* Override any geostats.css defaults on the color block */
+.geostats-legend .geostats-legend-block {
+    width: 20px;
+    height: 14px;
+    border: 1px solid #ccc;       /* visible border, especially for white blocks */
     display: block;
-    flex-shrink: 0;                           /* CHANGED: prevent shrinking */
-    transition: transform 0.25s ease;         /* CHANGED: slower, smoother rotation */
-    color: #666;                              /* CHANGED: subtle grey; stroke uses currentColor */
+    margin: 0;
+    margin-left: 8px;             /* CHANGED: left margin on coloured boxes */
 }
 
-/* CHANGED: hover makes chevron darker */
-#legend_view .title_bar:hover .legend_chevron {
-    color: #333;
+/* Lower bound — right-aligned so decimal points line up across rows */
+.geostats-legend .legend-lo {
+    text-align: right;
+    white-space: nowrap;
 }
 
-/* CHANGED: rotate chevron when collapsed */
-#legend_view.collapsed .legend_chevron {
-    transform: rotate(180deg);
+/* Dash separator — centered in its narrow column */
+.geostats-legend .legend-dash {
+    text-align: center;
+    white-space: nowrap;
 }
 
-/* CHANGED: smooth accordion via max-height + opacity transition
-   instead of abrupt display:none */
-   #legend_view #legend_content {
-    overflow: hidden;
-    max-height: 600px;
-    opacity: 1;
-    transition: max-height 0.3s ease,
-                opacity 0.2s ease,
-                margin 0.3s ease,             /* CHANGED: animate margin collapse so it shrinks smoothly */
-                padding 0.3s ease;            /* CHANGED: animate padding collapse */
-}
-/* CHANGED: collapsed state — zero height, zero spacing, transparent, non-interactive */
-#legend_view.collapsed #legend_content {
-    max-height: 0;
-    opacity: 0;
-    pointer-events: none;
-    margin: 0;                                /* CHANGED: collapse view_content's 10px margin */
-    padding: 0;                               /* CHANGED: collapse any padding */
+/* Upper bound — left-aligned */
+.geostats-legend .legend-hi {
+    text-align: left;
+    white-space: nowrap;
 }
 
-/* CHANGED: collapsed legend shrinks to just the title bar */
-#legend_view.collapsed {
-    min-height: 0;
+/* Special labels ("Keine Daten") span all 3 text columns */
+.geostats-legend .legend-label {
+    grid-column: 2 / 5;           /* span columns 2–4 */
+    white-space: nowrap;
 }
