@@ -28,35 +28,45 @@ function get_map_fit_padding_options() {
 	return { paddingTopLeft, paddingBottomRight };
 }
 
-/* Position header, zoom control, and year badge */
-function position_header_zoom_year() {
+/* CHANGED: positions the Leaflet zoom control directly below the header,
+   then positions the year+play container to the right of the zoom control.
+   Layout: [Header] → gap → [Zoom +/-] [Year | ▶]
+   The gap between header and zoom equals the spacing constant (8px). */
+   function position_header_zoom_year() {
 	const mapEl = document.getElementById('leafletmap');
 	const headerEl = document.getElementById('header');
-	const badgeEl = document.getElementById('current_year_badge');
+	const containerEl = document.getElementById('year_play_container');
 	if (!mapEl) return;
-
-	const corner = mapEl.querySelector('.leaflet-top.leaflet-right');
-	if (!corner) return;
 
 	const rect = headerEl ? headerEl.getBoundingClientRect() : null;
 	const spacing = 8;
 	const headerBottom = rect ? rect.bottom : 10;
 
-	corner.style.marginTop = (headerBottom + spacing) + 'px';
-	if (badgeEl) {
-		badgeEl.style.top = (headerBottom + spacing) + 'px';
+	/* CHANGED: position the Leaflet zoom control (top-left corner)
+	   directly below the header with the same spacing */
+	const zoomCorner = mapEl.querySelector('.leaflet-top.leaflet-left');
+	if (zoomCorner) {
+		zoomCorner.style.marginTop = (headerBottom + spacing) + 'px';
 	}
 
-	let badgeW = 0;
-	if (badgeEl) {
-		const bRect = badgeEl.getBoundingClientRect();
-		badgeW = Math.round(bRect.width);
+	/* CHANGED: position year+play container to the right of the zoom control,
+	   vertically aligned to the same top as the zoom control */
+	if (containerEl) {
+		containerEl.style.top = (headerBottom + spacing) + 'px';
+
+		/* CHANGED: calculate left offset based on zoom control's right edge */
+		const zoomControl = mapEl.querySelector('.leaflet-control-zoom');
+		if (zoomControl) {
+			const zoomRect = zoomControl.getBoundingClientRect();
+			containerEl.style.left = (zoomRect.right + spacing) + 'px';
+		} else {
+			/* Fallback if zoom control not yet rendered */
+			containerEl.style.left = (10 + 30 + spacing) + 'px';
+		}
 	}
-	const baseRightGap = 10;
-	const gapBetween = 20;
-	const totalRight = baseRightGap + badgeW + gapBetween;
-	corner.style.marginRight = totalRight + 'px';
 }
+
+
 
 /* Expose for other modules */
 window.position_header_zoom_year = position_header_zoom_year;

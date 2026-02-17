@@ -36,9 +36,23 @@
 	<h3><span id="dataset_title"></span></h3>
 </div>
 
-<!-- Current year badge (positioned by JS below the header) -->
-<div id="current_year_badge" class="year-badge" aria-live="polite" title="Ausgewähltes Jahr"></div>
-
+<!-- CHANGED: year badge + play button grouped in a flex container;
+     positioned by JS to the right of the zoom control, below the header -->
+	 <div id="year_play_container">
+		<div id="current_year_badge" class="year-badge" aria-live="polite" title="Ausgewähltes Jahr"></div>
+		<button
+		  id="year_play_toggle"
+		  class="selector"
+		  type="button"
+		  aria-pressed="false"
+		  aria-label="Jahre abspielen"
+		  onclick="toggle_year_playback()"
+		  disabled>
+		  <img id="year_play_icon" src="img/play.svg" alt="" class="icon" aria-hidden="true" />
+		</button>
+	</div>
+	
+	
 <!-- credits -->
 <div id="credits">
 	<img src="img/ifl_logo.svg" height="40px" />
@@ -89,18 +103,6 @@
 	</button>
 </div>
 
-<div id="year_play_fab" class="action_button" title="Jahre automatisch abspielen / pausieren">
-	<button
-	  id="year_play_toggle"
-	  class="selector"
-	  type="button"
-	  aria-pressed="false"
-	  aria-label="Jahre abspielen"
-	  onclick="toggle_year_playback()"
-	  disabled>
-	  <img id="year_play_icon" src="img/play.svg" alt="" class="icon" aria-hidden="true" />
-	</button>
-</div>
 
 <!-- map -->
 <div id="leafletmap"></div>

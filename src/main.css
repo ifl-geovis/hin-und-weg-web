@@ -71,29 +71,80 @@ h3 {
 	top: -5px;
 	font-weight: normal;
 }
-
-/* --- Year badge ----------------------------------------------------------- */
-#current_year_badge.year-badge {
+/* --- Year + play container ------------------------------------------------ */
+/* CHANGED: container wraps year badge and play button in a single flex row;
+   positioned by JS to the right of the Leaflet zoom control, below the header */
+   #year_play_container {
 	position: fixed;
-	left: 60px;
-	top: 90px;               /* FIXED: was "top: 90;" — missing px unit */
+	left: 60px;                     /* JS will override based on zoom control position */
+	top: 90px;                      /* JS will override based on header bottom */
 	z-index: 1000;
-	display: inline-block;
+	display: inline-flex;
+	align-items: stretch;           /* CHANGED: both children match the tallest element's height */
+	gap: 0;                         /* CHANGED: no gap — button joins the badge seamlessly */
+}
+
+/* CHANGED: year badge is now static inside the flex container;
+   right border/radius removed so it joins the play button cleanly */
+#year_play_container .year-badge {
+	position: static;               /* CHANGED: container handles positioning */
+	display: inline-flex;
+	align-items: center;
 	padding: 8px 14px;
 	background: #ffffffcc;
 	border: 1px solid lightgray;
-	border-radius: 12px;
+	border-right: none;             /* CHANGED: shared border with play button */
+	border-radius: 12px 0 0 12px;  /* CHANGED: rounded only on left side */
 	font-weight: 700;
 	font-size: 1.35rem;
 	line-height: 1.1;
 }
-/* REMOVED: dead rule "div#header .year-badge" — badge is outside #header, never matched */
+
+/* CHANGED: play button styled to match year badge — same background, border,
+   height (via stretch). Rounded only on the right side. */
+#year_play_container #year_play_toggle {
+	display: grid;
+	place-items: center;
+	padding: 0 10px;
+	background: #ffffffcc;
+	border: 1px solid lightgray;
+	border-left: none;              /* CHANGED: shared border with badge */
+	border-radius: 0 12px 12px 0;  /* CHANGED: rounded only on right side */
+	cursor: pointer;
+	min-height: 0;                  /* CHANGED: override global button min-height */
+	-webkit-appearance: none;
+	appearance: none;
+}
+
+/* CHANGED: play/pause icon sized to match the year badge font-size */
+#year_play_container #year_play_toggle img.icon {
+	width: 1.35rem;                 /* CHANGED: matches year badge font-size exactly */
+	height: 1.35rem;
+	display: block;
+	object-fit: contain;
+	pointer-events: none;
+}
+
+/* CHANGED: disabled state — faded out, no pointer */
+#year_play_container #year_play_toggle:disabled {
+	opacity: 0.4;
+	cursor: default;
+}
+
+/* CHANGED: subtle hover feedback when enabled */
+#year_play_container #year_play_toggle:not(:disabled):hover {
+	background: #e8e8e8cc;
+}
+
 
 /* --- Zoom control --------------------------------------------------------- */
-#leafletmap .leaflet-top.leaflet-left {
-	margin-top: 90px;
+/* CHANGED: margin-top is now set dynamically by position_header_zoom_year() in JS;
+   only margin-left remains as a static CSS value */
+   #leafletmap .leaflet-top.leaflet-left {
+	margin-top: 90px;              /* fallback; JS overrides on load */
 	margin-left: 10px;
 }
+
 
 /* --- Feature info popup --------------------------------------------------- */
 div#feature_info_popup {
@@ -235,12 +286,12 @@ div.action_button i {
 	display: inline-block;
 }
 
-/* Button positions — CONSOLIDATED: was defined 3x each */
 div#menu_toggle_button  { top:  40px; }
 div#classification_button { top:  90px; }
 div#zoom_home_fab       { top: 140px; }
 div#map_bg_fab          { top: 190px; }
-div#year_play_fab       { top: 240px; }
+/* REMOVED: div#year_play_fab — play button moved into #year_play_container */
+
 
 /* Hide legacy buttons that no longer exist in the UI */
 div#dataset_load_button,
@@ -705,15 +756,21 @@ div.load_inidicator_block {
 	h3 { font-size: 0.95rem; }
 	span#versionsub { font-size: 0.6rem; }
 
-	/* Hide ALL action buttons by default, then show the ones we need */
-	div.action_button { display: none; }
-	#menu_toggle_button,
-	#classification_button,
-	#zoom_home_fab,
-	#map_bg_fab,
-	#year_play_fab {
-		display: flex !important;
-	}
+		/* Hide ALL action buttons by default, then show the ones we need */
+		div.action_button { display: none; }
+		#menu_toggle_button,
+		#classification_button,
+		#zoom_home_fab,
+		#map_bg_fab {
+			display: flex !important;
+		}
+		/* REMOVED: #year_play_fab — play button is now in #year_play_container */
+	
+		/* CHANGED: year+play container responsive adjustments */
+		#year_play_container {
+			left: 8px;
+		}
+	
 
 	/* Credits: hidden on mobile */
 	#credits,
