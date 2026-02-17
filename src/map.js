@@ -85,7 +85,20 @@ function fit_map_to_data() {
 
 function init_map()
 {
-	app.map.map = L.map("leafletmap");
+	/* CHANGED: enable fractional (sub-integer) zoom levels so that
+	   fitBounds() can pick a tighter zoom that fills more of the screen.
+	   - zoomSnap : 0.25 → map snaps to quarter-zoom increments (0, 0.25, 0.5, …)
+	     This lets fitBounds() choose e.g. zoom 5.75 instead of jumping
+	     from 5 (too small) to 6 (too large).
+	   - zoomDelta: 0.25 → each scroll-wheel notch / zoom-button click
+	     zooms by 0.25 instead of 1, giving a smoother manual zoom as well.
+	   - wheelPxPerZoomLevel: 120 → slows down scroll-wheel zooming slightly
+	     so the smaller zoomDelta doesn't feel too sluggish (default is 60). */
+	app.map.map = L.map("leafletmap", {
+		zoomSnap:  0.2,
+		zoomDelta: 0.2,
+		wheelPxPerZoomLevel: 120
+	});
 	app.map.map.setView([51.5, 10], 7);
 
 	/* Create initial background layer from options array */
