@@ -232,13 +232,15 @@ div#legend_view
 	right: 50px;
 	bottom: 30px;
 	min-width: 100px;
-	min-height: 40px;
+	min-height: 0;                  /* CHANGED: allow panel to shrink to content when collapsed */
 	background-color: #edededbd;
-	border-style: solid;
-	border-width: 3px;
-	padding: 0px;
+	border: 1px solid lightgray;
+	border-radius: 10px;
+	padding: 0;                     /* CHANGED: removed — title bar handles all internal spacing */
+	overflow: hidden;
 	z-index: 1000;
 }
+
 
 div.viewcomponent
 {
@@ -585,10 +587,6 @@ div.gradient_color { height: 0.8em; }
 }
 
   
-  #legend_view.collapsed #legend_content {
-	display: none;
-  }
-  
   #legend_view.collapsed {
 	min-height: 0;
   }
@@ -604,6 +602,21 @@ div.gradient_color { height: 0.8em; }
 	  padding: 8px;
 	}
   }
+
+    /* CHANGED: toggle button is now borderless and transparent to match the
+     clean panel style; only the chevron icon itself is visible */
+	 #legend_view .legend_toggle {
+		position: static !important;
+		display: grid;
+		place-items: center;
+		width: 26px;
+		height: 26px;
+		padding: 0;
+		background: transparent;       /* CHANGED: no white box behind chevron */
+		border: none;                  /* CHANGED: removed border around button */
+		border-radius: 0;             /* CHANGED: no rounded box needed */
+		cursor: pointer;
+	  }
  /* Hide credits/logos only on small screens */
 @media (max-width: 768px) {
 	#credits,
@@ -1064,38 +1077,6 @@ div#header h1 {
 	letter-spacing: -0.2px;    /* ADDED: subtle tracking for condensed look */
   }
   
-  /* === Legend header: remove dark grey bar and align arrow with title === */
-  #legend_view .title_bar {
-	/* Override the global dark header bar just for the legend */
-	background-color: transparent !important; /* ADDED: remove dark box on legend */
-	/* Let the header fit its content and provide space for the toggle at right */
-	display: flex;               /* ADDED */
-	align-items: center;         /* ADDED: vertical centering of the text */
-	justify-content: center;     /* ADDED: keep “Legende” centered; change to left if you prefer */
-	position: relative;          /* ADDED: so the toggle can be absolutely positioned */
-	height: auto;                /* ADDED: auto height to match text line-height */
-	line-height: 1.2;            /* ADDED */
-	padding: 6px 42px 6px 10px;  /* ADDED: right padding for the toggle */
-	margin: 0 0 5px 0;           /* keep current bottom gap */
-  }
-  
-  
-  /* Size the chevron and let it rotate smoothly when collapsed */
-  #legend_view .legend_chevron {
-	width: 18px;                 /* ADDED */
-	height: 18px;                /* ADDED */
-	display: block;              /* ADDED */
-	transition: transform 120ms ease; /* ADDED */
-  }
-  
-  #legend_view.collapsed .legend_chevron {
-	transform: rotate(-90deg);   /* ADDED: rotated chevron when legend is collapsed */
-  }
-  
-  /* Keep the existing collapse behavior for the content */
-  #legend_view.collapsed #legend_content {
-	display: none;
-  }
   /* === Title (site): normal spacing and no bold === */
 div#header h1 {
 	font-weight: 400;          /* ADDED: not bold */
@@ -1104,36 +1085,6 @@ div#header h1 {
 	font-family: sans-serif;   /* ADDED: keep default sans-serif look */
   }
   
-  /* === Legend header: no dark bar; arrow inline next to “Legende” === */
-  #legend_view .title_bar {
-	background-color: transparent !important; /* ADDED: remove dark-grey header bar just for legend */
-	display: flex;               /* ADDED: keep title and arrow in one row */
-	align-items: center;         /* ADDED: vertical alignment */
-	gap: 8px;                    /* ADDED: space between “Legende” and arrow button */
-	justify-content: flex-start; /* ADDED: natural left alignment for header contents */
-	padding: 6px 10px;           /* ADDED: comfortable hit area */
-	height: auto;                /* ADDED: auto height to match text line-height */
-	line-height: 1.2;            /* ADDED */
-	text-align: left;            /* ADDED */
-	position: static;            /* ADDED: no absolute layout for the row */
-  }
-  
-  /* Chevron sizing and collapse rotation */
-  #legend_view .legend_chevron {
-	width: 18px;                 /* ADDED: fit inside 28px button */
-	height: 18px;                /* ADDED */
-	display: block;              /* ADDED */
-	transition: transform 120ms ease; /* ADDED: smooth rotation */
-  }
-  
-  #legend_view.collapsed .legend_chevron {
-	transform: rotate(180deg);   /* ADDED: indicate collapsed state */
-  }
-  
-  /* Keep the legend content hidden when collapsed (existing behavior) */
-  #legend_view.collapsed #legend_content {
-	display: none;
-  }
   /* === Title (site): normal spacing and weight (not condensed, not bold) === */
 div#header h1 {
 	font-weight: 400;        /* make title non-bold */
@@ -1142,52 +1093,7 @@ div#header h1 {
 	font-family: inherit;    /* use the page’s default sans-serif */
   }
   
-  /* === Legend header: remove dark bar; keep arrow inside, aligned with “Legende” === */
-  #legend_view .title_bar {
-	background-color: transparent !important; /* remove dark-grey bar on legend only */
-	display: flex;              /* put “Legende” and the button on one row */
-	align-items: center;        /* vertical centering so arrow = same height as text */
-	gap: 8px;                   /* spacing between title and arrow */
-	justify-content: flex-start;
-	padding: 6px 10px;          /* comfortable hit area; lets header height fit content */
-	height: auto;               /* let header grow with font-size */
-	line-height: 1.2;
-	text-align: left;
-	position: static;           /* no absolute layout needed for inline arrow */
-  }
-  
-  /* Make the toggle inline, fully inside the legend header (no overflow at the top) */
-  #legend_view .legend_toggle {
-	position: static !important;   /* override old absolute rule */
-	display: grid;                 /* centers the SVG inside the button */
-	place-items: center;
-	width: 26px;                   /* compact, stays within header height */
-	height: 26px;
-	padding: 0;
-	background: #fff;              /* visible on translucent header */
-	border: 1px solid #666;
-	border-radius: 6px;
-	cursor: pointer;
-  }
-  
-  /* Chevron size and smooth rotation */
-  #legend_view .legend_chevron {
-	width: 16px;
-	height: 16px;
-	display: block;
-	transition: transform 120ms ease;
-  }
-  
-  /* Rotate chevron to indicate collapsed state */
-  #legend_view.collapsed .legend_chevron {
-	transform: rotate(180deg);
-  }
-  
-  /* Keep content hidden when collapsed (existing behavior) */
-  #legend_view.collapsed #legend_content {
-	display: none;
-  }
-  
+ 
   /* ===================================================================
    CHANGED: Settings panel (#classification_view) — slide-in from the
    right edge, matching the burger menu (#selection_box) behavior.
@@ -1301,4 +1207,86 @@ div#classification_view {
    and right-align their text so it sits flush against the number input. */
 #classification_view_data .classborder_label {
     text-align: right;              /* CHANGED: label text hugs the input field */
+}
+
+/* ===================================================================
+   CHANGED: Legend collapse — elegant full-bar toggle with borderless
+   chevron and smooth accordion animation.
+   =================================================================== */
+
+  /* CHANGED: legend title bar — increased horizontal padding to keep text
+     and chevron away from the rounded border edges */
+	 #legend_view .title_bar {
+		background-color: transparent !important;
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		justify-content: space-between;
+		padding: 8px 14px;              /* CHANGED: match year badge padding exactly */
+		height: auto;
+		line-height: 1.2;
+		text-align: left;
+		position: static;
+		margin: 0;                      /* CHANGED: zero all margins so collapsed height equals content only */
+		width: auto;                    /* CHANGED: override global h2.title_bar width:100% — prevents chevron overflow */
+		box-sizing: border-box;         /* CHANGED: include padding in width calculation */
+	  }
+
+	
+
+/* CHANGED: hover feedback on the whole title bar */
+#legend_view .title_bar:hover {
+    color: #000;                              /* CHANGED: darken text on hover */
+}
+
+/* CHANGED: focus outline for keyboard accessibility */
+#legend_view .title_bar:focus-visible {
+    outline: 2px solid #356184;               /* CHANGED: visible focus ring */
+    outline-offset: 2px;
+    border-radius: 4px;
+}
+
+/* CHANGED: chevron is now a bare inline SVG — no button box, no border */
+#legend_view .legend_chevron {
+    width: 18px;                              /* CHANGED: slightly larger for visibility */
+    height: 18px;
+    display: block;
+    flex-shrink: 0;                           /* CHANGED: prevent shrinking */
+    transition: transform 0.25s ease;         /* CHANGED: slower, smoother rotation */
+    color: #666;                              /* CHANGED: subtle grey; stroke uses currentColor */
+}
+
+/* CHANGED: hover makes chevron darker */
+#legend_view .title_bar:hover .legend_chevron {
+    color: #333;
+}
+
+/* CHANGED: rotate chevron when collapsed */
+#legend_view.collapsed .legend_chevron {
+    transform: rotate(180deg);
+}
+
+/* CHANGED: smooth accordion via max-height + opacity transition
+   instead of abrupt display:none */
+   #legend_view #legend_content {
+    overflow: hidden;
+    max-height: 600px;
+    opacity: 1;
+    transition: max-height 0.3s ease,
+                opacity 0.2s ease,
+                margin 0.3s ease,             /* CHANGED: animate margin collapse so it shrinks smoothly */
+                padding 0.3s ease;            /* CHANGED: animate padding collapse */
+}
+/* CHANGED: collapsed state — zero height, zero spacing, transparent, non-interactive */
+#legend_view.collapsed #legend_content {
+    max-height: 0;
+    opacity: 0;
+    pointer-events: none;
+    margin: 0;                                /* CHANGED: collapse view_content's 10px margin */
+    padding: 0;                               /* CHANGED: collapse any padding */
+}
+
+/* CHANGED: collapsed legend shrinks to just the title bar */
+#legend_view.collapsed {
+    min-height: 0;
 }

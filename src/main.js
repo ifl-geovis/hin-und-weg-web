@@ -49,15 +49,6 @@ let app =
 			//	maxZoom: 19,
 			//},
 			{
-			// OpenStreetMap.DE — German community tile server that renders
-				// all labels using the name:de tag, so everything is in German.
-				name: "OpenStreetMap (deutsch)",
-				url: "https://{s}.tile.openstreetmap.de/tiles/osmde/{z}/{x}/{y}.png",
-				attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-				maxZoom: 18,
-				// License: ODbL — free with attribution (same as standard OSM)
-			},
-			{
 				// CHANGED: CartoDB Positron — very clean, light style, no sea borders
 				name: "CartoDB Positron",
 				url: "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
@@ -899,9 +890,15 @@ function refresh_legend() {
 	}
 
 	legendHtml += '</div>';
-	legend_content.innerHTML = legendHtml;
-	legend.style.display = "block";
-
+	    // CHANGED: write into the inner container so the accordion wrapper stays intact
+		const inner = document.getElementById('legend_content_inner');
+		if (inner) {
+			inner.innerHTML = legendHtml;
+		} else {
+			legend_content.innerHTML = legendHtml; // CHANGED: fallback if inner doesn't exist
+		}
+		legend.style.display = "block";
+	
 	// Collapsed state
 	if (app.view.legend_collapsed) legend.classList.add('collapsed');
 	else legend.classList.remove('collapsed');
@@ -969,25 +966,49 @@ function move_start_legend(event, viewid)
 	app.status.dragstart_y_legend = event.clientY;
 }
 
+// CHANGED: set a flag if the user actually moved the legend during drag,
+// so toggle_legend() can distinguish a drag from a click on the same element.
 function move_stop_legend(event, viewid)
 {
-	app.view.positions[viewid].x -= event.clientX - app.status.dragstart_x_legend;
-	app.view.positions[viewid].y -= event.clientY - app.status.dragstart_y_legend;
-	let view = document.getElementById(viewid);
-	view.style.right = app.view.positions[viewid].x + "px";
-	view.style.bottom = app.view.positions[viewid].y + "px";
+    const dx = event.clientX - app.status.dragstart_x_legend;
+    const dy = event.clientY - app.status.dragstart_y_legend;
+
+    // CHANGED: only reposition if the pointer actually moved (> 4px threshold)
+    if (Math.abs(dx) > 4 || Math.abs(dy) > 4) {
+        app.status._legendDragMoved = true; // CHANGED: flag so toggle_legend() skips
+        app.view.positions[viewid].x -= dx;
+        app.view.positions[viewid].y -= dy;
+        let view = document.getElementById(viewid);
+        view.style.right = app.view.positions[viewid].x + "px";
+        view.style.bottom = app.view.positions[viewid].y + "px";
+    }
 }
 
+// CHANGED: toggle_legend now works with the <h2> as both the drag handle
+// and the toggle button. We prevent toggling if the user was dragging
+// (drag moves the legend; click toggles it — we distinguish by movement).
 function toggle_legend(event) {
-	// Prevent click from interfering with dragging
-	if (event && typeof event.stopPropagation === 'function') event.stopPropagation();
-	const legend = document.getElementById('legend_view');
-	if (!legend) return;
-	const collapsed = legend.classList.toggle('collapsed');
-	const btn = document.getElementById('legend_toggle');
-	if (btn) btn.setAttribute('aria-expanded', (!collapsed).toString());
-	app.view.legend_collapsed = collapsed;
-  }
+    // CHANGED: prevent toggle from firing during drag operations
+    if (event && typeof event.stopPropagation === 'function') event.stopPropagation();
+
+    // CHANGED: if the pointer moved significantly since dragstart, treat it as a drag, not a click
+    if (app.status._legendDragMoved) {
+        app.status._legendDragMoved = false;
+        return;
+    }
+
+    const legend = document.getElementById('legend_view');
+    if (!legend) return;
+
+    const collapsed = legend.classList.toggle('collapsed');
+
+    // CHANGED: aria-expanded is now on the <h2> itself (id="legend_toggle")
+    const toggle = document.getElementById('legend_toggle');
+    if (toggle) toggle.setAttribute('aria-expanded', (!collapsed).toString());
+
+    app.view.legend_collapsed = collapsed;
+}
+
   
 // CHANGED: added mutual-exclusion logic so that opening the burger menu
 // automatically closes the settings panel (and vice versa via toggle_settings_panel)

@@ -230,34 +230,43 @@ onclick="toggle_settings_panel()">
 	<!-- index.html (changed): crisp, visible chevron; no text glyph -->
 <!-- CHANGED: arrow is an inline SVG chevron, placed right next to “Legende” inside the legend box -->
 <!-- index.html (changed): arrow is an inline SVG chevron; kept inline next to “Legende” -->
-<h2 class="title_bar"
-    draggable="true"
-    ondragstart="move_start_legend(event, 'legend_view')"
-    ondragend="move_stop_legend(event, 'legend_view')">
-  Legende
-  <button id="legend_toggle"
-          class="legend_toggle"
-          type="button"
-          aria-expanded="true"
-          aria-controls="legend_content"
-          title="Legende ein-/ausklappen"
-          onclick="toggle_legend(event)">
-    <!-- Chevron; CSS will center it and rotate when collapsed -->
-    <svg class="legend_chevron" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-      <polyline points="6,14 12,8 18,14"
-                stroke="#333"
-                stroke-width="3"
-                fill="none"
-                stroke-linecap="round"
-                stroke-linejoin="round"></polyline>
-    </svg>
-  </button>
-</h2>
+<!-- CHANGED: entire title bar is now the clickable toggle (no separate button);
+     the chevron sits at the right edge with no box around it -->
+	 <h2 class="title_bar"
+	 draggable="true"
+	 ondragstart="move_start_legend(event, 'legend_view')"
+	 ondragend="move_stop_legend(event, 'legend_view')"
+	 id="legend_toggle"
+	 role="button"
+	 tabindex="0"
+	 aria-expanded="true"
+	 aria-controls="legend_content"
+	 title="Legende ein-/ausklappen"
+	 onclick="toggle_legend(event)"
+	 onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggle_legend(event);}">
+   Legende
+   <!-- CHANGED: chevron is a bare inline SVG, no wrapping <button>;
+		CSS rotates it smoothly on collapse -->
+   <svg class="legend_chevron" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+	 <polyline points="6,14 12,8 18,14"
+			   stroke="currentColor"
+			   stroke-width="2.5"
+			   fill="none"
+			   stroke-linecap="round"
+			   stroke-linejoin="round"></polyline>
+   </svg>
+ </h2>
+ 
 
 
 
-	<div id="legend_content" class="view_content"></div>
-  </div>
+	<!-- CHANGED: added legend_content_inner so we can measure scrollHeight
+	     for smooth accordion animation -->
+		 <div id="legend_content" class="view_content">
+			<div id="legend_content_inner"></div>
+		</div>
+	  </div>
+	
   
 
 		<!-- dataset loader dialog -->
