@@ -778,9 +778,6 @@ function refresh_title_years() {
 }
 
 
-
-
-
 function refresh_legend() {
 	const legend = document.getElementById("legend_view");
 	const legend_content = document.getElementById("legend_content");
