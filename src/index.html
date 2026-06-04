@@ -1,418 +1,126 @@
 <!DOCTYPE html>
-<html>
-	<head>
-		<title>hin&amp;weg web</title>
-		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-		<link rel="icon" type="image/x-icon" href="img/huw-logo_32.ico">
-		<link rel="stylesheet" href="lib/leaflet.css">
-		<link rel="stylesheet" href="lib/geostats.css">
-		<link rel="stylesheet" href="main.css">
-		<script type="text/javascript" src="lib/leaflet.js"></script>
-		<script type="text/javascript" src="lib/Leaflet.SwoopyArrow.js"></script>
-		<script type="text/javascript" src="lib/turf.min.js"></script>
-		<script type="text/javascript" src="lib/papaparse.min.js"></script>
-		<script type="text/javascript" src="lib/alasql.min.js"></script>
-		<script type="text/javascript" src="lib/chroma.min.js"></script>
-		<script type="text/javascript" src="lib/geostats.js"></script>
-		<script type="text/javascript" src="main.js"></script>
-		<script type="text/javascript" src="util.js"></script>
-		<script type="text/javascript" src="init.js"></script>
-		<script type="text/javascript" src="map.js"></script>
-		<script type="text/javascript" src="table.js"></script>
-		<script type="text/javascript" src="charts.js"></script>
-		<script type="text/javascript" src="dataset-loader.js"></script>
-	</head>
+<html lang="de">
+<head>
+    <title>hin&amp;weg — Wanderungen zwischen Landkreisen</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <link rel="icon" type="image/x-icon" href="img/huw-logo_32.ico">
 
-	<body>
+    <link rel="stylesheet" href="fonts/overpass.css">
+    <link rel="stylesheet" href="lib/leaflet.css">
+    <link rel="stylesheet" href="lib/geostats.css">
+    <link rel="stylesheet" href="main.css">
 
-<!-- title header -->
+    <script src="lib/leaflet.js"></script>
+    <script src="lib/Leaflet.SwoopyArrow.js"></script>
+    <script src="lib/turf.min.js"></script>
+    <script src="lib/alasql.min.js"></script>
+    <script src="lib/chroma.min.js"></script>
+    <script src="lib/geostats.js"></script>
+
+    <!-- Vorgeladene Daten (einmalig erzeugt durch tools/build-preload.js) -->
+    <script src="data/landkreise/preload.js"></script>
+
+    <script src="util.js"></script>
+    <script src="main.js"></script>
+    <script src="map.js"></script>
+    <script src="init.js"></script>
+</head>
+<body>
+
+<!-- Title header -->
 <div id="header">
-	<img src="img/huw-logo_32.png" title="hin&weg logo" />
-	<h1>
-		hin&weg web
-		<span id="versionsub"></span>
-	</h1>
-	<h3><span id="dataset_title"></span></h3>
+    <img src="img/huw-logo_32.png" alt="hin&weg Logo" />
+    <h1>hin&amp;weg</h1>
+    <h3 id="dataset_title">Wanderungen zwischen Landkreisen</h3>
 </div>
 
-<!-- CHANGED: year badge + play button grouped in a flex container;
-     positioned by JS to the right of the zoom control, below the header -->
-	 <div id="year_play_container">
-		<div id="current_year_badge" class="year-badge" aria-live="polite" title="Ausgewähltes Jahr"></div>
-		<button
-		  id="year_play_toggle"
-		  class="selector"
-		  type="button"
-		  aria-pressed="false"
-		  aria-label="Jahre abspielen"
-		  onclick="toggle_year_playback()"
-		  disabled>
-		  <img id="year_play_icon" src="img/play.svg" alt="" class="icon" aria-hidden="true" />
-		</button>
-	</div>
-	
-	
-<!-- credits -->
-<div id="credits">
-	<img src="img/ifl_logo.svg" height="40px" />
-	<img src="img/Signet_gruen_transparent.png" height="40px" />
-	<div id="credits_text">
-		<div id="text_with_links">
-			<span>Diese Maßnahme wird mitfinanziert mit Steuermitteln <br> auf Grundlage des vom Sächsischen Landtag <br> beschlossenen Haushaltes.</span>
-			<div id="link_container">
-				<a href="datenschutz.html">Datenschutz</a>
-				<a href="impressum.html">Impressum</a>
-			</div>
-		</div>
-	</div>
+<!-- Year badge + play button -->
+<div id="year_play_container">
+    <div id="current_year_badge" class="year-badge" aria-live="polite" title="Ausgewähltes Jahr"></div>
+    <button id="year_play_toggle" type="button"
+            aria-pressed="false" aria-label="Jahre abspielen"
+            onclick="toggle_year_playback()" disabled>
+        <img id="year_play_icon" src="img/play.svg" alt="" class="icon" aria-hidden="true" />
+    </button>
+</div>
+
+<!-- Year slider (Hands-On gelb) -->
+<div id="year_slider_container">
+    <label for="year_slider" class="year-slider-label">Jahr wählen</label>
+	<input type="range" id="year_slider" min="0" max="0" value="0" step="1" disabled />
+	           oninput="year_slider_changed(event)" disabled />
+    <div id="year_slider_marks" aria-hidden="true"></div>
+</div>
+
+<!-- Map -->
+<div id="leafletmap"></div>
+
+<!-- Feature info popup -->
+<div id="feature_info_popup"></div>
+
+<!-- Load indicator -->
+<div id="load_indicator">
+    <div id="load_indicator_text">Bitte warten!<br /><span id="load_indicator_message"></span></div>
+    <div id="load_inidicator_blocks">
+        <div class="load_inidicator_block"></div><div class="load_inidicator_block"></div>
+        <div class="load_inidicator_block"></div><div class="load_inidicator_block"></div>
+        <div class="load_inidicator_block"></div><div class="load_inidicator_block"></div>
+        <div class="load_inidicator_block"></div><div class="load_inidicator_block"></div>
+        <div class="load_inidicator_block"></div><div class="load_inidicator_block"></div>
+    </div>
 </div>
 
 <!-- Right-side action buttons -->
-<div id="menu_toggle_button"
-     class="action_button"
-     title="Menü ein-/ausblenden"
-     role="button"
-     aria-label="Menü ein-/ausblenden"
-     aria-controls="selection_box"
-     aria-expanded="false"
-     onclick="toggle_mobile_menu()">
-  <img src="img/menu-burger.svg" alt="" class="icon" aria-hidden="true" />
+<div id="zoom_home_fab" class="action_button" title="Zur Gesamtansicht">
+    <button type="button" aria-label="Zur Gesamtansicht" onclick="zoom_home()">
+        <img src="img/globe.svg" alt="" class="icon" aria-hidden="true" />
+    </button>
 </div>
 
-<div id="classification_button"
-     class="action_button"
-     title="Einstellungen"
-     role="button"
-     aria-label="Einstellungen ein-/ausblenden"
-     aria-controls="classification_view"
-     aria-expanded="false"
-     onclick="toggle_settings_panel()">
-  <img src="img/settings-sliders.svg" alt="" class="icon" aria-hidden="true" />
+<div id="map_bg_fab" class="action_button" title="Hintergrundkarte umschalten">
+    <button type="button" aria-label="Hintergrundkarte umschalten" onclick="map_background_switcher()">
+        <img src="img/map.svg" alt="" class="icon" aria-hidden="true" />
+    </button>
 </div>
 
-<div id="zoom_home_fab" class="action_button" title="zur Gesamtausdehnung zoomen">
-	<button id="zoom_home_button" type="button" aria-label="zur Gesamtausdehnung zoomen" onclick="zoom_home()">
-	  <img src="img/globe.svg" alt="" class="icon" aria-hidden="true" />
-	</button>
+<!-- Hands-On: Pfeile ein/aus (gelb) -->
+<div id="arrows_toggle_fab" class="action_button hands_on" title="Wanderungspfeile ein-/ausblenden">
+    <button id="arrows_toggle_button" type="button" aria-pressed="true"
+            aria-label="Wanderungspfeile ein-/ausblenden" onclick="toggle_arrows()">
+        <img id="arrows_toggle_icon" src="img/arrow.svg" alt="" class="icon" aria-hidden="true" />
+    </button>
 </div>
 
-<div id="map_bg_fab" class="action_button" title="Hintergrundkarte ein-/ausschalten">
-	<button id="map_background_switcher_button" type="button" aria-label="Hintergrundkarte ein-/ausschalten" onclick="map_background_switcher()">
-	  <img src="img/map.svg" alt="" class="icon" aria-hidden="true" />
-	</button>
-</div>
-
-
-<!-- map -->
-<div id="leafletmap"></div>
-
-<!-- feature info popup -->
-<div id="feature_info_popup"></div>
-
-<!-- load indicator -->
-<div id="load_indicator">
-	<div id="load_indicator_text">Bitte warten!<br /><span id="load_indicator_message"></span></div>
-	<div id="load_inidicator_blocks">
-		<div class="load_inidicator_block" id="load_inidicator_block_0"></div>
-		<div class="load_inidicator_block" id="load_inidicator_block_1"></div>
-		<div class="load_inidicator_block" id="load_inidicator_block_2"></div>
-		<div class="load_inidicator_block" id="load_inidicator_block_3"></div>
-		<div class="load_inidicator_block" id="load_inidicator_block_4"></div>
-		<div class="load_inidicator_block" id="load_inidicator_block_5"></div>
-		<div class="load_inidicator_block" id="load_inidicator_block_6"></div>
-		<div class="load_inidicator_block" id="load_inidicator_block_7"></div>
-		<div class="load_inidicator_block" id="load_inidicator_block_8"></div>
-		<div class="load_inidicator_block" id="load_inidicator_block_9"></div>
-	</div>
-</div>
-
-<!-- Selection sidebar (burger menu) -->
-<div id="selection_box" aria-hidden="true">
-	<!-- 1. Thema -->
-	<label for="theme_selector">Thema:</label><br />
-	<select name="theme" id="theme_selector" class="selector" oninput="theme_selected(event)" disabled>
-	  <option value="von">Von</option>
-	  <option value="nach">Nach</option>
-	  <option value="saldi" selected>Saldi</option>
-	</select>
-	<br />
-	<fieldset id="data_interpretation" onchange="data_interpretation_changed(event)">
-		<span class="control-inline">
-		  <input type="radio" id="absolute_selector" class="selector" name="data_interpretation" value="absolute" checked disabled />
-		  <label for="absolute_selector">Umzüge</label>
-		</span>
-		<br />
-		<span class="control-inline">
-		  <input type="radio" id="migration_rate_selector" class="selector" name="data_interpretation" value="migration_rate" disabled />
-		  <label for="migration_rate_selector">Wanderungsrate</label>
-		</span>
-	</fieldset>
-	<hr />
-
-	<!-- 2. Filter -->
-	<div id="filter">
-	  <span>Filtern:</span><br />
-	  <div id="min_filter_container">
-		<label for="filter_min">untere Grenze:</label><br />
-		<input name="filter_min" id="filter_min" class="filter" type="number" value="0" oninput="filter_changed(event)" disabled /><br />
-	  </div>
-	  <label for="filter_max">obere Grenze:</label><br />
-	  <input name="filter_max" id="filter_max" class="filter" type="number" value="0" oninput="filter_changed(event)" disabled /><br />
-	</div>
-	<hr />
-
-	<!-- 3. Jahre -->
-	<div id="years_selection">
-	  <label for="year_selector">Jahre:</label><br />
-	  <select name="years" id="year_selector" class="selector" size="10" oninput="year_selected(event)" multiple disabled>
-	  </select>
-	</div>
-	<hr />
-
-	<!-- 4. Fläche -->
-	<label for="area_selector">Fläche:</label><br />
-	<select name="area" id="area_selector" class="selector" oninput="area_selected(event)" disabled>
-	  <option value="">-- Fläche auswählen --</option>
-	</select>
-	<br />
-	<span class="control-inline">
-		<input type="checkbox" id="area_inside_selector" class="selector" name="area_inside" value="area_inside" onchange="area_inside_changed(event)" disabled checked />
-		<label for="area_inside_selector">Umzüge innerhalb</label>
-	</span>
-	<hr />
-
-	<!-- 5. Kartenlabels -->
-	<label for="label_selector">Kartenlabels:</label><br />
-	<select name="labels" id="label_selector" class="selector" oninput="labels_selected(event)" disabled>
-	  <option value="none" selected>keine Anzeige</option>
-	  <option value="name">Namen anzeigen</option>
-	  <option value="number">Anzahl/Rate anzeigen</option>
-	</select>
-	<br />
-	<span class="control-inline">
-		<input type="checkbox" id="swoopy_arrows_selector" class="selector" name="swoopy_arrows" value="swoopy_arrows" onchange="swoopy_arrows_changed(event)" disabled />
-		<label for="swoopy_arrows_selector">Bewegungen visualisieren</label>
-	</span>
-	<hr />
-
-	<!-- 6. Datensatz und Datenkategorie -->
-	<label for="dataset_name_value">Datensatz:</label><br />
-	<input name="dataset_name_value" id="dataset_name_value" type="text" value="" readonly onclick="dataset_load()" /><br />
-	<label for="category_name_value">Datenkategorie:</label><br />
-	<input name="category_name_value" id="category_name_value" type="text" value="" readonly onclick="dataset_load()" /><br />
-	<hr />
-
-	<!-- 7. Transparenz -->
-	<label for="map_transparency_selector">Transparenz:</label>
-	<input name="map_transparency" id="map_transparency_selector" class="selector" type="number" value="0.5" min="0.0" max="1.0" step="0.1" oninput="map_transparency_changed(event)" />
-</div>
-
-<!-- Legend view -->
+<!-- Legend -->
 <div id="legend_view">
-	<!-- Title bar is the clickable toggle; chevron at right edge -->
-	<h2 class="title_bar"
-		draggable="true"
-		ondragstart="move_start_legend(event, 'legend_view')"
-		ondragend="move_stop_legend(event, 'legend_view')"
-		id="legend_toggle"
-		role="button"
-		tabindex="0"
-		aria-expanded="true"
-		aria-controls="legend_content"
-		title="Legende ein-/ausklappen"
-		onclick="toggle_legend(event)"
-		onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggle_legend(event);}">
-		Legende
-		<svg class="legend_chevron" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-			<polyline points="6,14 12,8 18,14"
-				stroke="currentColor"
-				stroke-width="2.5"
-				fill="none"
-				stroke-linecap="round"
-				stroke-linejoin="round"></polyline>
-		</svg>
-	</h2>
-	<div id="legend_content" class="view_content">
-		<div id="legend_content_inner"></div>
-	</div>
+    <h2 class="title_bar"
+        id="legend_toggle"
+        role="button" tabindex="0"
+        aria-expanded="true" aria-controls="legend_content"
+        title="Legende ein-/ausklappen"
+        onclick="toggle_legend(event)"
+        onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggle_legend(event);}">
+        Legende
+        <svg class="legend_chevron" viewBox="0 0 24 24" aria-hidden="true">
+            <polyline points="6,14 12,8 18,14" stroke="currentColor" stroke-width="2.5"
+                      fill="none" stroke-linecap="round" stroke-linejoin="round"></polyline>
+        </svg>
+    </h2>
+    <div id="legend_content" class="view_content">
+        <div id="legend_content_inner"></div>
+    </div>
 </div>
 
-<!-- Dataset loader dialog -->
-<div id="datasetloader_dialog" class="viewcomponent">
-	<h2 class="title_bar" draggable="true" ondragstart="move_start(event, 'datasetloader_dialog')" ondragend="move_stop(event, 'datasetloader_dialog')">
-		Datensatz einladen
-	</h2>
-	<div id="datasetloader_close_button" class="close_button" onclick="close_view('datasetloader_dialog')">
-		<img src="img/x-square.svg" width="100%" height="100%" />
-	</div>
-	<div id="datasetloader_content">
-		<p>Bitte laden sie den gewünschten Datensatz</p>
-		<label for="dataset_selector">Datensatz:</label>
-		<select name="dataset" id="dataset_selector" oninput="dataset_selected(event)">
-			<option value="">-- Bitte wählen sie einen Datensatz aus --</option>
-		</select>
-		<br />
-		<label for="category_selector">Datenkategorie:</label>
-		<select name="category" id="category_selector" oninput="category_selected(event)" disabled>
-			<option value="">-- Bitte wählen sie eine Datenkategorie aus --</option>
-		</select>
-		<br />
-		<button name="load_dataset" id="load_dataset_button" onclick="load_dataset()" disabled>Daten einladen</button>
-	</div>
+<!-- Idle overlay (Hinweis nach Inaktivität) -->
+<div id="idle_overlay" aria-hidden="true">
+    <div id="idle_overlay_content">
+        <h2>Wanderungen in Deutschland</h2>
+        <p>Tippen Sie auf einen <strong>Landkreis</strong>, um die Wanderungssaldi zu sehen.</p>
+        <p>Mit dem <strong>Schieberegler</strong> wählen Sie das Jahr.</p>
+    </div>
 </div>
 
-<!-- Settings panel (slide-in) -->
-<div id="classification_view" class="viewcomponent" aria-hidden="true">
-	<h2 class="title_bar">Einstellungen</h2>
-	<div id="classification_view_close_button" class="close_button" onclick="toggle_settings_panel()">
-		<img src="img/x-square.svg" width="100%" height="100%" />
-	</div>
-	<div id="classification_view_data" class="view_content">
-		<label for="classification_selector">Klassifikationsalgorithmus:</label><br />
-		<!-- FIXED: name="classification" instead of duplicate name="area" -->
-		<select name="classification" id="classification_selector" class="selector" oninput="classification_selected(event)">
-			<option value="equidistant">abstandsgetreu</option>
-			<option value="stddeviation">Standardabweichung</option>
-			<option value="arithmetic_progression">arithmetische Reihe</option>
-			<option value="quantile" selected>Quantile</option>
-			<option value="jenks">Brüche nach Jenks</option>
-			<option value="own">eigene Klassifikation</option>
-		</select>
-		<div id="classification_message"></div>
-		<br />
-		<label for="class_number_selector">Klassenzahl:</label><br />
-		<!-- FIXED: name="class_number" instead of duplicate name="area" -->
-		<select name="class_number" id="class_number_selector" class="selector" oninput="class_number_selected(event, true)">
-			<option value="automatic" selected>automatische Wahl</option>
-			<option value="1">1</option>
-			<option value="2">2</option>
-			<option value="3">3</option>
-			<option value="4">4</option>
-			<option value="5">5</option>
-			<option value="6">6</option>
-			<option value="7">7</option>
-			<option value="8">8</option>
-			<option value="9">9</option>
-			<option value="10">10</option>
-		</select>
-		<div id="class_number_negative_section">
-			<label for="class_number_selector_negative">Klassenzahl für negative Zahlen:</label><br />
-			<!-- FIXED: name="class_number_negative" instead of duplicate name="area" -->
-			<select name="class_number_negative" id="class_number_selector_negative" class="selector" oninput="class_number_selected(event, false)">
-				<option value="automatic" selected>automatische Wahl</option>
-				<option value="1">1</option>
-				<option value="2">2</option>
-				<option value="3">3</option>
-				<option value="4">4</option>
-				<option value="5">5</option>
-				<option value="6">6</option>
-				<option value="7">7</option>
-				<option value="8">8</option>
-				<option value="9">9</option>
-				<option value="10">10</option>
-			</select>
-		</div>
-		<hr />
-		<div id="classborder_selection_section">
-			Eigene Klassifikation:<br />
-			<label for="classborder1_selector" class="classborder_label">Klassengrenze 1:</label>
-			<input name="classborder1" id="classborder1_selector" class="selector" type="number" value="1" min="0" oninput="classborder_changed(event)" /><br />
-			<label for="classborder2_selector" class="classborder_label">Klassengrenze 2:</label>
-			<input name="classborder2" id="classborder2_selector" class="selector" type="number" value="2" min="0" oninput="classborder_changed(event)" /><br />
-			<label for="classborder3_selector" class="classborder_label">Klassengrenze 3:</label>
-			<input name="classborder3" id="classborder3_selector" class="selector" type="number" value="3" min="0" oninput="classborder_changed(event)" /><br />
-			<label for="classborder4_selector" class="classborder_label">Klassengrenze 4:</label>
-			<input name="classborder4" id="classborder4_selector" class="selector" type="number" value="4" min="0" oninput="classborder_changed(event)" /><br />
-			<label for="classborder5_selector" class="classborder_label">Klassengrenze 5:</label>
-			<input name="classborder5" id="classborder5_selector" class="selector" type="number" value="5" min="0" oninput="classborder_changed(event)" /><br />
-			<label for="classborder6_selector" class="classborder_label">Klassengrenze 6:</label>
-			<input name="classborder6" id="classborder6_selector" class="selector" type="number" value="6" min="0" oninput="classborder_changed(event)" /><br />
-			<label for="classborder7_selector" class="classborder_label">Klassengrenze 7:</label>
-			<input name="classborder7" id="classborder7_selector" class="selector" type="number" value="7" min="0" oninput="classborder_changed(event)" /><br />
-			<label for="classborder8_selector" class="classborder_label">Klassengrenze 8:</label>
-			<input name="classborder8" id="classborder8_selector" class="selector" type="number" value="8" min="0" oninput="classborder_changed(event)" /><br />
-			<label for="classborder9_selector" class="classborder_label">Klassengrenze 9:</label>
-			<input name="classborder9" id="classborder9_selector" class="selector" type="number" value="9" min="0" oninput="classborder_changed(event)" /><br />
-			<label for="classborder10_selector" class="classborder_label">Klassengrenze 10:</label>
-			<input name="classborder10" id="classborder10_selector" class="selector" type="number" value="10" min="0" oninput="classborder_changed(event)" /><br />
-			<div id="classborder_negative_section">
-				<hr />
-				Eigene Klassifikation für negative Werte:<br />
-				<label for="classborder1_negative_selector" class="classborder_label">Klassengrenze 1:</label>
-				<input name="classborder1_negative" id="classborder1_negative_selector" class="selector" type="number" value="-1" max="0" oninput="classborder_changed(event)" /><br />
-				<label for="classborder2_negative_selector" class="classborder_label">Klassengrenze 2:</label>
-				<input name="classborder2_negative" id="classborder2_negative_selector" class="selector" type="number" value="-2" max="0" oninput="classborder_changed(event)" /><br />
-				<label for="classborder3_negative_selector" class="classborder_label">Klassengrenze 3:</label>
-				<input name="classborder3_negative" id="classborder3_negative_selector" class="selector" type="number" value="-3" max="0" oninput="classborder_changed(event)" /><br />
-				<label for="classborder4_negative_selector" class="classborder_label">Klassengrenze 4:</label>
-				<input name="classborder4_negative" id="classborder4_negative_selector" class="selector" type="number" value="-4" max="0" oninput="classborder_changed(event)" /><br />
-				<label for="classborder5_negative_selector" class="classborder_label">Klassengrenze 5:</label>
-				<input name="classborder5_negative" id="classborder5_negative_selector" class="selector" type="number" value="-5" max="0" oninput="classborder_changed(event)" /><br />
-				<label for="classborder6_negative_selector" class="classborder_label">Klassengrenze 6:</label>
-				<input name="classborder6_negative" id="classborder6_negative_selector" class="selector" type="number" value="-6" max="0" oninput="classborder_changed(event)" /><br />
-				<label for="classborder7_negative_selector" class="classborder_label">Klassengrenze 7:</label>
-				<input name="classborder7_negative" id="classborder7_negative_selector" class="selector" type="number" value="-7" max="0" oninput="classborder_changed(event)" /><br />
-				<label for="classborder8_negative_selector" class="classborder_label">Klassengrenze 8:</label>
-				<input name="classborder8_negative" id="classborder8_negative_selector" class="selector" type="number" value="-8" max="0" oninput="classborder_changed(event)" /><br />
-				<label for="classborder9_negative_selector" class="classborder_label">Klassengrenze 9:</label>
-				<input name="classborder9_negative" id="classborder9_negative_selector" class="selector" type="number" value="-9" max="0" oninput="classborder_changed(event)" /><br />
-				<label for="classborder10_negative_selector" class="classborder_label">Klassengrenze 10:</label>
-				<input name="classborder10_negative" id="classborder10_negative_selector" class="selector" type="number" value="-10" max="0" oninput="classborder_changed(event)" /><br />
-			</div>
-			<hr />
-		</div>
-		<div class="classification_overall_toggle">
-			<input type="checkbox" id="classification_overall_selector" class="selector" oninput="classification_overall_changed(event)" />
-			<label for="classification_overall_selector">Klassifikation gesamt</label>
-		</div>
-		<hr />
-		Farben:
-		<div id="colors_positive_selections"></div>
-		<div id="colors_negative_section">
-			<hr />
-			Farben für die negative Skala:
-			<div id="colors_negative_selections"></div>
-		</div>
-	</div>
-</div>
-
-<!-- Statistics view -->
-<div id="statistics_view" class="viewcomponent">
-	<h2 class="title_bar" draggable="true" ondragstart="move_start(event, 'statistics_view')" ondragend="move_stop(event, 'statistics_view')">
-		Statistiken
-	</h2>
-	<div id="statistics_view_close_button" class="close_button" onclick="close_view('statistics_view')">
-		<img src="img/x-square.svg" width="100%" height="100%" />
-	</div>
-	<div id="statistics_view_data" class="view_content"></div>
-</div>
-
-<!-- Table view -->
-<div id="table_view" class="viewcomponent">
-	<h2 class="title_bar" draggable="true" ondragstart="move_start(event, 'table_view')" ondragend="move_stop(event, 'table_view')">
-		tabellarische Ansicht
-	</h2>
-	<div id="table_view_close_button" class="close_button" onclick="close_view('table_view')">
-		<img src="img/x-square.svg" width="100%" height="100%" />
-	</div>
-	<div id="table_view_data" class="view_content"></div>
-</div>
-
-<!-- Bar chart view -->
-<div id="barchart_view" class="viewcomponent">
-	<h2 class="title_bar" draggable="true" ondragstart="move_start(event, 'barchart_view')" ondragend="move_stop(event, 'barchart_view')">
-		Balkendiagramm
-	</h2>
-	<div id="barchart_view_close_button" class="close_button" onclick="close_view('barchart_view')">
-		<img src="img/x-square.svg" width="100%" height="100%" />
-	</div>
-	<div id="barchart_view_data" class="view_content"></div>
-</div>
-
-<script type="text/javascript" defer>
-	init();
-</script>
-
-	</body>
+<script>init();</script>
+</body>
 </html>
