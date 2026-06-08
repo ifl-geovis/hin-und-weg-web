@@ -427,9 +427,10 @@ h2.title_bar {
 div#legend_view {
     display: none;
     position: fixed;
-    right: 88px;                /* neben den Action-Buttons */
-    bottom: 30px;
+    right: 88px;                  /* neben den Action-Buttons */
+    top: 90px;                    /* statt bottom: 30px → nach oben */
     min-width: 220px;
+    max-width: 320px;
     min-height: 0;
     background: var(--hw-bg-overlay);
     border: 2px solid var(--hw-purple-dark);
@@ -439,6 +440,7 @@ div#legend_view {
     z-index: 1000;
     box-shadow: var(--hw-shadow);
 }
+
 div#legend_content {
     margin: 0;
     padding: 12px 14px;
@@ -673,10 +675,10 @@ fieldset#data_interpretation {
 
     div#legend_view {
         right: 72px;
-        bottom: 130px;
-        max-width: 60%;
+        top: 80px;                    /* statt bottom: 130px */
+        bottom: auto;
+        max-width: 50%;
     }
-
     div#feature_info_popup {
         font-size: 0.9rem;
         padding: 10px 12px;

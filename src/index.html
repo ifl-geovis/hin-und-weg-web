@@ -48,8 +48,10 @@
 <!-- Year slider (Hands-On gelb) -->
 <div id="year_slider_container">
     <label for="year_slider" class="year-slider-label">Jahr wählen</label>
-	<input type="range" id="year_slider" min="0" max="0" value="0" step="1" disabled />
-	           oninput="year_slider_changed(event)" disabled />
+    <input type="range" id="year_slider"
+           min="0" max="0" value="0" step="1"
+           oninput="year_slider_changed(event)"
+           disabled />
     <div id="year_slider_marks" aria-hidden="true"></div>
 </div>
 
@@ -88,7 +90,7 @@
 <div id="arrows_toggle_fab" class="action_button hands_on" title="Wanderungspfeile ein-/ausblenden">
     <button id="arrows_toggle_button" type="button" aria-pressed="true"
             aria-label="Wanderungspfeile ein-/ausblenden" onclick="toggle_arrows()">
-        <img id="arrows_toggle_icon" src="img/arrow.svg" alt="" class="icon" aria-hidden="true" />
+        <img id="arrows_toggle_icon" src="img/Pfeil.png" alt="" class="icon" aria-hidden="true" />
     </button>
 </div>
 
