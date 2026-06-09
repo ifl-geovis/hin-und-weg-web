@@ -12,6 +12,7 @@
   "type": "commonjs",
   "dependencies": {
     "@turf/turf": "^7.3.5",
-    "papaparse": "^5.5.3"
+    "papaparse": "^5.5.3",
+    "simple-statistics": "^7.9.0"
   }
 }

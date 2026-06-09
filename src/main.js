@@ -9,24 +9,19 @@
    let app = {
     configuration: {
         colors: {
-            "red_scale": {
-                title: "Rot",
-                scale: [chroma("#E45A47").brighten(2), chroma("#E45A47").darken(2)],
+            /* Lila-Skala für POSITIVE Werte (Zuwanderung) — hell → dunkel */
+            "purple_scale": {
+                title: "Lila",
+                scale: ['#D8CEF7', '#8B72EA', '#5D3EE1'],
             },
-            "blue_scale": {
-                title: "Blau",
-                scale: [chroma("#356184").brighten(2), chroma("#356184").darken(2)],
-            },
-            "blue_scale_negative": {
-                title: "Blau",
-                scale: [chroma("#356184").brighten(2), chroma("#356184").darken(2)],
-            },
+            /* Gelb-Skala für NEGATIVE Werte (Abwanderung) — hell → dunkel */
+        "yellow_scale": {
+    title: "Gelb (Abwanderung)",
+    scale: ['#FFB400', '#FFE08A', '#FFF4D1'],   /* dunkel → hell */
+},
+            /* Legacy-Aliase entfernt — sie haben den Bug verursacht */
             "Greys": { title: "Graustufen", scale: "Greys" },
-            "green_scale": {
-                title: "Grün",
-                scale: [chroma("green").brighten(3), chroma("green").darken(3)],
-            },
-            "RdYlBu": { title: "Rot - Gelb - Blau", scale: "RdYlBu" },
+            "RdYlBu": { title: "Lila-Weiß-Gelb", scale: ['#5D3EE1', '#FFFFFF', '#FFB400'] },
         }
     },
     map: {
@@ -86,8 +81,8 @@
         classification: 'quantile',
         class_number: 'automatic',
         class_number_negative: 'automatic',
-        colors: 'red_scale',
-        colors_negative: 'blue_scale_negative',
+        colors:'purple_scale',
+        colors_negative: 'yellow_scale',
         classborders: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
         classborders_negative: [-10, -9, -8, -7, -6, -5, -4, -3, -2, -1],
         map_opacity: 0.8,
@@ -437,7 +432,7 @@ function set_classification_algorithm(gs, classcount, negative) {
         else gs.getClassQuantile(classcount);
     } catch (e) {
         console.error("Classification error:", e);
-        app.selection.classification = "equidistant";
+        app.selection.classification = "jenks";
         gs.getClassEqInterval(classcount);
     }
 }
@@ -679,8 +674,8 @@ function keep_load_indicator() {
 }
 
 function highlight_load_indicator(index, indicator) {
-    const palette = ['#4a2c7a', '#6e51a0', '#9580bf', '#b9a9d4'];
-    if (index === app.view.load_indicator_state) indicator.style.backgroundColor = palette[0];
+    const palette = ['#5D3EE1', '#8B72EA', '#B5A4F0', '#D8CEF7'];
+        if (index === app.view.load_indicator_state) indicator.style.backgroundColor = palette[0];
     else if ((index + 1) === app.view.load_indicator_state) indicator.style.backgroundColor = palette[1];
     else if ((index + 2) === app.view.load_indicator_state) indicator.style.backgroundColor = palette[2];
     else if ((index + 3) === app.view.load_indicator_state) indicator.style.backgroundColor = palette[3];

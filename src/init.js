@@ -330,8 +330,8 @@ function init_selections() {
     app.selection.data_interpretation = 'absolute';
     app.selection.swoopy_arrows = true;
     app.selection.labels = 'none';
-    app.selection.colors = 'red_scale';
-    app.selection.colors_negative = 'blue_scale_negative';
+    app.selection.colors =  'purple_scale';
+    app.selection.colors_negative = 'yellow_scale';
     app.selection.tablesort = null;
     app.selection.tablesort_ascending = true;
 

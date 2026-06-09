@@ -171,9 +171,10 @@ function add_swoopy_arrows() {
     if (minNeg === 0) minNeg = -1;
     if (maxPos === 0) maxPos = 1;
 
-    const COLOR_INFLOW  = '#4a2c7a';   /* Lila dunkel — Zuwanderung */
-    const COLOR_OUTFLOW = '#fbb614';   /* Gelb dunkel — Abwanderung (Hands-On) */
-    /* Alternative: rot/blau wie früher; hier Corporate-Design-Töne. */
+/* Pfeilfarben aus CSS-Variablen lesen — bleibt CD-konform */
+const rootStyle = getComputedStyle(document.documentElement);
+const COLOR_INFLOW  = rootStyle.getPropertyValue('--hw-arrow-inflow').trim()  || '#0a0a0a';
+const COLOR_OUTFLOW = rootStyle.getPropertyValue('--hw-arrow-outflow').trim() || '#00B8A9';
 
     for (const dataset of visible) {
         if (dataset.migrations === 0 || dataset.migrations === null || dataset.migrations === undefined) continue;
@@ -263,11 +264,10 @@ function map_style_selected(feature) {
     return {
         weight: 3,
         opacity: is_selected ? 1 : 0,
-        color: '#4a2c7a',                  /* Corporate-Lila statt schwarz */
+        color: '#5D3EE1',                  /* CD-Lila */
         fillOpacity: 0,
     };
 }
-
 
 /* --- Map interaction ------------------------------------------------------ */
 
@@ -433,9 +433,9 @@ function is_selected_feature(feature_id) {
 function highlight_feature(event) {
     const layer = event.target;
     layer.setStyle({
-        fillColor: '#fbb614',                 /* Hands-On Gelb für Hover */
-        fillOpacity: 0.5,
-        color: '#4a2c7a',
+        fillColor: '#FFB400',                /* CD-Gelb */
+        fillOpacity: 0.45,
+        color: '#5D3EE1',                    /* CD-Lila Outline */
         weight: 2.5,
         opacity: 1,
     });

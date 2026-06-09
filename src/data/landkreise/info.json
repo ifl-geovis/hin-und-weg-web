@@ -11,6 +11,13 @@
 			"name": "Gesamtdaten",
 			"migrations":
 			{
+"2024": "Landkreise_2024.csv",
+"2023": "Landkreise_2023.csv",
+"2022": "Landkreise_2022.csv",
+				"2021": "Landkreise_2021.csv",
+				"2020": "Landkreise_2020.csv",
+				"2019": "Landkreise_2019.csv",
+				"2018": "Landkreise_2018.csv",
 				"2017": "Landkreise_2017.csv",
 				"2016": "Landkreise_2016.csv",
 				"2015": "Landkreise_2015.csv",

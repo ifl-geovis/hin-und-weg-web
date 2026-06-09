@@ -2,23 +2,29 @@
    main.css — Medienstation (Corporate Design hin&weg)
    Schwarz: Text. Lila: Auszeichnung. Gelb: Hands-On.
    ========================================================================== */
-
    :root {
-    /* === Corporate Design — bitte mit Grafikteam abgleichen === */
-    --hw-text:        #0a0a0a;             /* CMYK 0/0/0/98 Text-Schwarz */
-    --hw-purple-dark: #4a2c7a;             /* PLATZHALTER für Lila dunkel */
-    --hw-purple-lite: #b9a9d4;             /* PLATZHALTER für Lila hell */
-    --hw-yellow-dark: #fbb614;             /* Gelb dunkel — Hands-On */
-    --hw-yellow-lite: #f3e57f;             /* Gelb hell — Hands-On */
+    /* === Corporate Design hin&weg === */
+    --hw-text:        #0a0a0a;
+    --hw-purple-dark: #5D3EE1;             /* CD Lila */
+    --hw-purple-mid:  #8B72EA;             /* abgeleitet */
+    --hw-purple-lite: #D8CEF7;             /* abgeleitet */
+    --hw-yellow-dark: #FFB400;             /* CD Gelb */
+    --hw-yellow-lite: #FFE08A;             /* abgeleitet */
+    --hw-yellow-soft: #FFF4D1;             /* abgeleitet, für Hover */
+
+    /* Pfeil-Farben (semantisch) */
+    --hw-arrow-inflow:  #0a0a0a;           /* Schwarz: Zuwanderung */
+    --hw-arrow-outflow: #00B8A9;           /* Türkis: Abwanderung */
 
     --hw-bg:          #ffffff;
     --hw-bg-soft:     #f5f3f8;
     --hw-bg-overlay:  rgba(255, 255, 255, 0.94);
-    --hw-shadow:      0 4px 14px rgba(74, 44, 122, 0.18);
+    --hw-shadow:      0 4px 14px rgba(93, 62, 225, 0.20);
 
     --hw-font-text:    'Overpass', sans-serif;
     --hw-font-heading: 'Overpass Mono', monospace;
 }
+
 
 /* --- Reset / Base --------------------------------------------------------- */
 html, body {
