@@ -7,14 +7,14 @@
     --hw-text:        #0a0a0a;
     --hw-purple-dark: #5D3EE1;             /* CD Lila */
     --hw-purple-mid:  #8B72EA;             /* abgeleitet */
-    --hw-purple-lite: #D8CEF7;             /* abgeleitet */
+    --hw-purple-lite: #b6a6e4;             /* abgeleitet */
     --hw-yellow-dark: #FFB400;             /* CD Gelb */
     --hw-yellow-lite: #FFE08A;             /* abgeleitet */
     --hw-yellow-soft: #FFF4D1;             /* abgeleitet, für Hover */
 
     /* Pfeil-Farben (semantisch) */
-    --hw-arrow-inflow:  #0a0a0a;           /* Schwarz: Zuwanderung */
-    --hw-arrow-outflow: #00B8A9;           /* Türkis: Abwanderung */
+    --hw-arrow-inflow:  #189b62;           
+    --hw-arrow-outflow: #b6280f;           
 
     --hw-bg:          #ffffff;
     --hw-bg-soft:     #f5f3f8;

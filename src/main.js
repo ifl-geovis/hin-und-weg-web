@@ -12,12 +12,12 @@
             /* Lila-Skala für POSITIVE Werte (Zuwanderung) — hell → dunkel */
             "purple_scale": {
                 title: "Lila",
-                scale: ['#D8CEF7', '#8B72EA', '#5D3EE1'],
+                scale: ['#BBABED', '#674EC7', '#2B119C'],
             },
             /* Gelb-Skala für NEGATIVE Werte (Abwanderung) — hell → dunkel */
         "yellow_scale": {
     title: "Gelb (Abwanderung)",
-    scale: ['#FFB400', '#FFE08A', '#FFF4D1'],   /* dunkel → hell */
+    scale: ['#FFB400', '#FFD86E', '#FFEAA6'],   /* dunkel → hell */
 },
             /* Legacy-Aliase entfernt — sie haben den Bug verursacht */
             "Greys": { title: "Graustufen", scale: "Greys" },
