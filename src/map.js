@@ -43,13 +43,26 @@ function get_map_fit_padding_options() {
 
 
 /* --- Header / Zoom / Year-Container Position ----------------------------- */
-
 function position_header_zoom_year() {
     const mapEl = document.getElementById('leafletmap');
     const headerEl = document.getElementById('header');
     const containerEl = document.getElementById('year_play_container');
     if (!mapEl) return;
 
+    /* Auf Mobile übernimmt die CSS die Positionierung — keine inline styles */
+    const isMobile = window.matchMedia('(max-width: 900px)').matches;
+    if (isMobile) {
+        if (containerEl) {
+            containerEl.style.top = '';
+            containerEl.style.left = '';
+            containerEl.style.bottom = '';
+        }
+        const zoomCorner = mapEl.querySelector('.leaflet-top.leaflet-left');
+        if (zoomCorner) zoomCorner.style.marginTop = '';
+        return;
+    }
+
+    /* Desktop: dynamisch unter dem Header platzieren */
     const rect = headerEl ? headerEl.getBoundingClientRect() : null;
     const spacing = 8;
     const headerBottom = rect ? rect.bottom : 16;
@@ -61,6 +74,7 @@ function position_header_zoom_year() {
 
     if (containerEl) {
         containerEl.style.top = (headerBottom + spacing) + 'px';
+        containerEl.style.bottom = '';                     /* WICHTIG: zurücksetzen */
         const zoomControl = mapEl.querySelector('.leaflet-control-zoom');
         if (zoomControl) {
             const zoomRect = zoomControl.getBoundingClientRect();
@@ -70,6 +84,7 @@ function position_header_zoom_year() {
         }
     }
 }
+
 window.position_header_zoom_year = position_header_zoom_year;
 
 
