@@ -34,6 +34,25 @@
     <h1>hin&amp;weg</h1>
     <h3 id="dataset_title">Wanderungen zwischen Landkreisen</h3>
 </div>
+<!-- Suchfeld für Landkreisnamen -->
+<div id="search_container" role="search">
+    <div id="search_inputrow">
+        <svg class="search_icon" viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/>
+            <line x1="16.5" y1="16.5" x2="21" y2="21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        <input type="search" id="search_input"
+               placeholder="Landkreis suchen…"
+               aria-label="Landkreis suchen"
+               autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
+               inputmode="search" />
+        <button id="search_clear" type="button"
+                aria-label="Sucheingabe löschen"
+                tabindex="-1">✕</button>
+    </div>
+    <ul id="search_results" role="listbox" aria-label="Suchergebnisse" hidden></ul>
+</div>
+
 
 <!-- Year badge + play button -->
 <div id="year_play_container">
@@ -60,6 +79,20 @@
 
 <!-- Feature info popup -->
 <div id="feature_info_popup"></div>
+
+<!-- Touch-Detail-Panel (persistent bis geschlossen) -->
+<div id="feature_detail_panel" aria-hidden="true" role="dialog" aria-labelledby="feature_detail_title">
+    <button id="feature_detail_close" type="button"
+            aria-label="Info-Fenster schließen"
+            onclick="hide_detail_panel()">✕</button>
+    <h2 id="feature_detail_title"></h2>
+    <div id="feature_detail_summary"></div>
+    <p id="feature_detail_hint" class="detail-hint">
+        Nochmal auf den Kreis tippen, um ihn als <strong>Bezugskreis</strong> zu wählen.
+    </p>
+</div>
+
+
 
 <!-- Load indicator -->
 <div id="load_indicator">

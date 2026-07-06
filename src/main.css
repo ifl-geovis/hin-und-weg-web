@@ -1,28 +1,56 @@
 /* ==========================================================================
-   main.css — Medienstation (Corporate Design hin&weg)
-   Schwarz: Text. Lila: Auszeichnung. Gelb: Hands-On.
+   main.css — Medienstation "Alltag im Wandel – Alles bleibt anders"
+   Farben aus Entwurfsplanung molitor, 10.06.2026:
+     Schrift/Hervorhebung: Schwarz (CMYK 0/0/0/98), Lila (CMYK 80/90/0/0)
+     Hands-On:             Gelb  (CMYK 0/30/94/0)
+     Infografik:           Blau  (CMYK 75/16/0/15), Rosé (CMYK 35/55/0/0),
+                           Cream (CMYK 27/24/1/0), Karten-Neutral (CMYK 5/5/25/5),
+                           Grün  (CMYK 70/5/30/0)
+   Schrift:
+     Überschriften         Overpass Mono Bold
+     Lesetext              Overpass Regular
+     Objektbeschreibungen  Overpass Mono Regular
+     Credits               Overpass Mono Light
    ========================================================================== */
+
    :root {
-    /* === Corporate Design hin&weg === */
-    --hw-text:        #0a0a0a;
-    --hw-purple-dark: #5D3EE1;             /* CD Lila */
-    --hw-purple-mid:  #8B72EA;             /* abgeleitet */
-    --hw-purple-lite: #b6a6e4;             /* abgeleitet */
-    --hw-yellow-dark: #FFB400;             /* CD Gelb */
-    --hw-yellow-lite: #FFE08A;             /* abgeleitet */
-    --hw-yellow-soft: #FFF4D1;             /* abgeleitet, für Hover */
+    /* === Grundfarben (Schrift / Hervorhebung) === */
+    --hw-text:        #060606;             /* CMYK 0/0/0/98 – Schrift-Schwarz */
+    --hw-purple-dark: #4b2c7a;             /* CMYK 80/90/0/0 – CD-Lila */
 
-    /* Pfeil-Farben (semantisch) */
-    --hw-arrow-inflow:  #189b62;           
-    --hw-arrow-outflow: #b6280f;           
+    /* Abgeleitete Lila-Töne (Skala, Hover, Rahmen) */
+    --hw-purple-mid:  #7a5aaf;
+    --hw-purple-lite: #b6a6d1;
+    --hw-purple-soft: #ece6f5;
 
+    /* === Hands-On-Farbe === */
+    --hw-yellow-dark: #f2b800;             /* CMYK 0/30/94/0 – Hands-On-Gelb */
+    --hw-yellow-lite: #ffe08a;             /* aufgehellt für Hover */
+    --hw-yellow-soft: #fff4d1;             /* sehr hell für Flächen */
+
+    /* === Infografik-Farben === */
+    --hw-info-blue:   #2b8fc7;             /* CMYK 75/16/0/15 */
+    --hw-info-rose:   #b285b8;             /* CMYK 35/55/0/0 */
+    --hw-info-cream:  #c9c3e0;             /* CMYK 27/24/1/0 */
+    --hw-info-grey:   #f0eee6;             /* CMYK 5/5/25/5 – Karten-Neutralton */
+    --hw-info-green:  #4fb08c;             /* CMYK 70/5/30/0 */
+
+    /* Semantische Pfeil-Farben — klar unterscheidbar */
+    --hw-arrow-inflow:  #4fb08c;           /* CD-Grün: Zuwanderung */
+    --hw-arrow-outflow: #2b8fc7;           /* CD-Blau: Abwanderung */
+
+    /* Flächen */
     --hw-bg:          #ffffff;
-    --hw-bg-soft:     #f5f3f8;
-    --hw-bg-overlay:  rgba(255, 255, 255, 0.94);
-    --hw-shadow:      0 4px 14px rgba(93, 62, 225, 0.20);
+    --hw-bg-soft:     var(--hw-info-grey);
+    --hw-bg-overlay:  rgba(255, 255, 255, 0.96);
+    --hw-shadow:      0 4px 14px rgba(75, 44, 122, 0.22);
 
+    /* Schriften */
     --hw-font-text:    'Overpass', sans-serif;
-    --hw-font-heading: 'Overpass Mono', monospace;
+    --hw-font-mono:    'Overpass Mono', monospace;
+    --hw-font-heading: 'Overpass Mono', monospace;   /* Bold */
+    --hw-font-caption: 'Overpass Mono', monospace;   /* Regular */
+    --hw-font-credit:  'Overpass Mono', monospace;   /* Light */
 }
 
 
@@ -32,7 +60,8 @@ html, body {
     margin: 0;
     font-family: var(--hw-font-text);
     font-size: 18px;
-    line-height: 1.4;
+    font-weight: 400;                        /* Overpass Regular = Lesetext */
+    line-height: 1.45;
     color: var(--hw-text);
     background: var(--hw-bg);
     -webkit-font-smoothing: antialiased;
@@ -43,12 +72,32 @@ html, body {
     touch-action: manipulation;
 }
 
-h1, h2, h3, .title_bar, .year-badge,
-.year-slider-label, #idle_overlay h2 {
+/* Überschriften — Overpass Mono Bold */
+h1, h2, h3,
+.title_bar,
+.year-badge,
+#idle_overlay h2 {
     font-family: var(--hw-font-heading);
     font-weight: 700;
     letter-spacing: 0.01em;
     color: var(--hw-text);
+}
+
+/* Objektbeschreibungen / Labels / Legenden — Overpass Mono Regular */
+.year-slider-label,
+.map_info_label,
+#year_slider_marks,
+.geostats-legend {
+    font-family: var(--hw-font-caption);
+    font-weight: 400;
+}
+
+/* Credits — Overpass Mono Light */
+.leaflet-control-attribution,
+.hw-credit {
+    font-family: var(--hw-font-credit);
+    font-weight: 300;
+    font-size: 12px;
 }
 
 input, select, button, textarea {
@@ -68,20 +117,22 @@ select {
     cursor: pointer;
 }
 
+
 /* --- Map ------------------------------------------------------------------ */
 div#leafletmap {
     width: 100%;
     height: 100%;
     margin: 0;
-    background: var(--hw-bg-soft);
+    background: var(--hw-bg-soft);           /* Karten-Neutralton (CD) */
 }
 
 .leaflet-control-attribution {
     font-size: 10px !important;
-    background: rgba(255,255,255,0.7) !important;
+    background: rgba(255,255,255,0.75) !important;
     color: var(--hw-text) !important;
 }
 .leaflet-control-attribution a { color: var(--hw-purple-dark) !important; }
+
 
 /* --- Header --------------------------------------------------------------- */
 div#header {
@@ -117,8 +168,10 @@ span#versionsub {
     font-weight: 400;
     color: var(--hw-purple-dark);
     margin-left: 6px;
+    font-family: var(--hw-font-credit);
 }
-h3 {
+/* Untertitel im Header = Lesetext */
+div#header h3 {
     margin: 0;
     font-size: 0.95rem;
     font-weight: 400;
@@ -129,7 +182,8 @@ h3 {
 /* --- Year + play container ------------------------------------------------ */
 #year_play_container {
     position: fixed;
-    left: 100px;                  /* JS overrides via position_header_zoom_year() */
+    /* left/top werden zur Laufzeit von position_header_zoom_year() gesetzt. */
+    left: 16px;
     top: 90px;
     z-index: 1000;
     display: inline-flex;
@@ -154,6 +208,8 @@ h3 {
     line-height: 1.1;
     min-width: 4ch;
     text-align: center;
+    height: 52px;
+    box-sizing: border-box;
 }
 #year_play_container #year_play_toggle {
     display: grid;
@@ -167,6 +223,8 @@ h3 {
     -webkit-appearance: none;
     appearance: none;
     min-height: 0;
+    height: 52px;
+    box-sizing: border-box;
     transition: background 0.15s ease;
 }
 #year_play_container #year_play_toggle img.icon {
@@ -184,6 +242,7 @@ h3 {
 #year_play_container #year_play_toggle:not(:disabled):active {
     background: var(--hw-yellow-dark);
 }
+
 
 /* --- Year slider (Hands-On gelb) ------------------------------------------ */
 #year_slider_container {
@@ -206,6 +265,7 @@ h3 {
     margin-bottom: 8px;
     text-transform: uppercase;
     letter-spacing: 0.08em;
+    font-family: var(--hw-font-caption);
 }
 #year_slider {
     -webkit-appearance: none;
@@ -243,12 +303,14 @@ h3 {
     margin-top: 6px;
     font-size: 0.75rem;
     color: var(--hw-purple-dark);
-    font-family: var(--hw-font-heading);
+    font-family: var(--hw-font-caption);
 }
 
 /* --- Zoom control --------------------------------------------------------- */
 #leafletmap .leaflet-top.leaflet-left {
-    margin-top: 90px;
+    /* margin-top wird zur Laufzeit von position_header_zoom_year() gesetzt.
+       Fallback ausreichend für den Erst-Render: */
+    margin-top: 160px;
     margin-left: 16px;
 }
 .leaflet-control-zoom a {
@@ -266,7 +328,8 @@ h3 {
     background: var(--hw-yellow-lite) !important;
 }
 
-/* --- Feature info popup --------------------------------------------------- */
+
+/* --- Feature info popup (Desktop / Hover-Geräte) ------------------------- */
 div#feature_info_popup {
     display: none;
     position: fixed;
@@ -281,9 +344,15 @@ div#feature_info_popup {
     pointer-events: none;
     max-width: 320px;
     font-size: 0.95rem;
+    font-family: var(--hw-font-text);
     box-shadow: var(--hw-shadow);
 }
 div#feature_info_popup strong { color: var(--hw-purple-dark); }
+
+/* Auf Touch-Only-Geräten Hover-Popup unterdrücken */
+@media (hover: none) {
+    div#feature_info_popup { display: none !important; }
+}
 
 div.map_info_label {
     display: block;
@@ -291,13 +360,14 @@ div.map_info_label {
     border: 1px solid var(--hw-purple-lite);
     border-radius: 8px;
     padding: 4px 8px;
-    font-family: var(--hw-font-heading);
+    font-family: var(--hw-font-caption);
     font-size: 0.85rem;
     color: var(--hw-text);
     white-space: nowrap;
     width: auto;
     height: auto;
 }
+
 
 /* --- Action buttons ------------------------------------------------------- */
 div.action_button {
@@ -328,13 +398,8 @@ div.action_button.hands_on:hover,
 div.action_button.hands_on:active {
     background: var(--hw-yellow-dark);
 }
-/* Pfeile-Toggle: visuell deutlich machen, ob aktiv */
-#arrows_toggle_fab[data-active="false"] {
-    opacity: 0.55;
-}
-#arrows_toggle_fab[data-active="true"] {
-    opacity: 1;
-}
+#arrows_toggle_fab[data-active="false"] { opacity: 0.55; }
+#arrows_toggle_fab[data-active="true"]  { opacity: 1; }
 
 div.action_button > button {
     display: grid;
@@ -359,22 +424,19 @@ div.action_button img.icon {
     pointer-events: none;
 }
 
-/* Anordnung der Buttons rechts (von oben) */
-#arrows_toggle_fab { top: 90px; }
-#zoom_home_fab     { top: 156px; }
-#map_bg_fab        { top: 222px; }
-
-/* Versteckte Legacy-Buttons für die Medienstation */
+/* Anordnung der Buttons rechts, alle auf Header-Höhe:
+   top: 16px = identisch mit #header top */
+   #arrows_toggle_fab { top: 16px; right: 16px; }
+   #zoom_home_fab     { top: 16px; right: 82px; }   /* 16 + 56 + 10 Abstand */
+   #map_bg_fab        { top: 16px; right: 148px; }
+   
+/* Versteckte Legacy-Buttons */
 div#menu_toggle_button,
 div#classification_button,
 div#dataset_load_button,
 div#statistics_button,
 div#table_button,
-div#barchart_button {
-    display: none !important;
-}
-
-/* --- Selection box / classification view: in Medienstation deaktiviert --- */
+div#barchart_button,
 div#selection_box,
 div#classification_view,
 div#statistics_view,
@@ -386,7 +448,8 @@ div#credits {
     visibility: hidden !important;
 }
 
-/* --- Viewcomponents (defensiver Stil, falls doch gerendert) --------------- */
+
+/* --- Viewcomponents (defensiver Fallback-Stil) --------------------------- */
 div.viewcomponent {
     display: none;
     position: fixed;
@@ -418,12 +481,13 @@ div.close_button {
 }
 h2.title_bar {
     margin: 0 0 5px 0;
-    background: var(--hw-purple-lite);
+    background: var(--hw-purple-soft);
     color: var(--hw-text);
     padding: 8px 14px;
     width: 100%;
     height: auto;
     text-align: center;
+    font-family: var(--hw-font-heading);
     font-size: 1rem;
     font-weight: 700;
     box-sizing: border-box;
@@ -433,8 +497,8 @@ h2.title_bar {
 div#legend_view {
     display: none;
     position: fixed;
-    right: 88px;                  /* neben den Action-Buttons */
-    top: 90px;                    /* statt bottom: 30px → nach oben */
+    right: 214px;               /* rechts von den 3 FABs (148 + 56 + 10) */
+    top: 16px;                  /* identisch mit Header-top */
     min-width: 220px;
     max-width: 320px;
     min-height: 0;
@@ -452,7 +516,7 @@ div#legend_content {
     padding: 12px 14px;
 }
 #legend_view .title_bar {
-    background: var(--hw-purple-lite) !important;
+    background: var(--hw-purple-soft) !important;
     color: var(--hw-text);
     display: flex;
     align-items: center;
@@ -470,6 +534,7 @@ div#legend_content {
     user-select: none;
     -webkit-user-select: none;
     transition: background 0.15s ease, color 0.15s ease;
+    font-family: var(--hw-font-heading);
     font-size: 1rem;
     border-bottom: 1px solid var(--hw-purple-dark);
 }
@@ -489,14 +554,11 @@ div#legend_content {
 }
 #legend_view.collapsed .legend_chevron { transform: rotate(180deg); }
 
-/* Accordion animation */
 #legend_view #legend_content {
     overflow: hidden;
     max-height: 600px;
     opacity: 1;
-    transition: max-height 0.3s ease,
-                opacity 0.2s ease,
-                padding 0.3s ease;
+    transition: max-height 0.3s ease, opacity 0.2s ease, padding 0.3s ease;
 }
 #legend_view.collapsed #legend_content {
     max-height: 0;
@@ -507,6 +569,7 @@ div#legend_content {
 }
 #legend_view.collapsed { min-height: 0; }
 
+
 /* --- Legend grid (geostats-legend) ---------------------------------------- */
 .geostats-legend {
     display: inline-grid;
@@ -516,7 +579,7 @@ div#legend_content {
     align-items: center;
     font-size: 0.95em;
     line-height: 1.3;
-    font-family: var(--hw-font-heading);
+    font-family: var(--hw-font-caption);
 }
 .geostats-legend .geostats-legend-block {
     width: 22px;
@@ -548,6 +611,7 @@ div#legend_content {
     font-style: italic;
     color: var(--hw-purple-dark);
 }
+
 
 /* --- Load indicator ------------------------------------------------------- */
 div#load_indicator {
@@ -596,7 +660,7 @@ div.load_inidicator_block {
     display: none;
     position: fixed;
     inset: 0;
-    background: rgba(74, 44, 122, 0.78);
+    background: rgba(75, 44, 122, 0.78);      /* CD-Lila 80/90/0/0 mit Alpha */
     z-index: 5000;
     align-items: center;
     justify-content: center;
@@ -612,28 +676,35 @@ div.load_inidicator_block {
     border-radius: 16px;
     padding: 32px 40px;
     text-align: center;
-    max-width: 600px;
-    box-shadow: 0 12px 40px rgba(0,0,0,0.4);
+    max-width: 640px;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
 }
 #idle_overlay_content h2 {
     margin: 0 0 16px 0;
-    font-size: 1.6rem;
+    font-family: var(--hw-font-heading);
+    font-size: 1.8rem;
+    font-weight: 700;
     color: var(--hw-purple-dark);
+    letter-spacing: 0.01em;
 }
 #idle_overlay_content p {
-    margin: 8px 0;
-    font-size: 1.1rem;
+    margin: 10px 0;
+    font-family: var(--hw-font-text);
+    font-size: 1.15rem;
+    font-weight: 400;
     line-height: 1.5;
     color: var(--hw-text);
 }
 #idle_overlay_content strong {
     color: var(--hw-purple-dark);
     font-family: var(--hw-font-heading);
+    font-weight: 700;
 }
 
+
 /* --- Misc / Cleanup ------------------------------------------------------- */
-div#legend { display: none; }
-div#years_selection { display: none; }
+div#legend            { display: none; }
+div#years_selection   { display: none; }
 option.year_option {
     padding-left: 5px;
     padding-right: 15px;
@@ -641,6 +712,245 @@ option.year_option {
 fieldset#data_interpretation {
     border: none;
     display: none;
+}
+
+/* ==========================================================================
+   Touch-Detail-Panel (Ersatz für Mouseover auf Touchscreens)
+   ========================================================================== */
+   #feature_detail_panel {
+    display: none;
+    position: fixed;
+    left: 50%;
+    /* bottom wird zur Laufzeit gesetzt via --hw-panel-bottom;
+       Fallback für erste Renderrunde: knapp über dem Slider */
+    bottom: var(--hw-panel-bottom, 160px);
+    transform: translateX(-50%);
+    width: min(620px, 92vw);
+    /* Höhe deckeln, damit das Panel bei viel Text nicht bis in den Header
+       hineinragt. Rechenweg: Viewport minus Header-Zone minus Slider-Zone. */
+    max-height: calc(100vh - var(--hw-panel-bottom, 160px) - 100px);
+    overflow-y: auto;
+    background: var(--hw-bg-overlay);
+    border: 3px solid var(--hw-purple-dark);
+    border-radius: 14px;
+    padding: 18px 52px 18px 22px;
+    box-shadow: var(--hw-shadow);
+    z-index: 1400;
+    font-family: var(--hw-font-text);
+    font-size: 1.05rem;
+    line-height: 1.5;
+    color: var(--hw-text);
+    animation: hw-panel-fade-in 0.18s ease-out;
+    /* Scrollen mit Finger im Panel erlauben, ohne die Karte zu bewegen */
+    touch-action: pan-y;
+    -webkit-overflow-scrolling: touch;
+}
+
+#feature_detail_panel[aria-hidden="false"] { display: block; }
+
+@keyframes hw-panel-fade-in {
+    from { opacity: 0; transform: translate(-50%, 8px); }
+    to   { opacity: 1; transform: translate(-50%, 0); }
+}
+
+#feature_detail_panel h2 {
+    margin: 0 0 10px 0;
+    font-family: var(--hw-font-heading);
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--hw-purple-dark);
+    line-height: 1.2;
+}
+
+#feature_detail_summary {
+    font-family: var(--hw-font-text);
+    font-size: 1.05rem;
+    line-height: 1.5;
+}
+#feature_detail_summary p { margin: 4px 0; }
+
+#feature_detail_close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    border-radius: 50%;
+    background: var(--hw-yellow-lite);
+    border: 2px solid var(--hw-purple-dark);
+    font-family: var(--hw-font-heading);
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--hw-purple-dark);
+    cursor: pointer;
+    line-height: 1;
+    min-height: 0;
+    display: grid;
+    place-items: center;
+    transition: background 0.15s ease;
+}
+#feature_detail_close:hover,
+#feature_detail_close:active {
+    background: var(--hw-yellow-dark);
+}
+#feature_detail_close:focus-visible {
+    outline: 3px solid var(--hw-yellow-dark);
+    outline-offset: 2px;
+}
+
+.detail-hint {
+    margin: 12px 0 0 0;
+    padding-top: 10px;
+    border-top: 1px dashed var(--hw-purple-lite);
+    font-family: var(--hw-font-text);
+    font-size: 0.9rem;
+    font-style: italic;
+    color: var(--hw-purple-dark);
+    line-height: 1.4;
+}
+
+/* Semantische Farbklassen für Saldo-Werte */
+.saldo-positive { color: var(--hw-arrow-inflow);  font-weight: 700; }
+.saldo-negative { color: var(--hw-arrow-outflow); font-weight: 700; }
+.saldo-zero     { color: var(--hw-text);          font-weight: 700; }
+
+/* Auf Touch-Geräten das Desktop-Hover-Popup unterdrücken */
+@media (hover: none) {
+    div#feature_info_popup { display: none !important; }
+}
+/* ==========================================================================
+   Suchfeld für Landkreisnamen
+   ========================================================================== */
+/* ==========================================================================
+   Suchfeld für Landkreisnamen — neben der Jahresanzeige unter dem Header
+   ========================================================================== */
+
+   #search_container {
+    position: fixed;
+    /* left / top / width werden zur Laufzeit gesetzt.
+       Fallback für erste Renderrunde: */
+    left: 200px;
+    top: 90px;
+    width: 260px;
+    z-index: 1050;
+    font-family: var(--hw-font-text);
+}
+
+#search_inputrow {
+    position: relative;
+    display: flex;
+    align-items: center;
+    height: 52px;                       /* == year-badge Höhe → gleiche Baseline */
+    background: var(--hw-bg-overlay);
+    border: 2px solid var(--hw-purple-dark);
+    border-radius: 12px;
+    padding: 0 8px 0 12px;
+    box-shadow: var(--hw-shadow);
+    box-sizing: border-box;
+    transition: border-color 0.15s ease;
+}
+#search_container.is-open #search_inputrow {
+    border-radius: 12px 12px 0 0;
+    border-bottom-color: var(--hw-purple-lite);
+}
+
+.search_icon {
+    width: 22px;
+    height: 22px;
+    flex-shrink: 0;
+    color: var(--hw-purple-dark);
+    margin-right: 6px;
+}
+
+#search_input {
+    flex: 1;
+    min-width: 0;
+    height: 100%;
+    padding: 0 6px;
+    border: none;
+    background: transparent;
+    font-family: var(--hw-font-text);
+    font-size: 1.05rem;
+    color: var(--hw-text);
+    outline: none;
+    -webkit-appearance: none;
+    appearance: none;
+}
+#search_input::placeholder {
+    color: var(--hw-purple-mid);
+    opacity: 0.75;
+}
+#search_input::-webkit-search-cancel-button { -webkit-appearance: none; appearance: none; }
+#search_input { -webkit-user-select: text; user-select: text; }
+
+#search_clear {
+    display: none;
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: var(--hw-yellow-lite);
+    border: 1px solid var(--hw-purple-dark);
+    color: var(--hw-purple-dark);
+    font-family: var(--hw-font-heading);
+    font-size: 0.85rem;
+    font-weight: 700;
+    line-height: 1;
+    cursor: pointer;
+    padding: 0;
+    min-height: 0;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s ease;
+}
+#search_clear.is-visible { display: inline-flex; }
+#search_clear:active { background: var(--hw-yellow-dark); }
+
+#search_results {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    max-height: min(420px, 60vh);
+    overflow-y: auto;
+    background: var(--hw-bg-overlay);
+    border: 2px solid var(--hw-purple-dark);
+    border-top: none;
+    border-radius: 0 0 12px 12px;
+    box-shadow: var(--hw-shadow);
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-y;
+}
+#search_results:not([hidden]) { display: block; }
+
+.search_result_item {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--hw-purple-lite);
+    cursor: pointer;
+    font-family: var(--hw-font-text);
+    font-size: 1rem;
+    color: var(--hw-text);
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    transition: background 0.1s ease;
+}
+.search_result_item:last-child { border-bottom: none; }
+.search_result_item:hover,
+.search_result_item.is-active { background: var(--hw-yellow-soft); }
+.search_result_item:active     { background: var(--hw-yellow-lite); }
+.search_result_item mark {
+    background: var(--hw-yellow-lite);
+    color: var(--hw-text);
+    font-weight: 700;
+    padding: 0 1px;
+    border-radius: 2px;
+}
+.search_result_empty {
+    padding: 16px;
+    color: var(--hw-purple-dark);
+    font-style: italic;
+    text-align: center;
 }
 
 /* --- Responsive ----------------------------------------------------------- */
@@ -655,14 +965,24 @@ fieldset#data_interpretation {
     div#header h3 { font-size: 0.85rem; }
 
     #year_play_container {
-        left: 16px;
-        top: auto;
-        bottom: 130px;
+        left: 16px !important;
+        top: auto !important;
+        bottom: 130px !important;
     }
     #year_play_container .year-badge {
         font-size: 1.2rem;
         padding: 8px 14px;
+        height: 44px;
     }
+    #year_play_container #year_play_toggle { height: 44px; }
+
+    #search_container {
+        left: 8px !important;
+        top: 68px !important;
+        width: calc(100% - 16px) !important;
+    }
+    #search_inputrow { height: 46px; }
+    #search_results { max-height: 50vh; }
 
     #year_slider_container {
         bottom: 16px;
@@ -673,21 +993,25 @@ fieldset#data_interpretation {
     div.action_button {
         width: 48px;
         height: 48px;
-        right: 12px;
+        top: 8px !important;
     }
-    #arrows_toggle_fab { top: 80px; }
-    #zoom_home_fab     { top: 138px; }
-    #map_bg_fab        { top: 196px; }
+    #arrows_toggle_fab { right: 12px !important; }
+    #zoom_home_fab     { right: 68px !important; }
+    #map_bg_fab        { right: 124px !important; }
 
     div#legend_view {
-        right: 72px;
-        top: 80px;                    /* statt bottom: 130px */
-        bottom: auto;
-        max-width: 50%;
+        right: 180px !important;
+        top: 8px !important;
+        max-width: 40%;
     }
     div#feature_info_popup {
         font-size: 0.9rem;
         padding: 10px 12px;
         max-width: 260px;
+    }
+
+    /* Zoom-Control auf Mobile unter der zweiten Zeile */
+    #leafletmap .leaflet-top.leaflet-left {
+        margin-top: 130px;
     }
 }

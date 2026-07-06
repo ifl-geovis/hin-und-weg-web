@@ -70,6 +70,9 @@ function bootstrap_from_preload() {
     install_idle_handlers();
     install_auto_refresh();
     install_global_error_handler();
+    install_global_error_handler();
+    if (typeof install_search === 'function') install_search();       /* NEU */
+
 
     app.status.loading = false;
     app.status.modal_dialog = false;
@@ -215,7 +218,10 @@ function reset_idle_timer() {
 
 function idle_reset_to_default() {
     stop_year_playback(true);
-
+    if (typeof close_search === 'function') close_search(true);       /* NEU */
+   /* Detail-Panel schließen (falls offen) */
+   if (typeof hide_detail_panel === 'function') hide_detail_panel();
+   if (typeof clear_preview_highlight === 'function') clear_preview_highlight();
     /* Hintergrundkarte zurück auf Standard */
     if (app.map && app.map.map && !app.status.background_active) {
         const opt = app.map.background_options[0];
@@ -255,6 +261,8 @@ function show_idle_overlay() {
     const dismiss = () => {
         ov.classList.remove('visible');
         ov.setAttribute('aria-hidden', 'true');
+        if (typeof hide_detail_panel === 'function') hide_detail_panel();      /* NEU */
+        if (typeof clear_preview_highlight === 'function') clear_preview_highlight();  /* NEU */
         ov.removeEventListener('pointerdown', dismiss);
         ov.removeEventListener('touchstart', dismiss);
     };
