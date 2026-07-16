@@ -1198,3 +1198,53 @@ function format_saldo_sentence(row, otherName, bezugsName, year) {
     }
 }
    
+/* ==========================================================================
+   Info-Modal ("Weitere Informationen")
+   ========================================================================== */
+
+   function show_info_modal() {
+    const modal = document.getElementById('info_modal');
+    if (!modal) return;
+
+    /* Während das Modal offen ist: laufende Wiedergabe pausieren,
+       damit der Besucher in Ruhe lesen kann. */
+    if (typeof stop_year_playback === 'function' &&
+        app.view && app.view.year_player && app.view.year_player.isPlaying) {
+        stop_year_playback(true);
+    }
+
+    modal.setAttribute('aria-hidden', 'false');
+    app.status.modal_dialog = true;
+
+    /* ESC-Taste schließt das Modal (für Wartungspersonal mit Tastatur) */
+    document.addEventListener('keydown', _info_modal_key_handler);
+
+    /* Klick auf den dunklen Hintergrund schließt ebenfalls */
+    modal.addEventListener('pointerdown', _info_modal_backdrop_handler);
+
+    if (typeof reset_idle_timer === 'function') reset_idle_timer();
+}
+
+function hide_info_modal() {
+    const modal = document.getElementById('info_modal');
+    if (!modal) return;
+    modal.setAttribute('aria-hidden', 'true');
+    app.status.modal_dialog = false;
+
+    document.removeEventListener('keydown', _info_modal_key_handler);
+    modal.removeEventListener('pointerdown', _info_modal_backdrop_handler);
+
+    if (typeof reset_idle_timer === 'function') reset_idle_timer();
+}
+
+function _info_modal_key_handler(ev) {
+    if (ev.key === 'Escape') hide_info_modal();
+}
+
+function _info_modal_backdrop_handler(ev) {
+    /* Nur reagieren, wenn wirklich auf den Overlay-Hintergrund geklickt wurde,
+       nicht auf den Inhalt. */
+    if (ev.target && ev.target.id === 'info_modal') {
+        hide_info_modal();
+    }
+}

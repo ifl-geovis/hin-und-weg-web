@@ -106,16 +106,10 @@
     </div>
 </div>
 
-<!-- Right-side action buttons -->
+<!-- Right-side action buttons (vertikal gestapelt) -->
 <div id="zoom_home_fab" class="action_button" title="Zur Gesamtansicht">
     <button type="button" aria-label="Zur Gesamtansicht" onclick="zoom_home()">
         <img src="img/globe.svg" alt="" class="icon" aria-hidden="true" />
-    </button>
-</div>
-
-<div id="map_bg_fab" class="action_button" title="Hintergrundkarte umschalten">
-    <button type="button" aria-label="Hintergrundkarte umschalten" onclick="map_background_switcher()">
-        <img src="img/map.svg" alt="" class="icon" aria-hidden="true" />
     </button>
 </div>
 
@@ -124,6 +118,14 @@
     <button id="arrows_toggle_button" type="button" aria-pressed="true"
             aria-label="Wanderungspfeile ein-/ausblenden" onclick="toggle_arrows()">
         <img id="arrows_toggle_icon" src="img/Pfeil.png" alt="" class="icon" aria-hidden="true" />
+    </button>
+</div>
+
+<!-- Info-Button (öffnet Weitere Informationen) -->
+<div id="info_fab" class="action_button" title="Weitere Informationen">
+    <button type="button" aria-label="Weitere Informationen anzeigen"
+            onclick="show_info_modal()">
+        <span class="info-i" aria-hidden="true">i</span>
     </button>
 </div>
 
@@ -146,6 +148,48 @@
         <div id="legend_content_inner"></div>
     </div>
 </div>
+
+
+
+
+<!-- Info-Modal (Pop-up) -->
+<div id="info_modal" aria-hidden="true" role="dialog"
+     aria-labelledby="info_modal_title" aria-modal="true">
+    <div id="info_modal_content">
+        <button id="info_modal_close" type="button"
+                aria-label="Fenster schließen"
+                onclick="hide_info_modal()">✕</button>
+
+        <div id="info_modal_header">
+            <img id="info_modal_logo" src="img/huw-logo_32.png"
+                 alt="Leibniz-Institut für Länderkunde Logo" />
+            <h2 id="info_modal_title">Weitere Informationen</h2>
+        </div>
+
+        <div id="info_modal_body">
+            <p>
+                <strong>hin&amp;weg</strong> ist eine Anwendung des
+                Leibniz-Instituts für Länderkunde und steht Interessierten
+                kostenfrei zur Verfügung.
+            </p>
+            <p>
+                Die Wanderungsmatrizen der Landkreise stammen aus Daten
+                der Statistischen Ämter des Bundes und der Länder.
+                Dargestellt werden die Salden, also die Differenz aus
+                Zu- und Wegzügen zwischen zwei Landkreisen. Für den
+                Zeitraum 2018 bis 2021 werden 3-Jahres-Mittelwerte
+                ausgegeben.
+            </p>
+        </div>
+
+        <div id="info_modal_qr">
+            <img src="img/hinundweg-qr.png"
+                 alt="QR-Code zur hin&amp;weg-Anwendung" />
+            <span class="qr-caption">Anwendung online aufrufen</span>
+        </div>
+    </div>
+</div>
+
 
 <!-- Idle overlay (Hinweis nach Inaktivität) -->
 <div id="idle_overlay" aria-hidden="true">

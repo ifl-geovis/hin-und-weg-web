@@ -423,12 +423,12 @@ div.action_button img.icon {
     object-position: center;
     pointer-events: none;
 }
-
-/* Anordnung der Buttons rechts, alle auf Header-Höhe:
-   top: 16px = identisch mit #header top */
-   #arrows_toggle_fab { top: 16px; right: 16px; }
-   #zoom_home_fab     { top: 16px; right: 82px; }   /* 16 + 56 + 10 Abstand */
-   #map_bg_fab        { top: 16px; right: 148px; }
+/* Anordnung der Buttons rechts, vertikal gestapelt.
+   Reihenfolge von oben nach unten: Gesamtansicht → Pfeile → Info.
+   Vertikaler Abstand: 56 (Button-Höhe) + 10 (Gap) = 66 px pro Schritt. */
+   #zoom_home_fab    { top: 16px;  right: 16px; }
+   #arrows_toggle_fab { top: 82px;  right: 16px; }
+   #info_fab         { top: 148px; right: 16px; }
    
 /* Versteckte Legacy-Buttons */
 div#menu_toggle_button,
@@ -446,6 +446,22 @@ div#datasetloader_dialog,
 div#credits {
     display: none !important;
     visibility: hidden !important;
+}
+
+/* Info-Button "i" — typografisch gesetzt statt als Bild */
+#info_fab .info-i {
+    display: inline-block;
+    font-family: var(--hw-font-heading);
+    font-size: 1.6rem;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--hw-purple-dark);
+    font-style: italic;
+    pointer-events: none;
+}
+#info_fab:hover .info-i,
+#info_fab:active .info-i {
+    color: var(--hw-text);
 }
 
 
@@ -497,8 +513,8 @@ h2.title_bar {
 div#legend_view {
     display: none;
     position: fixed;
-    right: 214px;               /* rechts von den 3 FABs (148 + 56 + 10) */
-    top: 16px;                  /* identisch mit Header-top */
+    right: 82px;                /* rechts neben der einen Button-Spalte (16 + 56 + 10) */
+    top: 16px;                 /* identisch mit Header-top */
     min-width: 220px;
     max-width: 320px;
     min-height: 0;
@@ -993,14 +1009,15 @@ fieldset#data_interpretation {
     div.action_button {
         width: 48px;
         height: 48px;
-        top: 8px !important;
     }
-    #arrows_toggle_fab { right: 12px !important; }
-    #zoom_home_fab     { right: 68px !important; }
-    #map_bg_fab        { right: 124px !important; }
+    
+    /* Vertikaler Stapel auch auf Mobile — 48 + 10 = 58 px Schritt */
+    #zoom_home_fab    { top: 8px !important;  right: 12px !important; }
+    #arrows_toggle_fab { top: 66px !important; right: 12px !important; }
+    #info_fab         { top: 124px !important; right: 12px !important; }
 
     div#legend_view {
-        right: 180px !important;
+        right: 70px !important;    /* rechts neben der Button-Spalte (12 + 48 + 10) */
         top: 8px !important;
         max-width: 40%;
     }
@@ -1014,4 +1031,179 @@ fieldset#data_interpretation {
     #leafletmap .leaflet-top.leaflet-left {
         margin-top: 130px;
     }
+}
+/* ==========================================================================
+   "Weitere Informationen"-Button + Modal
+   ========================================================================== */
+
+#info_button {
+    position: fixed;
+    bottom: 16px;
+    right: 16px;
+    z-index: 1000;
+    padding: 10px 20px;
+    background: var(--hw-purple-dark);
+    color: #ffffff;
+    border: 2px solid var(--hw-purple-dark);
+    border-radius: 12px;
+    font-family: var(--hw-font-heading);
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    cursor: pointer;
+    box-shadow: var(--hw-shadow);
+    min-height: 44px;
+    transition: background 0.15s ease, color 0.15s ease;
+}
+#info_button:hover,
+#info_button:active {
+    background: var(--hw-yellow-dark);
+    color: var(--hw-text);
+    border-color: var(--hw-purple-dark);
+}
+#info_button:focus-visible {
+    outline: 3px solid var(--hw-yellow-dark);
+    outline-offset: 3px;
+}
+
+/* --- Modal-Overlay --- */
+#info_modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(75, 44, 122, 0.78);      /* CD-Lila mit Alpha */
+    z-index: 6000;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+}
+#info_modal[aria-hidden="false"] {
+    display: flex;
+    animation: hw-modal-fade-in 0.2s ease-out;
+}
+@keyframes hw-modal-fade-in {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+#info_modal_content {
+    position: relative;
+    background: var(--hw-bg);
+    border: 4px solid var(--hw-yellow-dark);
+    border-radius: 16px;
+    padding: 32px 40px;
+    max-width: 720px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+    font-family: var(--hw-font-text);
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-y;
+}
+
+#info_modal_close {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border-radius: 50%;
+    background: var(--hw-yellow-lite);
+    border: 2px solid var(--hw-purple-dark);
+    font-family: var(--hw-font-heading);
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--hw-purple-dark);
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+    line-height: 1;
+    transition: background 0.15s ease;
+}
+#info_modal_close:hover,
+#info_modal_close:active {
+    background: var(--hw-yellow-dark);
+}
+#info_modal_close:focus-visible {
+    outline: 3px solid var(--hw-yellow-dark);
+    outline-offset: 2px;
+}
+
+#info_modal_header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 20px;
+    padding-right: 48px;                       /* Platz für Schließen-Button */
+    border-bottom: 2px solid var(--hw-purple-soft);
+    padding-bottom: 16px;
+}
+#info_modal_logo {
+    height: 56px;
+    width: auto;
+    flex-shrink: 0;
+}
+#info_modal_title {
+    margin: 0;
+    font-family: var(--hw-font-heading);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--hw-purple-dark);
+}
+
+#info_modal_body {
+    font-family: var(--hw-font-text);
+    font-size: 1.05rem;
+    line-height: 1.55;
+    color: var(--hw-text);
+}
+#info_modal_body p {
+    margin: 0 0 14px 0;
+}
+#info_modal_body strong {
+    color: var(--hw-purple-dark);
+    font-weight: 700;
+}
+
+#info_modal_qr {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 2px solid var(--hw-purple-soft);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+#info_modal_qr img {
+    width: 160px;
+    height: 160px;
+    display: block;
+    border: 1px solid var(--hw-purple-lite);
+    border-radius: 8px;
+    background: #ffffff;
+    padding: 6px;
+}
+#info_modal_qr .qr-caption {
+    font-family: var(--hw-font-caption);
+    font-size: 0.85rem;
+    color: var(--hw-purple-dark);
+    letter-spacing: 0.05em;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+    #info_button {
+        bottom: 8px;
+        right: 8px;
+        padding: 8px 14px;
+        font-size: 0.9rem;
+    }
+    #info_modal_content {
+        padding: 24px 20px;
+    }
+    #info_modal_logo { height: 44px; }
+    #info_modal_title { font-size: 1.2rem; }
+    #info_modal_qr img { width: 130px; height: 130px; }
 }

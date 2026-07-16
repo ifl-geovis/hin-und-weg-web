@@ -218,10 +218,10 @@ function reset_idle_timer() {
 
 function idle_reset_to_default() {
     stop_year_playback(true);
-    if (typeof close_search === 'function') close_search(true);       /* NEU */
-   /* Detail-Panel schließen (falls offen) */
-   if (typeof hide_detail_panel === 'function') hide_detail_panel();
-   if (typeof clear_preview_highlight === 'function') clear_preview_highlight();
+    if (typeof close_search === 'function') close_search(true);
+    if (typeof hide_detail_panel === 'function') hide_detail_panel();
+    if (typeof hide_info_modal === 'function') hide_info_modal();   /* NEU */
+    if (typeof clear_preview_highlight === 'function') clear_preview_highlight();
     /* Hintergrundkarte zurück auf Standard */
     if (app.map && app.map.map && !app.status.background_active) {
         const opt = app.map.background_options[0];

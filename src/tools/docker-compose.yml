@@ -1,0 +1,19 @@
+version: "3.8"
+services:
+  tilemaker:
+    image: ghcr.io/systemed/tilemaker:latest
+    volumes:
+      - ../data-osm:/data
+    command: >
+      --input /data/germany-latest.osm.pbf
+      --output /data/germany.mbtiles
+      --config /data/config-openmaptiles.json
+      --process /data/process-openmaptiles.lua
+
+  tileserver:
+    image: maptiler/tileserver-gl:latest
+    ports:
+      - "8080:8080"
+    volumes:
+      - ../data-osm:/data
+    command: --config /data/tileserver-config.json
